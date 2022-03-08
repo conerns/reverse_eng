@@ -3,11 +3,12 @@ package org.openmrs;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.util.RoleConstants;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserRoles {
+public class UserRoles implements java.io.Serializable {
 
 	private Set<Role> roles;
 	

@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests database upgrade from OpenMRS 1.9.7.
  */
+@Ignore
 public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	
 	public static final String TEST_DATA_DIR = "/org/openmrs/util/databasechange/";
