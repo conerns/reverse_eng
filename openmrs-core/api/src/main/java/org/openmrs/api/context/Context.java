@@ -34,6 +34,7 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.*;
 import org.openmrs.api.db.ContextDAO;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.logic.LogicService;
 import org.openmrs.messagesource.MessageSourceService;
