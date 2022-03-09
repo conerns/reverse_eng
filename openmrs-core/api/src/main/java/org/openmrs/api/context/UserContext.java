@@ -356,7 +356,7 @@ public class UserContext implements Serializable {
 			return anonymousRole;
 		}
 		
-		anonymousRole = Context.getUserService().getRole(RoleConstants.ANONYMOUS);
+		anonymousRole = Context.getUserRolesService().getRole(RoleConstants.ANONYMOUS);
 		if (anonymousRole == null) {
 			throw new RuntimeException("Database out of sync with code: " + RoleConstants.ANONYMOUS + " role does not exist");
 		}
@@ -376,7 +376,7 @@ public class UserContext implements Serializable {
 			return authenticatedRole;
 		}
 		
-		authenticatedRole = Context.getUserService().getRole(RoleConstants.AUTHENTICATED);
+		authenticatedRole = Context.getUserRolesService().getRole(RoleConstants.AUTHENTICATED);
 		if (authenticatedRole == null) {
 			throw new RuntimeException("Database out of sync with code: " + RoleConstants.AUTHENTICATED
 			        + " role does not exist");

@@ -74,6 +74,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	private final String ADMIN_USERNAME = "admin";
 
 	private UserService userService;
+	private UserRolesService userRolesService;
 
 	private MessageSourceService messages;
 	
@@ -83,6 +84,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@BeforeEach
 	public void setup() {
 		userService = Context.getUserService();
+		userRolesService = Context.getUserRolesService();
 		messages = Context.getMessageSourceService();
 	}
 
@@ -410,7 +412,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Role role1 = new Role();
 		role1.setDescription("testing1");
 		role1.setRole("test1");
-		Privilege p1 = userService.getAllPrivileges().get(0);
+		Privilege p1 = userRolesService.getAllPrivileges().get(0);
 		Set<Privilege> privileges1 = new HashSet<>();
 		privileges1.add(p1);
 		role1.getRolePrivileges().setPrivileges(privileges1);
@@ -418,7 +420,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Role role2 = new Role();
 		role2.setDescription("testing2");
 		role2.setRole("test2");
-		Privilege p2 = userService.getAllPrivileges().get(0);
+		Privilege p2 = userRolesService.getAllPrivileges().get(0);
 		Set<Privilege> privileges2 = new HashSet<>();
 		privileges2.add(p2);
 		role2.getRolePrivileges().setPrivileges(privileges2);
@@ -552,7 +554,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	public void getPrivilegeByUuid_shouldFindObjectGivenValidUuid() {
 		executeDataSet(XML_FILENAME);
 		String uuid = "d979d066-15e6-467c-9d4b-cb575ef97f0f";
-		Privilege privilege = userService.getPrivilegeByUuid(uuid);
+		Privilege privilege = userRolesService.getPrivilegeByUuid(uuid);
 		assertEquals("Some Privilege", privilege.getPrivilege());
 	}
 
@@ -561,7 +563,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getPrivilegeByUuid_shouldReturnNullIfNoObjectFoundWithGivenUuid() {
-		assertNull(userService.getPrivilegeByUuid("some invalid uuid"));
+		assertNull(userRolesService.getPrivilegeByUuid("some invalid uuid"));
 	}
 
 	/**
@@ -570,7 +572,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getRoleByUuid_shouldFindObjectGivenValidUuid() {
 		String uuid = "3480cb6d-c291-46c8-8d3a-96dc33d199fb";
-		Role role = userService.getRoleByUuid(uuid);
+		Role role = userRolesService.getRoleByUuid(uuid);
 		assertEquals("Provider", role.getRole());
 	}
 
@@ -579,7 +581,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getRoleByUuid_shouldReturnNullIfNoObjectFoundWithGivenUuid() {
-		assertNull(userService.getRoleByUuid("some invalid uuid"));
+		assertNull(userRolesService.getRoleByUuid("some invalid uuid"));
 	}
 
 	/**
@@ -646,7 +648,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getAllPrivileges_shouldReturnAllPrivilegesInTheSystem() {
 		executeDataSet(XML_FILENAME);
-		List<Privilege> privileges = userService.getAllPrivileges();
+		List<Privilege> privileges = userRolesService.getAllPrivileges();
 		assertEquals(1, privileges.size());
 	}
 	
@@ -657,7 +659,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	public void getAllRoles_shouldReturnAllRolesInTheSystem() {
 		executeDataSet(XML_FILENAME);
 		
-		List<Role> roles = userService.getAllRoles();
+		List<Role> roles = userRolesService.getAllRoles();
 		assertEquals(7, roles.size());
 	}
 	
@@ -762,7 +764,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getPrivilege_shouldFetchPrivilegeForGivenName() {
 		executeDataSet(XML_FILENAME);
-		Privilege privilege = userService.getPrivilege("Some Privilege");
+		Privilege privilege = userRolesService.getPrivilege("Some Privilege");
 		assertEquals("Some Privilege", privilege.getPrivilege());
 	}
 	
@@ -772,7 +774,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getRole_shouldFetchRoleForGivenRoleName() {
 		executeDataSet(XML_FILENAME);
-		Role role = userService.getRole("Some Role");
+		Role role = userRolesService.getRole("Some Role");
 		assertEquals("Some Role", role.getRole());
 	}
 	
@@ -911,8 +913,8 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void purgePrivilege_shouldDeleteGivenPrivilegeFromTheDatabase() {
-		userService.purgePrivilege(new Privilege("Some Privilege"));
-		assertNull(userService.getPrivilege("Some Privilege"));
+		userRolesService.purgePrivilege(new Privilege("Some Privilege"));
+		assertNull(userRolesService.getPrivilege("Some Privilege"));
 	}
 	
 	/**
@@ -920,7 +922,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void purgePrivilege_shouldThrowErrorWhenPrivilegeIsCorePrivilege() {
-		assertThrows(APIException.class, () -> userService.purgePrivilege(new Privilege(PrivilegeConstants.ADD_COHORTS)));
+		assertThrows(APIException.class, () -> userRolesService.purgePrivilege(new Privilege(PrivilegeConstants.ADD_COHORTS)));
 	}
 	
 	/**
@@ -929,9 +931,9 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void purgeRole_shouldDeleteGivenRoleFromDatabase() {
 		executeDataSet(XML_FILENAME);
-		Role role = userService.getRole("Some Role To Delete");
-		userService.purgeRole(role);
-		assertNull(userService.getRole("Some Role To Delete"));
+		Role role = userRolesService.getRole("Some Role To Delete");
+		userRolesService.purgeRole(role);
+		assertNull(userRolesService.getRole("Some Role To Delete"));
 	}
 	
 	/**
@@ -939,7 +941,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void purgeRole_shouldReturnIfRoleIsNull() {
-		userService.purgeRole(null);
+		userRolesService.purgeRole(null);
 	}
 	
 	/**
@@ -949,7 +951,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	public void purgeRole_shouldThrowErrorWhenRoleIsACoreRole() {
 		Role role = new Role(RoleConstants.ANONYMOUS);
 
-		assertThrows(APIException.class, () -> userService.purgeRole(role));
+		assertThrows(APIException.class, () -> userRolesService.purgeRole(role));
 	}
 	
 	/**
@@ -963,7 +965,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		childRole.add(role1);
 		role2.setChildRoles(childRole);
 
-		assertThrows(CannotDeleteRoleWithChildrenException.class, () -> userService.purgeRole(role2));
+		assertThrows(CannotDeleteRoleWithChildrenException.class, () -> userRolesService.purgeRole(role2));
 	}
 	
 	/**
@@ -1040,9 +1042,9 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void savePrivilege_shouldSaveGivenPrivilegeToTheDatabase() {
 		Privilege p = new Privilege("new privilege name", "new privilege desc");
-		userService.savePrivilege(p);
+		userRolesService.savePrivilege(p);
 		
-		Privilege savedPrivilege = userService.getPrivilege("new privilege name");
+		Privilege savedPrivilege = userRolesService.getPrivilege("new privilege name");
 		assertNotNull(savedPrivilege);
 		
 	}
@@ -1108,9 +1110,9 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveRole_shouldSaveGivenRoleToTheDatabase() {
 		Role role = new Role("new role", "new desc");
-		userService.saveRole(role);
+		userRolesService.saveRole(role);
 		
-		assertNotNull(userService.getRole("new role"));
+		assertNotNull(userRolesService.getRole("new role"));
 		
 	}
 	
@@ -1132,7 +1134,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		inheritsFromChild.add(childRole);
 		parentRole.setInheritedRoles(inheritsFromChild);
 		
-		APIException exception = assertThrows(APIException.class, () -> userService.saveRole(parentRole));
+		APIException exception = assertThrows(APIException.class, () -> userRolesService.saveRole(parentRole));
 		assertThat(exception.getMessage(), is(messages.getMessage("Role.cannot.inherit.descendant")));
 	}
 	
@@ -1148,7 +1150,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		withCurrentUserAs(currentUser, () -> {
 			Role newRole = new Role("another role");
 			newRole.getRolePrivileges().addPrivilege(myPrivilege);
-			userService.saveRole(newRole);
+			userRolesService.saveRole(newRole);
 		});
 	}
 
@@ -1165,7 +1167,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		APIException exception = assertThrows(APIException.class, () ->  withCurrentUserAs(currentUser, () -> {
 			Role newRole = new Role("another role");
 			newRole.getRolePrivileges().addPrivilege(myPrivilege);
-			userService.saveRole(newRole);
+			userRolesService.saveRole(newRole);
 		}));
 		assertThat(exception.getMessage(), is("You must have the following privileges in order to assign them: custom privilege"));
 	}
@@ -1186,7 +1188,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 			Role newRole = new Role("another role");
 			newRole.getRolePrivileges().addPrivilege(myFirstPrivilege);
 			newRole.getRolePrivileges().addPrivilege(mySecondPrivilege);
-			userService.saveRole(newRole);
+			userRolesService.saveRole(newRole);
 		}));
 		assertThat(exception.getMessage(), is("You must have the following privileges in order to assign them: another privilege"));
 	}
@@ -1277,7 +1279,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		executeDataSet(XML_FILENAME);
 		
 		List<Role> roles = new ArrayList<>();
-		roles.add(userService.getRole("Parent"));
+		roles.add(userRolesService.getRole("Parent"));
 		assertEquals(3, userService.getUsers(null, roles, true, null, null).size());
 	}
 	

@@ -2310,7 +2310,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		encounter.setEncounterDatetime(new Date());
 		encounter.setPatient(Context.getPatientService().getPatient(3));
 		EncounterType encounterType = new EncounterType(1);
-		encounterType.setViewPrivilege(Context.getUserService().getPrivilege("Some Privilege For View Encounter Types"));
+		encounterType.setViewPrivilege(Context.getUserRolesService().getPrivilege("Some Privilege For View Encounter Types"));
 		encounter.setEncounterType(encounterType);
 		
 		EncounterRole role = new EncounterRole();
@@ -2388,7 +2388,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		EncounterService encounterService = Context.getEncounterService();
 		
 		EncounterType encounterType = new EncounterType("testing", "desc");
-		Privilege viewPrivilege = Context.getUserService().getPrivilege("Some Privilege For View Encounter Types");
+		Privilege viewPrivilege = Context.getUserRolesService().getPrivilege("Some Privilege For View Encounter Types");
 		encounterType.setViewPrivilege(viewPrivilege);
 		
 		encounterService.saveEncounterType(encounterType);
@@ -2398,7 +2398,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		
 		assertFalse(encounterService.canViewAllEncounterTypes(user));
 		
-		Role role = Context.getUserService().getRole("Provider");
+		Role role = Context.getUserRolesService().getRole("Provider");
 		role.getRolePrivileges().addPrivilege(viewPrivilege);
 		user.addRole(role);
 		
@@ -2432,7 +2432,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		EncounterService encounterService = Context.getEncounterService();
 		
 		EncounterType encounterType = new EncounterType("testing", "desc");
-		Privilege editPrivilege = Context.getUserService().getPrivilege("Some Privilege For Edit Encounter Types");
+		Privilege editPrivilege = Context.getUserRolesService().getPrivilege("Some Privilege For Edit Encounter Types");
 		encounterType.setEditPrivilege(editPrivilege);
 		
 		encounterService.saveEncounterType(encounterType);
@@ -2442,7 +2442,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		
 		assertFalse(encounterService.canEditAllEncounterTypes(user));
 		
-		Role role = Context.getUserService().getRole("Provider");
+		Role role = Context.getUserRolesService().getRole("Provider");
 		role.getRolePrivileges().addPrivilege(editPrivilege);
 		user.addRole(role);
 		
@@ -2480,7 +2480,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		assertNotNull(user);
 		
 		// add required privilege to role in which this user is
-		Role role = Context.getUserService().getRole("Provider");
+		Role role = Context.getUserRolesService().getRole("Provider");
 		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getEditPrivilege());
 		user.addRole(role);
 		
@@ -2524,7 +2524,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		assertNotNull(user);
 		
 		// add required privilege to role in which this user is
-		Role role = Context.getUserService().getRole("Provider");
+		Role role = Context.getUserRolesService().getRole("Provider");
 		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getViewPrivilege());
 		user.addRole(role);
 		
@@ -2589,7 +2589,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		assertNotNull(user);
 		
 		// add required privilege to role in which this user is
-		Role role = Context.getUserService().getRole("Provider");
+		Role role = Context.getUserRolesService().getRole("Provider");
 		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getViewPrivilege());
 		user.addRole(role);
 		
@@ -2750,7 +2750,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		// make sure that encounter type is not null
 		assertNotNull(encounterType);
 		// set view privilege on this encounter type
-		Privilege editPrivilege = Context.getUserService().getPrivilege("Some Privilege For Edit Encounter Types");
+		Privilege editPrivilege = Context.getUserRolesService().getPrivilege("Some Privilege For Edit Encounter Types");
 		encounterType.setEditPrivilege(editPrivilege);
 		encounter.setEncounterType(encounterType);
 		// update encounter
@@ -2775,7 +2775,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		// make sure that encounter type is not null
 		assertNotNull(encounterType);
 		// set view privilege on this encounter type
-		Privilege viewPrivilege = Context.getUserService().getPrivilege("Some Privilege For View Encounter Types");
+		Privilege viewPrivilege = Context.getUserRolesService().getPrivilege("Some Privilege For View Encounter Types");
 		encounterType.setViewPrivilege(viewPrivilege);
 		encounter.setEncounterType(encounterType);
 		// update encounter

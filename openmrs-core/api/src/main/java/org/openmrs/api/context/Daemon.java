@@ -150,7 +150,7 @@ public class Daemon {
 					}
 
 					if (!CollectionUtils.isEmpty(roleNames)) {
-						List<Role> roles = roleNames.stream().map(roleName -> Context.getUserService().getRole(roleName)).collect(Collectors.toList()); 
+						List<Role> roles = roleNames.stream().map(roleName -> Context.getUserRolesService().getRole(roleName)).collect(Collectors.toList()); 
 						roles.forEach(role -> user.addRole(role));
 					}
 
