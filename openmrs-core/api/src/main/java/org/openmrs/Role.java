@@ -35,7 +35,7 @@ public class Role extends BaseChangeableOpenmrsMetadata {
 	
 	private String role;
 	
-	private Set<Privilege> privileges;
+	private RolePrivileges rolePrivileges;
 	
 	private Set<Role> inheritedRoles;
 	
@@ -45,71 +45,35 @@ public class Role extends BaseChangeableOpenmrsMetadata {
 	
 	/** default constructor */
 	public Role() {
+		rolePrivileges = new RolePrivileges(role);
 	}
 	
 	/** constructor with id */
 	public Role(String role) {
 		this.role = role;
+		rolePrivileges = new RolePrivileges(role);
 	}
 	
 	/** constructor with all database required properties */
 	public Role(String role, String description) {
 		this.role = role;
 		setDescription(description);
+		rolePrivileges = new RolePrivileges(role);
 	}
-	
-	/**
-	 * @return Returns the privileges.
-	 */
-	public Set<Privilege> getPrivileges() {
-		return privileges;
+
+	public RolePrivileges getRolePrivileges() {
+		return rolePrivileges;
 	}
-	
-	/**
-	 * @param privileges The privileges to set.
-	 */
-	public void setPrivileges(Set<Privilege> privileges) {
-		this.privileges = privileges;
+
+	public void setRolePrivileges(RolePrivileges rolePrivileges) {
+		this.rolePrivileges = rolePrivileges;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.getRole();
 	}
 	
-	/**
-	 * Adds the given Privilege to the list of privileges
-	 *
-	 * @param privilege Privilege to add
-	 */
-	public void addPrivilege(Privilege privilege) {
-		if (privileges == null) {
-			privileges = new HashSet<>();
-		}
-		if (privilege != null && !containsPrivilege(privileges, privilege.getPrivilege())) {
-			privileges.add(privilege);
-		}
-	}
-	
-	private boolean containsPrivilege(Collection<Privilege> privileges, String privilegeName) {
-		for (Privilege privilege : privileges) {
-			if (privilege.getPrivilege().equals(privilegeName)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Removes the given Privilege from the list of privileges
-	 *
-	 * @param privilege Privilege to remove
-	 */
-	public void removePrivilege(Privilege privilege) {
-		if (privileges != null) {
-			privileges.remove(privilege);
-		}
-	}
 	
 	/**
 	 * @return Returns the role.
@@ -123,6 +87,9 @@ public class Role extends BaseChangeableOpenmrsMetadata {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+		if(rolePrivileges == null)
+			rolePrivileges = new RolePrivileges();
+		rolePrivileges.setPriviledgesID(role);
 	}
 	
 	/**
@@ -133,33 +100,6 @@ public class Role extends BaseChangeableOpenmrsMetadata {
 		return this.role;
 	}
 	
-	/**
-	 * Looks for the given <code>privilegeName</code> privilege name in this roles privileges. This
-	 * method does not recurse through the inherited roles
-	 *
-	 * @param privilegeName String name of a privilege
-	 * @return true/false whether this role has the given privilege
-	 * <strong>Should</strong> return false if not found
-	 * <strong>Should</strong> return true if found
-	 * <strong>Should</strong> not fail given null parameter
-	 * <strong>Should</strong> return true for any privilegeName if super user
-	 */
-	public boolean hasPrivilege(String privilegeName) {
-		
-		if (RoleConstants.SUPERUSER.equals(this.role)) {
-			return true;
-		}
-		
-		if (privileges != null) {
-			for (Privilege p : privileges) {
-				if (p.getPrivilege().equalsIgnoreCase(privilegeName)) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
 	
 	/**
 	 * @return Returns the inheritedRoles.

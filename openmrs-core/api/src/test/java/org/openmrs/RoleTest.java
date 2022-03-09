@@ -38,31 +38,31 @@ public class RoleTest {
 		Role role = new Role();
 		
 		// test the null parameter cases
-		role.addPrivilege(null);
-		role.removePrivilege(null);
+		role.getRolePrivileges().addPrivilege(null);
+		role.getRolePrivileges().removePrivilege(null);
 		
 		Privilege priv1 = new Privilege("priv1");
-		role.addPrivilege(priv1);
-		assertEquals(role.getPrivileges().size(), 1, "Incorrect number of privileges");
+		role.getRolePrivileges().addPrivilege(priv1);
+		assertEquals(role.getRolePrivileges().getPrivileges().size(), 1, "Incorrect number of privileges");
 		
 		// adding the same privilege should not be allowed
-		role.addPrivilege(priv1);
-		assertEquals(role.getPrivileges().size(), 1, "Incorrect number of privileges");
+		role.getRolePrivileges().addPrivilege(priv1);
+		assertEquals(role.getRolePrivileges().getPrivileges().size(), 1, "Incorrect number of privileges");
 		
 		// adding a different privilege with the same name should not be allowed
 		Privilege priv2 = new Privilege(priv1.getPrivilege());
-		role.addPrivilege(priv2);
-		assertEquals(role.getPrivileges().size(), 1, "Incorrect number of privileges");
+		role.getRolePrivileges().addPrivilege(priv2);
+		assertEquals(role.getRolePrivileges().getPrivileges().size(), 1, "Incorrect number of privileges");
 		
 		Privilege priv3 = new Privilege("priv3");
 		
 		// removing a fake privilege shouldn't do anything
-		role.removePrivilege(priv3);
-		assertEquals(role.getPrivileges().size(), 1, "Incorrect number of privileges");
+		role.getRolePrivileges().removePrivilege(priv3);
+		assertEquals(role.getRolePrivileges().getPrivileges().size(), 1, "Incorrect number of privileges");
 		
 		// removing the first privilege
-		role.removePrivilege(priv1);
-		assertEquals(role.getPrivileges().size(), 0, "Incorrect number of privileges");
+		role.getRolePrivileges().removePrivilege(priv1);
+		assertEquals(role.getRolePrivileges().getPrivileges().size(), 0, "Incorrect number of privileges");
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class RoleTest {
 		Role role = new Role();
 		
 		// test the null case
-		role.hasPrivilege(null);
+		role.getRolePrivileges().hasPrivilege(null, role.getRole());
 	}
 	
 	/**
@@ -87,8 +87,8 @@ public class RoleTest {
 		
 		// very basic privilege adding and checking
 		Privilege p1 = new Privilege("priv1");
-		role.addPrivilege(p1);
-		assertTrue(role.hasPrivilege("priv1"), "This roles should have the privilege");
+		role.getRolePrivileges().addPrivilege(p1);
+		assertTrue(role.getRolePrivileges().hasPrivilege("priv1", role.getRole()), "This roles should have the privilege");
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class RoleTest {
 	@Test
 	public void hasPrivilege_shouldReturnFalseIfNotFound() {
 		Role role = new Role();
-		assertFalse(role.hasPrivilege("some other privilege name"), "This roles should not have the privilege");
+		assertFalse(role.getRolePrivileges().hasPrivilege("some other privilege name", role.getRole()), "This roles should not have the privilege");
 	}
 
 	@Test
@@ -106,8 +106,8 @@ public class RoleTest {
 
 		// very basic privilege adding and checking
 		Privilege p1 = new Privilege("PrIv1");
-		role.addPrivilege(p1);
-		assertTrue(role.hasPrivilege("priv1"), "This roles should have the privilege");
+		role.getRolePrivileges().addPrivilege(p1);
+		assertTrue(role.getRolePrivileges().hasPrivilege("priv1", role.getRole()), "This roles should have the privilege");
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class RoleTest {
 		// check super user "super" status
 		Role role = new Role(RoleConstants.SUPERUSER);
 		
-		assertTrue(role.hasPrivilege("Some weird privilege name that shouldn't be there"), "Super users are super special and should have all privileges");
+		assertTrue(role.getRolePrivileges().hasPrivilege("Some weird privilege name that shouldn't be there", role.getRole()), "Super users are super special and should have all privileges");
 		assertNotNull(role.getName());
 		assertEquals(role.getName(), RoleConstants.SUPERUSER);
 	}

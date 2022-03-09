@@ -22,10 +22,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.Person;
-import org.openmrs.Privilege;
-import org.openmrs.Role;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.annotation.Logging;
 import org.openmrs.api.*;
@@ -385,7 +382,7 @@ public class UserServiceImpl extends BaseOpenmrsService implements UserService {
 	 */
 	private void checkPrivileges(User user) {
 		List<String> requiredPrivs = user.getAllRoles().stream().peek(this::checkSuperUserPrivilege)
-				.map(Role::getPrivileges).filter(Objects::nonNull).flatMap(Collection::stream)
+				.map(Role::getRolePrivileges).map(RolePrivileges::getPrivileges).filter(Objects::nonNull).flatMap(Collection::stream)
 				.map(Privilege::getPrivilege).filter(p -> !Context.hasPrivilege(p)).sorted().collect(Collectors.toList());
 		if (requiredPrivs.size() == 1) {
 			throw new APIException("User.you.must.have.privilege", new Object[] { requiredPrivs.get(0) });
@@ -513,7 +510,7 @@ public class UserServiceImpl extends BaseOpenmrsService implements UserService {
 	 * @param role 
 	 */
 	private void checkPrivileges(Role role) {
-		Optional.ofNullable(role.getPrivileges())
+		Optional.ofNullable(role.getRolePrivileges().getPrivileges())
 		.map(p -> p.stream().filter(pr -> !Context.hasPrivilege(pr.getPrivilege())).map(Privilege::getPrivilege)
 			.distinct().collect(Collectors.joining(", ")))
 		.ifPresent(missing -> {

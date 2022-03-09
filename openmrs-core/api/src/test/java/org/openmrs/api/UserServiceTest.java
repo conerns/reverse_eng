@@ -265,7 +265,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		User currentUser = new User();
 		Role userRole = new Role("User Adder");
 		userRole.setRole(RoleConstants.AUTHENTICATED);
-		userRole.addPrivilege(new Privilege("Add Users"));
+		userRole.getRolePrivileges().addPrivilege(new Privilege("Add Users"));
 		currentUser.addRole(userRole);
 		// setup our expected exception
 		// we expect this to fail because the currently logged-in user lacks a privilege to be
@@ -276,7 +276,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 			Role role = new Role();
 			role.setRole(RoleConstants.AUTHENTICATED);
 			// add a privilege to the role
-			role.addPrivilege(new Privilege("Custom Privilege"));
+			role.getRolePrivileges().addPrivilege(new Privilege("Custom Privilege"));
 
 			// create our new user object with the required fields
 			User u = new User();
@@ -298,7 +298,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		User currentUser = new User();
 		Role userRole = new Role("User Adder");
 		userRole.setRole(RoleConstants.AUTHENTICATED);
-		userRole.addPrivilege(new Privilege("Add Users"));
+		userRole.getRolePrivileges().addPrivilege(new Privilege("Add Users"));
 		currentUser.addRole(userRole);
 		// setup our expected exception
 		// we expect this to fail because the currently logged-in user lacks a privilege to be
@@ -309,8 +309,8 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 			Role role = new Role();
 			role.setRole(RoleConstants.AUTHENTICATED);
 			// add privileges to the role
-			role.addPrivilege(new Privilege("Custom Privilege"));
-			role.addPrivilege(new Privilege("Another Privilege"));
+			role.getRolePrivileges().addPrivilege(new Privilege("Custom Privilege"));
+			role.getRolePrivileges().addPrivilege(new Privilege("Another Privilege"));
 
 			// create our new user object with the required fields
 			User u = new User();
@@ -332,7 +332,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		User currentUser = new User();
 		Role userRole = new Role("User Adder");
 		userRole.setRole(RoleConstants.AUTHENTICATED);
-		userRole.addPrivilege(new Privilege("Add Users"));
+		userRole.getRolePrivileges().addPrivilege(new Privilege("Add Users"));
 		currentUser.addRole(userRole);
 
 		// setup our expected exception
@@ -345,7 +345,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 			Role role= new Role("add user");
 			role.setRole(RoleConstants.SUPERUSER);
 			// add a privilege to the role
-			role.hasPrivilege(PrivilegeConstants.ASSIGN_SYSTEM_DEVELOPER_ROLE);			
+			role.getRolePrivileges().hasPrivilege(PrivilegeConstants.ASSIGN_SYSTEM_DEVELOPER_ROLE, role.getRole());			
 
 			// create our new user object with the required fields
 			User u = new User();
@@ -413,7 +413,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Privilege p1 = userService.getAllPrivileges().get(0);
 		Set<Privilege> privileges1 = new HashSet<>();
 		privileges1.add(p1);
-		role1.setPrivileges(privileges1);
+		role1.getRolePrivileges().setPrivileges(privileges1);
 
 		Role role2 = new Role();
 		role2.setDescription("testing2");
@@ -421,7 +421,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Privilege p2 = userService.getAllPrivileges().get(0);
 		Set<Privilege> privileges2 = new HashSet<>();
 		privileges2.add(p2);
-		role2.setPrivileges(privileges2);
+		role2.getRolePrivileges().setPrivileges(privileges2);
 
 		userService.saveUser(u.addRole(role1));
 
@@ -1140,14 +1140,14 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	public void saveRole_shouldAllowARoleToBeSavedWithCorrectPermissions() throws IllegalAccessException {
 		Role role = new Role("my role");
 		Privilege myPrivilege = new Privilege("custom privilege");
-		role.addPrivilege(myPrivilege);
+		role.getRolePrivileges().addPrivilege(myPrivilege);
 		
 		User currentUser = new User();
 		currentUser.addRole(new Role(RoleConstants.SUPERUSER));
 		
 		withCurrentUserAs(currentUser, () -> {
 			Role newRole = new Role("another role");
-			newRole.addPrivilege(myPrivilege);
+			newRole.getRolePrivileges().addPrivilege(myPrivilege);
 			userService.saveRole(newRole);
 		});
 	}
@@ -1155,7 +1155,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveRole_shouldThrowErrorWhenCurrentUserLacksPrivilegeAssignedToRole() throws IllegalAccessException {
 		Role adminRole = new Role("my role");
-		adminRole.addPrivilege(new Privilege(PrivilegeConstants.MANAGE_ROLES));
+		adminRole.getRolePrivileges().addPrivilege(new Privilege(PrivilegeConstants.MANAGE_ROLES));
 
 		User currentUser = new User();
 		currentUser.addRole(adminRole);
@@ -1164,7 +1164,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		
 		APIException exception = assertThrows(APIException.class, () ->  withCurrentUserAs(currentUser, () -> {
 			Role newRole = new Role("another role");
-			newRole.addPrivilege(myPrivilege);
+			newRole.getRolePrivileges().addPrivilege(myPrivilege);
 			userService.saveRole(newRole);
 		}));
 		assertThat(exception.getMessage(), is("You must have the following privileges in order to assign them: custom privilege"));
@@ -1176,16 +1176,16 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 		Privilege mySecondPrivilege = new Privilege("another privilege");
 		
 		Role adminRole = new Role("my role");
-		adminRole.addPrivilege(new Privilege(PrivilegeConstants.MANAGE_ROLES));
-		adminRole.addPrivilege(myFirstPrivilege);
+		adminRole.getRolePrivileges().addPrivilege(new Privilege(PrivilegeConstants.MANAGE_ROLES));
+		adminRole.getRolePrivileges().addPrivilege(myFirstPrivilege);
 
 		User currentUser = new User();
 		currentUser.addRole(adminRole);
 
 		APIException exception = assertThrows(APIException.class, () -> withCurrentUserAs(currentUser, () -> {
 			Role newRole = new Role("another role");
-			newRole.addPrivilege(myFirstPrivilege);
-			newRole.addPrivilege(mySecondPrivilege);
+			newRole.getRolePrivileges().addPrivilege(myFirstPrivilege);
+			newRole.getRolePrivileges().addPrivilege(mySecondPrivilege);
 			userService.saveRole(newRole);
 		}));
 		assertThat(exception.getMessage(), is("You must have the following privileges in order to assign them: another privilege"));

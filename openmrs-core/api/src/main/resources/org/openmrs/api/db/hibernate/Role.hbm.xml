@@ -50,16 +50,8 @@
 			</key>
 			<many-to-many class="Role" column="child_role" />
 		</set>
-                
-		<!-- bi-directional many-to-many association to Privilege -->
-		<set name="privileges" cascade="" lazy="false"
-			table="role_privilege">
-			<cache usage="read-write"/>
-			<key>
-				<column name="role" />
-			</key>
-			<many-to-many class="Privilege" column="privilege" />
-		</set>
+		
+		<one-to-one name="rolePrivileges" class="org.openmrs.RolePrivileges" cascade="all"/>
 
 	</class>
 </hibernate-mapping>

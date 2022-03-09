@@ -119,7 +119,7 @@ public class UserRoles implements java.io.Serializable {
 
 		// loop over the roles and check each for the privilege
 		for (Role tmprole : tmproles) {
-			if (tmprole.hasPrivilege(privilege)) {
+			if (tmprole.getRolePrivileges().hasPrivilege(privilege, tmprole.getRole())) {
 				return true;
 			}
 		}
@@ -140,7 +140,7 @@ public class UserRoles implements java.io.Serializable {
 		Role role;
 		for (Role tmprole : tmproles) {
 			role = tmprole;
-			Collection<Privilege> privs = role.getPrivileges();
+			Collection<Privilege> privs = role.getRolePrivileges().getPrivileges();
 			if (privs != null) {
 				privileges.addAll(privs);
 			}

@@ -317,7 +317,7 @@ public class UserContext implements Serializable {
 		
 		// if a user has logged in, check their privileges
 		if (isAuthenticated()
-		        && (getAuthenticatedUser().hasPrivilege(privilege) || getAuthenticatedRole().hasPrivilege(privilege))) {
+		        && (getAuthenticatedUser().hasPrivilege(privilege) || getAuthenticatedRole().getRolePrivileges().hasPrivilege(privilege, getAuthenticatedRole().getRole()))) {
 			
 			// check user's privileges
 			notifyPrivilegeListeners(getAuthenticatedUser(), privilege, true);
@@ -335,7 +335,7 @@ public class UserContext implements Serializable {
 			}
 		}
 		
-		if (getAnonymousRole().hasPrivilege(privilege)) {
+		if (getAnonymousRole().getRolePrivileges().hasPrivilege(privilege, getAnonymousRole().getRole())) {
 			notifyPrivilegeListeners(getAuthenticatedUser(), privilege, true);
 			return true;
 		}

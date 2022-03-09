@@ -2399,7 +2399,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		assertFalse(encounterService.canViewAllEncounterTypes(user));
 		
 		Role role = Context.getUserService().getRole("Provider");
-		role.addPrivilege(viewPrivilege);
+		role.getRolePrivileges().addPrivilege(viewPrivilege);
 		user.addRole(role);
 		
 		assertTrue(encounterService.canViewAllEncounterTypes(user));
@@ -2443,7 +2443,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		assertFalse(encounterService.canEditAllEncounterTypes(user));
 		
 		Role role = Context.getUserService().getRole("Provider");
-		role.addPrivilege(editPrivilege);
+		role.getRolePrivileges().addPrivilege(editPrivilege);
 		user.addRole(role);
 		
 		assertTrue(encounterService.canEditAllEncounterTypes(user));
@@ -2481,7 +2481,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		
 		// add required privilege to role in which this user is
 		Role role = Context.getUserService().getRole("Provider");
-		role.addPrivilege(encounter.getEncounterType().getEditPrivilege());
+		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getEditPrivilege());
 		user.addRole(role);
 		
 		assertTrue(Context.getEncounterService().canEditEncounter(encounter, user));
@@ -2525,7 +2525,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		
 		// add required privilege to role in which this user is
 		Role role = Context.getUserService().getRole("Provider");
-		role.addPrivilege(encounter.getEncounterType().getViewPrivilege());
+		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getViewPrivilege());
 		user.addRole(role);
 		
 		assertTrue(Context.getEncounterService().canViewEncounter(encounter, user));
@@ -2590,7 +2590,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		
 		// add required privilege to role in which this user is
 		Role role = Context.getUserService().getRole("Provider");
-		role.addPrivilege(encounter.getEncounterType().getViewPrivilege());
+		role.getRolePrivileges().addPrivilege(encounter.getEncounterType().getViewPrivilege());
 		user.addRole(role);
 		
 		// and authenticate under it's account
