@@ -12,6 +12,7 @@ package org.openmrs.propertyeditor;
 import java.beans.PropertyEditorSupport;
 
 import org.openmrs.Privilege;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.slf4j.Logger;
@@ -40,9 +41,10 @@ public class PrivilegeEditor extends PropertyEditorSupport {
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		UserService es = Context.getUserService();
+		UserRolesService ers = Context.getUserRolesService();
 		if (StringUtils.hasText(text)) {
 			try {
-				Privilege p = es.getPrivilege(text);
+				Privilege p = ers.getPrivilege(text);
 				setValue(p);
 				//when a privilege is not found, no exception is generated. throw one to execute the catch block
 				if (p == null) {
@@ -50,7 +52,7 @@ public class PrivilegeEditor extends PropertyEditorSupport {
 				}
 			}
 			catch (Exception ex) {
-				Privilege p = es.getPrivilegeByUuid(text);
+				Privilege p = ers.getPrivilegeByUuid(text);
 				setValue(p);
 				if (p == null) {
 					log.error("Error setting text: " + text, ex);

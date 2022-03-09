@@ -62,47 +62,7 @@ public interface UserDAO {
 	
 	// Role stuff
 	
-	/**
-	 * @see org.openmrs.api.UserService#saveRole(org.openmrs.Role)
-	 */
-	public Role saveRole(Role role) throws DAOException;
 	
-	/**
-	 * @see org.openmrs.api.UserService#purgeRole(org.openmrs.Role)
-	 */
-	public void deleteRole(Role role) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.UserService#getRole(java.lang.String)
-	 */
-	public Role getRole(String r) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.UserService#getAllRoles()
-	 */
-	public List<Role> getAllRoles() throws DAOException;
-	
-	// Privilege stuff
-	
-	/**
-	 * @see org.openmrs.api.UserService#savePrivilege(org.openmrs.Privilege)
-	 */
-	public Privilege savePrivilege(Privilege privilege) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.UserService#getPrivilege(java.lang.String)
-	 */
-	public Privilege getPrivilege(String p) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.UserService#getAllPrivileges()
-	 */
-	public List<Privilege> getAllPrivileges() throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.UserService#purgePrivilege(org.openmrs.Privilege)
-	 */
-	public void deletePrivilege(Privilege privilege) throws DAOException;
 	
 	/**
 	 * @see org.openmrs.api.UserService#getUsersByName(java.lang.String, java.lang.String, boolean)
@@ -139,18 +99,6 @@ public interface UserDAO {
 	 * @see org.openmrs.api.UserService#isSecretAnswer(org.openmrs.User, java.lang.String)
 	 */
 	public boolean isSecretAnswer(User u, String answer) throws DAOException;
-	
-	/**
-	 * @param uuid
-	 * @return privilege or null
-	 */
-	public Privilege getPrivilegeByUuid(String uuid);
-	
-	/**
-	 * @param uuid
-	 * @return role or null
-	 */
-	public Role getRoleByUuid(String uuid);
 	
 	/**
 	 * @param uuid

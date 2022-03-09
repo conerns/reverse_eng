@@ -12,6 +12,7 @@ package org.openmrs.propertyeditor;
 import java.beans.PropertyEditorSupport;
 
 import org.openmrs.Role;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class RoleEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		UserService es = Context.getUserService();
+		UserRolesService es = Context.getUserRolesService();
 		if (StringUtils.hasText(text)) {
 			try {
 				Role r = es.getRole(text);

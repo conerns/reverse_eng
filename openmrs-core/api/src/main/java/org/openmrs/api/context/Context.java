@@ -54,6 +54,7 @@ import org.openmrs.api.SerializationService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.db.ContextDAO;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.logic.LogicService;
 import org.openmrs.messagesource.MessageSourceService;
@@ -486,6 +487,10 @@ public class Context {
 	 */
 	public static UserService getUserService() {
 		return getServiceContext().getUserService();
+	}
+	
+	public static UserRolesService getUserRolesService(){
+		return getServiceContext().getUserRolesService();
 	}
 
 	/**
@@ -1039,7 +1044,7 @@ public class Context {
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.MANAGE_ROLES);
 			Set<String> currentRoleNames = new HashSet<>();
-			for (Role role : Context.getUserService().getAllRoles()) {
+			for (Role role : Context.getUserRolesService().getAllRoles()) {
 				currentRoleNames.add(role.getRole().toUpperCase());
 			}
 			Map<String, String> map = OpenmrsUtil.getCoreRoles();
@@ -1049,7 +1054,7 @@ public class Context {
 					Role role = new Role();
 					role.setRole(roleName);
 					role.setDescription(entry.getValue());
-					Context.getUserService().saveRole(role);
+					Context.getUserRolesService().saveRole(role);
 				}
 			}
 		}
@@ -1064,7 +1069,7 @@ public class Context {
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.MANAGE_PRIVILEGES);
 			Set<String> currentPrivilegeNames = new HashSet<>();
-			for (Privilege privilege : Context.getUserService().getAllPrivileges()) {
+			for (Privilege privilege : Context.getUserRolesService().getAllPrivileges()) {
 				currentPrivilegeNames.add(privilege.getPrivilege().toUpperCase());
 			}
 			Map<String, String> map = OpenmrsUtil.getCorePrivileges();
@@ -1074,7 +1079,7 @@ public class Context {
 					Privilege p = new Privilege();
 					p.setPrivilege(privilegeName);
 					p.setDescription(entry.getValue());
-					Context.getUserService().savePrivilege(p);
+					Context.getUserRolesService().savePrivilege(p);
 				}
 			}
 		}

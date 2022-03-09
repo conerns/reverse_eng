@@ -41,6 +41,7 @@ import org.openmrs.api.SerializationService;
 import org.openmrs.api.ServiceNotFoundException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.VisitService;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.logic.LogicService;
 import org.openmrs.messagesource.MessageSourceService;
@@ -485,6 +486,14 @@ public class ServiceContext implements ApplicationContextAware {
 	 */
 	public void setUserService(UserService userService) {
 		setService(UserService.class, userService);
+	}
+	
+	public void setUserRolesService(UserRolesService userRolesService){
+		setService(UserRolesService.class, userRolesService);
+	}
+	
+	public UserRolesService getUserRolesService(){
+		return getService(UserRolesService.class);
 	}
 	
 	/**

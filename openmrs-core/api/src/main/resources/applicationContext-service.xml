@@ -121,6 +121,8 @@
 		<property name="messageSourceService" ref="messageSourceService"/>
 		<property name="visitService" ref="visitService"/>
 		<property name="providerService" ref="providerService"/>
+		
+		<property name="userRolesService" ref="userRolesService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -145,6 +147,9 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="userDAO" class="org.openmrs.api.db.hibernate.HibernateUserDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="userRolesDAO" class="org.openmrs.api.db.hibernate.HibernateUserRolesDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="obsDAO" class="org.openmrs.api.db.hibernate.HibernateObsDAO">
@@ -236,6 +241,9 @@
 	</bean>
 	<bean id="userServiceTarget" class="org.openmrs.api.impl.UserServiceImpl">
 		<property name="userDAO" ref="userDAO"/>
+	</bean>
+	<bean id="userRolesServiceTarget" class="org.openmrs.api.impl.UserRolesServiceImpl">
+		<property name="userRolesDAO" ref="userRolesDAO"/>
 	</bean>
 	<bean id="obsServiceTarget" class="org.openmrs.api.impl.ObsServiceImpl">
 		<property name="obsDAO" ref="obsDAO"/>
@@ -384,6 +392,12 @@
 	<bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="userServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="userRolesService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="userRolesServiceTarget"/>
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>
@@ -651,6 +665,7 @@
 	<bean id="implementationIdHttpClient" class="org.openmrs.util.HttpClient">
 		<constructor-arg name="url" value="https://implementation.openmrs.org"/>
 	</bean>
+	<!-- TODO missing validator -->
 
 	<!--  ************************ END VALIDATOR CONFIGURATION  ************************  -->
 

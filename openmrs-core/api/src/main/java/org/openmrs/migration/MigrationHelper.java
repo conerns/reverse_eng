@@ -42,11 +42,7 @@ import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
 import org.openmrs.Role;
 import org.openmrs.User;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.ProgramWorkflowService;
-import org.openmrs.api.UserService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -213,6 +209,7 @@ public class MigrationHelper {
 	public static int importRelationships(Collection<String> relationships, boolean autoCreateUsers, boolean autoAddRole) {
 		PatientService ps = Context.getPatientService();
 		UserService us = Context.getUserService();
+		UserRolesService urs = Context.getUserRolesService();
 		PersonService personService = Context.getPersonService();
 		List<Relationship> relsToAdd = new ArrayList<>();
 		Random rand = new Random();
@@ -268,7 +265,7 @@ public class MigrationHelper {
 					pass = new String(password);
 				}
 				if (autoAddRole) {
-					Role role = us.getRole(relationshipType);
+					Role role = urs.getRole(relationshipType);
 					if (role != null) {
 						user.addRole(role);
 					}

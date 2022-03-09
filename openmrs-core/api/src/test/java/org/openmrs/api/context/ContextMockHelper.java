@@ -35,6 +35,7 @@ import org.openmrs.api.SerializationService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.db.ContextDAO;
+import org.openmrs.api.UserRolesService;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.util.RoleConstants;
 import org.springframework.context.ApplicationContext;
@@ -69,6 +70,8 @@ public class ContextMockHelper {
 	EncounterService encounterService;
 	
 	FormService formService;
+	
+	UserRolesService userRolesService;
 	
 	LocationService locationService;
 	
@@ -263,6 +266,11 @@ public class ContextMockHelper {
 	public void setUserService(UserService userService) {
 		setService(UserService.class, userService);
 		this.userService = userService;
+	}
+	
+	public void setUserRolesService(UserRolesService userRolesService){
+		setService(UserRolesService.class, userService);
+		this.userRolesService = userRolesService;
 	}
 	
 	public void setVisitService(VisitService visitService) {
