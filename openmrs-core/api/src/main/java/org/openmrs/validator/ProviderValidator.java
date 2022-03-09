@@ -85,7 +85,7 @@ public class ProviderValidator extends BaseCustomizableValidator implements Vali
 		}
 		
 		ValidateUtil.validateFieldLengths(errors, obj.getClass(), "name", "identifier", "retireReason");
-		super.validateAttributes(provider, errors, Context.getProviderService().getAllProviderAttributeTypes());
+		super.validateAttributes(provider, errors, Context.getProviderAttributeService().getAllProviderAttributeTypes());
 	}
 	
 }

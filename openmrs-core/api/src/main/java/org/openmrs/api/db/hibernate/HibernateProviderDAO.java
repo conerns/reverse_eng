@@ -112,23 +112,7 @@ public class HibernateProviderDAO implements ProviderDAO {
 		
 		return criteria.list();
 	}
-	
-	/**
-	 * @see org.openmrs.api.db.ProviderDAO#getProviderAttribute(Integer)
-	 */
-	@Override
-	public ProviderAttribute getProviderAttribute(Integer providerAttributeID) {
-		return (ProviderAttribute) getSession().get(ProviderAttribute.class, providerAttributeID);
-	}
-	
-	/**
-	 * @see org.openmrs.api.db.ProviderDAO#getProviderAttributeByUuid(String)
-	 */
-	
-	@Override
-	public ProviderAttribute getProviderAttributeByUuid(String uuid) {
-		return getByUuid(uuid, ProviderAttribute.class);
-	}
+
 	
 	/**
 	 * @see org.openmrs.api.db.ProviderDAO#getProviders(String, Map, Integer, Integer, boolean)
@@ -245,13 +229,7 @@ public class HibernateProviderDAO implements ProviderDAO {
 	  return (long) criteria.list().size();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.openmrs.api.db.ProviderDAO#getAllProviderAttributeTypes(boolean)
-	 */
-	@Override
-	public List<ProviderAttributeType> getAllProviderAttributeTypes(boolean includeRetired) {
-		return getAll(includeRetired, ProviderAttributeType.class);
-	}
+
 	
 	private <T> List<T> getAll(boolean includeRetired, Class<T> clazz) {
 		Criteria criteria = getSession().createCriteria(clazz);
@@ -269,39 +247,6 @@ public class HibernateProviderDAO implements ProviderDAO {
 		Criteria criteria = getSession().createCriteria(clazz);
 		criteria.add(Restrictions.eq("uuid", uuid));
 		return (T) criteria.uniqueResult();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openmrs.api.db.ProviderDAO#getProviderAttributeType(java.lang.Integer)
-	 */
-	@Override
-	public ProviderAttributeType getProviderAttributeType(Integer providerAttributeTypeId) {
-		return (ProviderAttributeType) getSession().get(ProviderAttributeType.class, providerAttributeTypeId);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openmrs.api.db.ProviderDAO#getProviderAttributeTypeByUuid(java.lang.String)
-	 */
-	@Override
-	public ProviderAttributeType getProviderAttributeTypeByUuid(String uuid) {
-		return getByUuid(uuid, ProviderAttributeType.class);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openmrs.api.db.ProviderDAO#saveProviderAttributeType(org.openmrs.ProviderAttributeType)
-	 */
-	@Override
-	public ProviderAttributeType saveProviderAttributeType(ProviderAttributeType providerAttributeType) {
-		getSession().saveOrUpdate(providerAttributeType);
-		return providerAttributeType;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openmrs.api.db.ProviderDAO#deleteProviderAttributeType(org.openmrs.ProviderAttributeType)
-	 */
-	@Override
-	public void deleteProviderAttributeType(ProviderAttributeType providerAttributeType) {
-		getSession().delete(providerAttributeType);
 	}
 	
 	/**

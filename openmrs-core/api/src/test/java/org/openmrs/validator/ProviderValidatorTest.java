@@ -23,6 +23,7 @@ import org.openmrs.PersonName;
 import org.openmrs.Provider;
 import org.openmrs.ProviderAttribute;
 import org.openmrs.ProviderAttributeType;
+import org.openmrs.api.ProviderAttributeService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
@@ -38,6 +39,7 @@ public class ProviderValidatorTest extends BaseContextSensitiveTest {
 	private ProviderValidator providerValidator;
 	
 	private ProviderService providerService;
+	private ProviderAttributeService providerAttributeService;
 	
 	private static final String PROVIDER_ATTRIBUTE_TYPES_XML = "org/openmrs/api/include/ProviderServiceTest-providerAttributes.xml";
 	
@@ -49,6 +51,7 @@ public class ProviderValidatorTest extends BaseContextSensitiveTest {
 		errors = new BindException(provider, "provider");
 		providerValidator = new ProviderValidator();
 		providerService = Context.getProviderService();
+		providerAttributeService = Context.getProviderAttributeService();
 	}
 	
 	/**
@@ -156,10 +159,10 @@ public class ProviderValidatorTest extends BaseContextSensitiveTest {
 		provider.setId(null);
 		provider.setPerson(null);
 		executeDataSet(PROVIDER_ATTRIBUTE_TYPES_XML);
-		ProviderAttributeType attributeType = providerService.getProviderAttributeType(1);
+		ProviderAttributeType attributeType = providerAttributeService.getProviderAttributeType(1);
 		attributeType.setMinOccurs(2);
 		attributeType.setMaxOccurs(3);
-		providerService.saveProviderAttributeType(attributeType);
+		providerAttributeService.saveProviderAttributeType(attributeType);
 		
 		provider.addAttribute(makeAttribute("one"));
 		Errors errors = new BindException(provider, "provider");
@@ -185,7 +188,7 @@ public class ProviderValidatorTest extends BaseContextSensitiveTest {
 	
 	private ProviderAttribute makeAttribute(String serializedValue) {
 		ProviderAttribute attr = new ProviderAttribute();
-		attr.setAttributeType(providerService.getProviderAttributeType(1));
+		attr.setAttributeType(providerAttributeService.getProviderAttributeType(1));
 		attr.setValueReferenceInternal(serializedValue);
 		return attr;
 	}

@@ -1003,6 +1003,12 @@ public class ServiceContext implements ApplicationContextAware {
 		return getService(ProviderService.class);
 	}
 	
+	public ProviderAttributeService getProviderAttributeService(){ return getService(ProviderAttributeService.class); }
+	
+	public void setProviderAttributeService(ProviderAttributeService providerAttributeService){
+		setService(ProviderAttributeService.class, providerAttributeService);
+	}
+	
 	/**
 	 * Sets the provider service.
 	 *

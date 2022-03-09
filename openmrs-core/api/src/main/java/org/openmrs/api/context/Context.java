@@ -514,6 +514,10 @@ public class Context {
 		return getServiceContext().getLogicService();
 	}
 
+	public static ProviderAttributeService getProviderAttributeService(){
+		return getServiceContext().getProviderAttributeService();
+	}
+	
 	/**
 	 * @return admin-related services
 	 */

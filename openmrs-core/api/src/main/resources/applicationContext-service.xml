@@ -125,6 +125,7 @@
 		<property name="userRolesService" ref="userRolesService"/>
 		<property name="visitTypeService" ref="visitTypeService"/>
 		<property name="visitAttributeService" ref="visitAttributeService"/>
+		<property name="providerAttributeService" ref="providerAttributeService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -207,6 +208,9 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="providerDAO" class="org.openmrs.api.db.hibernate.HibernateProviderDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="providerAttributeDAO" class="org.openmrs.api.db.hibernate.HibernateProviderAttributeDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="conditionDAO" class="org.openmrs.api.db.hibernate.HibernateConditionDAO">
@@ -318,6 +322,9 @@
 	</bean>
 	<bean id="visitAttributeServiceTarget" class="org.openmrs.api.impl.VisitAttributeServiceImpl">
 		<property name="visitAttributeDAO" ref="visitAttributeDAO"/>
+	</bean>
+	<bean id="providerAttributeServiceTarget" class="org.openmrs.api.impl.ProviderAttributeServiceImpl">
+		<property name="providerAttributeDAO" ref="providerAttributeDAO"/>
 	</bean>
 
 	<!-- Cohort Service setup -->
@@ -552,6 +559,13 @@
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>
+	<bean id="providerAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="providerAttributeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+
 
 
 	<!--  **************************  SERVICE INTERCEPTORS  *************************  -->

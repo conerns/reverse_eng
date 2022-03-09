@@ -53,10 +53,12 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	private static final String OTHERS_PROVIDERS_XML = "org/openmrs/api/include/ProviderServiceTest-otherProviders.xml";
 	
 	private ProviderService service;
+	private ProviderAttributeService providerAttributeService;
 	
 	@BeforeEach
 	public void before() {
 		service = Context.getProviderService();
+		providerAttributeService = Context.getProviderAttributeService();
 		executeDataSet(PROVIDERS_INITIAL_XML);
 		executeDataSet(PROVIDER_ATTRIBUTE_TYPES_XML);
 	}
@@ -66,7 +68,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getAllProviderAttributeTypes_shouldGetAllProviderAttributeTypesExcludingRetired() {
-		List<ProviderAttributeType> types = service.getAllProviderAttributeTypes(false);
+		List<ProviderAttributeType> types = providerAttributeService.getAllProviderAttributeTypes(false);
 		assertEquals(2, types.size());
 	}
 	
@@ -75,7 +77,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getAllProviderAttributeTypes_shouldGetAllProviderAttributeTypesIncludingRetired() {
-		List<ProviderAttributeType> types = service.getAllProviderAttributeTypes(true);
+		List<ProviderAttributeType> types = providerAttributeService.getAllProviderAttributeTypes(true);
 		assertEquals(3, types.size());
 	}
 	
@@ -84,7 +86,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getAllProviderAttributeTypes_shouldGetAllProviderAttributeTypesIncludingRetiredByDefault() {
-		List<ProviderAttributeType> types = service.getAllProviderAttributeTypes();
+		List<ProviderAttributeType> types = providerAttributeService.getAllProviderAttributeTypes();
 		assertEquals(3, types.size());
 	}
 	
@@ -120,7 +122,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getProviderAttribute_shouldGetProviderAttributeGivenID() {
-		ProviderAttribute providerAttribute = service.getProviderAttribute(321);
+		ProviderAttribute providerAttribute = providerAttributeService.getProviderAttribute(321);
 		assertEquals("Mr. Horatio Test Hornblower", providerAttribute.getProvider().getName());
 	}
 	
@@ -130,7 +132,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	
 	@Test
 	public void getProviderAttributeByUuid_shouldGetProviderAttributeGivenUuid() {
-		ProviderAttribute providerAttribute = service.getProviderAttributeByUuid("823382cd-5faa-4b57-8b34-fed33b9c8c65");
+		ProviderAttribute providerAttribute = providerAttributeService.getProviderAttributeByUuid("823382cd-5faa-4b57-8b34-fed33b9c8c65");
 		assertEquals("Mr. Horatio Test Hornblower", providerAttribute.getProvider().getName());
 	}
 	
@@ -139,7 +141,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getProviderAttributeType_shouldGetProviderAttributeTypeForTheGivenId() {
-		ProviderAttributeType providerAttributeType = service.getProviderAttributeType(1);
+		ProviderAttributeType providerAttributeType = providerAttributeService.getProviderAttributeType(1);
 		assertEquals("Audit Date", providerAttributeType.getName());
 		assertEquals("9516cc50-6f9f-11e0-8414-001e378eb67e", providerAttributeType.getUuid());
 	}
@@ -149,7 +151,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getProviderAttributeTypeByUuid_shouldGetTheProviderAttributeTypeByItsUuid() {
-		ProviderAttributeType providerAttributeType = service
+		ProviderAttributeType providerAttributeType = providerAttributeService
 		        .getProviderAttributeTypeByUuid("9516cc50-6f9f-11e0-8414-001e378eb67e");
 		assertEquals("Audit Date", providerAttributeType.getName());
 	}
@@ -221,10 +223,10 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void purgeProviderAttributeType_shouldDeleteAProviderAttributeType() {
-		int size = service.getAllProviderAttributeTypes().size();
-		ProviderAttributeType providerAttributeType = service.getProviderAttributeType(2);
-		service.purgeProviderAttributeType(providerAttributeType);
-		assertEquals(size - 1, service.getAllProviderAttributeTypes().size());
+		int size = providerAttributeService.getAllProviderAttributeTypes().size();
+		ProviderAttributeType providerAttributeType = providerAttributeService.getProviderAttributeType(2);
+		providerAttributeService.purgeProviderAttributeType(providerAttributeType);
+		assertEquals(size - 1, providerAttributeService.getAllProviderAttributeTypes().size());
 	}
 	
 	/**
@@ -246,14 +248,14 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void retireProviderAttributeType_shouldRetireProviderTypeAttribute() {
-		ProviderAttributeType providerAttributeType = service.getProviderAttributeType(1);
+		ProviderAttributeType providerAttributeType = providerAttributeService.getProviderAttributeType(1);
 		assertFalse(providerAttributeType.getRetired());
 		assertNull(providerAttributeType.getRetireReason());
-		assertEquals(2, service.getAllProviderAttributeTypes(false).size());
-		service.retireProviderAttributeType(providerAttributeType, "retire reason");
+		assertEquals(2, providerAttributeService.getAllProviderAttributeTypes(false).size());
+		providerAttributeService.retireProviderAttributeType(providerAttributeType, "retire reason");
 		assertTrue(providerAttributeType.getRetired());
 		assertEquals("retire reason", providerAttributeType.getRetireReason());
-		assertEquals(1, service.getAllProviderAttributeTypes(false).size());
+		assertEquals(1, providerAttributeService.getAllProviderAttributeTypes(false).size());
 	}
 	
 	/**
@@ -279,12 +281,12 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void saveProviderAttributeType_shouldSaveTheProviderAttributeType() {
-		int size = service.getAllProviderAttributeTypes().size();
+		int size = providerAttributeService.getAllProviderAttributeTypes().size();
 		ProviderAttributeType providerAttributeType = new ProviderAttributeType();
 		providerAttributeType.setName("new");
 		providerAttributeType.setDatatypeClassname(FreeTextDatatype.class.getName());
-		providerAttributeType = service.saveProviderAttributeType(providerAttributeType);
-		assertEquals(size + 1, service.getAllProviderAttributeTypes().size());
+		providerAttributeType = providerAttributeService.saveProviderAttributeType(providerAttributeType);
+		assertEquals(size + 1, providerAttributeService.getAllProviderAttributeTypes().size());
 		assertNotNull(providerAttributeType.getId());
 	}
 	
@@ -304,9 +306,9 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void unretireProviderAttributeType_shouldUnretireAProviderAttributeType() {
-		ProviderAttributeType providerAttributeType = service.getProviderAttributeType(2);
+		ProviderAttributeType providerAttributeType = providerAttributeService.getProviderAttributeType(2);
 		assertTrue(providerAttributeType.getRetired());
-		service.unretireProviderAttributeType(providerAttributeType);
+		providerAttributeService.unretireProviderAttributeType(providerAttributeType);
 		assertFalse(providerAttributeType.getRetired());
 		assertNull(providerAttributeType.getRetireReason());
 	}
@@ -318,7 +320,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getProviders_shouldGetAllProvidersWithGivenAttributeValues() throws ParseException {
 		Map<ProviderAttributeType, Object> attributes = new HashMap<>();
-		attributes.put(service.getProviderAttributeType(1), new SimpleDateFormat("yyyy-MM-dd").parse("2011-04-25"));
+		attributes.put(providerAttributeService.getProviderAttributeType(1), new SimpleDateFormat("yyyy-MM-dd").parse("2011-04-25"));
 		List<Provider> providers = service.getProviders("RobertClive", 0, null, attributes);
 		assertEquals(1, providers.size());
 		assertEquals(Integer.valueOf(1), providers.get(0).getProviderId());
@@ -331,7 +333,7 @@ public class ProviderServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getProviders_shouldNotFindAnyProvidersIfNoneHaveGivenAttributeValues() throws ParseException {
 		Map<ProviderAttributeType, Object> attributes = new HashMap<>();
-		attributes.put(service.getProviderAttributeType(1), new SimpleDateFormat("yyyy-MM-dd").parse("1411-04-25"));
+		attributes.put(providerAttributeService.getProviderAttributeType(1), new SimpleDateFormat("yyyy-MM-dd").parse("1411-04-25"));
 		List<Provider> providers = service.getProviders("RobertClive", 0, null, attributes);
 		assertEquals(0, providers.size());
 	}

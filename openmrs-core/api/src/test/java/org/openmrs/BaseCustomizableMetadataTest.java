@@ -51,7 +51,7 @@ public class BaseCustomizableMetadataTest extends BaseContextSensitiveTest {
 		
 		provider.setPerson(newPerson("name"));
 		
-		ProviderAttributeType place = service.getProviderAttributeType(3);
+		ProviderAttributeType place = Context.getProviderAttributeService().getProviderAttributeType(3);
 		provider.setAttribute(buildProviderAttribute(place, "bangalore"));
 		provider.setAttribute(buildProviderAttribute(place, "chennai"));
 		
@@ -76,7 +76,7 @@ public class BaseCustomizableMetadataTest extends BaseContextSensitiveTest {
 		
 		provider.setPerson(newPerson("name"));
 		
-		ProviderAttributeType cv = service.getProviderAttributeType(4);
+		ProviderAttributeType cv = Context.getProviderAttributeService().getProviderAttributeType(4);
 		provider.setAttribute(buildProviderAttribute(cv, "Worked lots of places..."));
 		
 		service.saveProvider(provider);
