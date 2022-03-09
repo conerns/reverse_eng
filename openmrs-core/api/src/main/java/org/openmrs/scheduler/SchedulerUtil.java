@@ -177,7 +177,7 @@ public class SchedulerUtil {
 		Calendar nextTime = Calendar.getInstance();
 		
 		try {
-			Date firstTime = taskDefinition.getStartTime();
+			Date firstTime = taskDefinition.getTaskMetadata().getStartTime();
 			
 			if (firstTime != null) {
 				
@@ -190,7 +190,7 @@ public class SchedulerUtil {
 				}
 				
 				// The time between successive runs (e.g. 24 hours)
-				long repeatInterval = taskDefinition.getRepeatInterval();
+				long repeatInterval = taskDefinition.getTaskMetadata().getRepeatInterval();
 				if (repeatInterval == 0) {
 					// task is one-shot so just return the start time
 					return firstTime;

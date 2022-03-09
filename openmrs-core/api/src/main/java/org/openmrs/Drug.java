@@ -35,15 +35,7 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	
 	private Boolean combination = false;
 	
-	private Concept dosageForm;
-	
-	private Double maximumDailyDose;
-	
-	private Double minimumDailyDose;
-	
-	private String strength;
-	
-	private Concept doseLimitUnits;
+	private DrugDosage drugDosage;
 	
 	@IndexedEmbedded(includeEmbeddedObjectId = true)
 	private Concept concept;
@@ -52,6 +44,8 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	private Set<DrugReferenceMap> drugReferenceMaps;
 	
 	private Collection<DrugIngredient> ingredients;
+
+	private String strength;
 	
 	// Constructors
 	
@@ -66,7 +60,24 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	}
 	
 	// Property accessors
-	
+
+
+	public String getStrength() {
+		return strength;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public DrugDosage getDrugDosage() {
+		return drugDosage;
+	}
+
+	public void setDrugDosage(DrugDosage drugDosage) {
+		this.drugDosage = drugDosage;
+	}
+
 	/**
 	 * Gets the internal identification number for this drug
 	 *
@@ -126,26 +137,6 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	}
 	
 	/**
-	 * Gets the strength
-	 *
-	 * @return String
-	 * @since 1.10
-	 */
-	public String getStrength() {
-		return strength;
-	}
-	
-	/**
-	 * Sets the strength
-	 *
-	 * @param strength
-	 * @since 1.10
-	 */
-	public void setStrength(String strength) {
-		this.strength = strength;
-	}
-	
-	/**
 	 * Gets the concept this drug is tied to
 	 *
 	 * @return Concept
@@ -161,30 +152,6 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	 */
 	public void setConcept(Concept concept) {
 		this.concept = concept;
-	}
-	
-	public Concept getDosageForm() {
-		return dosageForm;
-	}
-	
-	public void setDosageForm(Concept dosageForm) {
-		this.dosageForm = dosageForm;
-	}
-	
-	public Double getMaximumDailyDose() {
-		return maximumDailyDose;
-	}
-	
-	public void setMaximumDailyDose(Double maximumDailyDose) {
-		this.maximumDailyDose = maximumDailyDose;
-	}
-	
-	public Double getMinimumDailyDose() {
-		return minimumDailyDose;
-	}
-	
-	public void setMinimumDailyDose(Double minimumDailyDose) {
-		this.minimumDailyDose = minimumDailyDose;
 	}
 	
 	/**
@@ -277,27 +244,5 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 			}
 			getDrugReferenceMaps().add(drugReferenceMap);
 		}
-	}
-	
-	/**
-	 * Gets the doseLimitUnits which represents the units of the existing maximumDailyDose and
-	 * minimumDailyDose
-	 * 
-	 * @return the doseLimitUnits.
-	 * @since 2.3.0
-	 */
-	public Concept getDoseLimitUnits() {
-		return doseLimitUnits;
-	}
-	
-	/**
-	 * Sets the doseLimitUnits which represents the units of the existing maximumDailyDose and
-	 * minimumDailyDose
-	 * 
-	 * @param doseLimitUnits The doseLimitUnits to set.
-	 * @since 2.3.0
-	 */
-	public void setDoseLimitUnits(Concept doseLimitUnits) {
-		this.doseLimitUnits = doseLimitUnits;
 	}
 }

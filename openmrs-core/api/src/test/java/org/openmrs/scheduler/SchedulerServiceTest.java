@@ -104,10 +104,10 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 	private TaskDefinition makeRepeatingTaskThatStartsImmediately(String taskClassName) {
 		TaskDefinition taskDef = new TaskDefinition();
 		taskDef.setTaskClass(taskClassName);
-		taskDef.setStartOnStartup(false);
-		taskDef.setStartTime(null);
+		taskDef.getTaskMetadata().setStartOnStartup(false);
+		taskDef.getTaskMetadata().setStartTime(null);
 		taskDef.setName("name");
-		taskDef.setRepeatInterval(CONCURRENT_TASK_WAIT_MS * 10); // latch should timeout before task ever repeats
+		taskDef.getTaskMetadata().setRepeatInterval(CONCURRENT_TASK_WAIT_MS * 10); // latch should timeout before task ever repeats
 		// save task definition to generate a unique ID, otherwise the scheduler thinks they're duplicates and tries to shut one down
 		Context.getSchedulerService().saveTaskDefinition(taskDef);
 		return taskDef;
@@ -246,11 +246,11 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 		SchedulerService schedulerService = Context.getSchedulerService();
 		
 		TaskDefinition t5 = new TaskDefinition();
-		t5.setStartOnStartup(false);
-		t5.setStartTime(null); // immediate start
+		t5.getTaskMetadata().setStartOnStartup(false);
+		t5.getTaskMetadata().setStartTime(null); // immediate start
 		t5.setTaskClass(InitSequenceTestTask.class.getName());
 		t5.setName("name");
-		t5.setRepeatInterval(CONCURRENT_TASK_WAIT_MS * 4);
+		t5.getTaskMetadata().setRepeatInterval(CONCURRENT_TASK_WAIT_MS * 4);
 		
 		synchronized (TASK_TEST_METHOD_LOCK) {
 			// wait for the task to complete
@@ -271,8 +271,8 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 		TaskDefinition def = new TaskDefinition();
 		final String TASK_NAME = "This is my test! 123459876";
 		def.setName(TASK_NAME);
-		def.setStartOnStartup(false);
-		def.setRepeatInterval(10000000L);
+		def.getTaskMetadata().setStartOnStartup(false);
+		def.getTaskMetadata().setRepeatInterval(10000000L);
 		def.setTaskClass(LatchExecuteTask.class.getName());
 		
 		synchronized (TASK_TEST_METHOD_LOCK) {
@@ -335,11 +335,11 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 		
 		TaskDefinition td = new TaskDefinition();
 		td.setName("Task");
-		td.setStartOnStartup(false);
+		td.getTaskMetadata().setStartOnStartup(false);
 		td.setTaskClass(BareTask.class.getName());
-		td.setStartTime(null);
+		td.getTaskMetadata().setStartTime(null);
 		td.setName("name");
-		td.setRepeatInterval(5000L);
+		td.getTaskMetadata().setRepeatInterval(5000L);
 		
 		synchronized (TASK_TEST_METHOD_LOCK) {
 			latch = new CountDownLatch(1);
@@ -375,10 +375,10 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 		
 		TaskDefinition td = new TaskDefinition();
 		td.setName(NAME);
-		td.setStartOnStartup(false);
+		td.getTaskMetadata().setStartOnStartup(false);
 		td.setTaskClass(StoreExecutionTimeTask.class.getName());
-		td.setStartTime(null);
-		td.setRepeatInterval(0L);//0 indicates single execution
+		td.getTaskMetadata().setStartTime(null);
+		td.getTaskMetadata().setRepeatInterval(0L);//0 indicates single execution
 		synchronized (TASK_TEST_METHOD_LOCK) {
 			latch = new CountDownLatch(1);
 			service.saveTaskDefinition(td);
@@ -394,15 +394,15 @@ public class SchedulerServiceTest extends BaseContextSensitiveTest {
 		for (int x = 0; x < 100; x++) {
 			// refetch the task
 			td = service.getTaskByName(NAME);
-			if (td.getLastExecutionTime() != null) {
+			if (td.getTaskMetadata().getLastExecutionTime() != null) {
 				log.debug("shouldSaveLastExecutionTime wait done");
 				break;
 			}
 			Thread.sleep(200);
 		}
 		assertNotNull(actualExecutionTime, "actualExecutionTime is null, so either the SessionTask.execute method hasn't finished or didn't get run");
-		assertNotNull(td.getLastExecutionTime(), "lastExecutionTime is null, so the SchedulerService didn't save it");
-		assertEquals(1, td.getLastExecutionTime().getTime() / 1000, actualExecutionTime / 1000, "Last execution time in seconds is wrong");
+		assertNotNull(td.getTaskMetadata().getLastExecutionTime(), "lastExecutionTime is null, so the SchedulerService didn't save it");
+		assertEquals(1, td.getTaskMetadata().getLastExecutionTime().getTime() / 1000, actualExecutionTime / 1000, "Last execution time in seconds is wrong");
 	}
 
 	/**

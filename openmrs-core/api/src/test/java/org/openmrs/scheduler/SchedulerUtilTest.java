@@ -34,8 +34,8 @@ public class SchedulerUtilTest {
 		
 		// Create the new task
 		TaskDefinition taskDefinition = new TaskDefinition();
-		taskDefinition.setStartTime(startTime.getTime());
-		taskDefinition.setRepeatInterval(repeatInterval);
+		taskDefinition.getTaskMetadata().setStartTime(startTime.getTime());
+		taskDefinition.getTaskMetadata().setRepeatInterval(repeatInterval);
 		
 		// Add four minutes to the start time
 		startTime.add(Calendar.MINUTE, 4);

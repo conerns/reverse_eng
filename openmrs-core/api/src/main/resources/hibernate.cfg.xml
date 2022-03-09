@@ -21,6 +21,8 @@
 		<property name="hibernate.search.model_mapping">org.openmrs.api.db.hibernate.search.LuceneAnalyzerFactory</property>
 		
 		<!-- API -->
+		
+		<mapping resource="org/openmrs/api/db/hibernate/DrugDosage.hbm.xml"/>
 
 		<mapping resource="org/openmrs/api/db/hibernate/AllergyReaction.hbm.xml" />
 		<mapping resource="org/openmrs/api/db/hibernate/Concept.hbm.xml" />
@@ -113,6 +115,7 @@
 		
 		<!-- Scheduler -->
 		<mapping resource="org/openmrs/scheduler/db/hibernate/TaskDefinition.hbm.xml" />
+		<mapping resource="org/openmrs/scheduler/db/hibernate/TaskMetadata.hbm.xml" />
 		
 		<!-- Visit -->
 		<mapping resource="org/openmrs/api/db/hibernate/VisitType.hbm.xml" />

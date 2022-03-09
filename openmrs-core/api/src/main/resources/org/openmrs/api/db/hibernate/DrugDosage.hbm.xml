@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.openmrs.DrugDosage" table="drug">
+
+		<id name="dosageId" type="java.lang.Integer" column="drug_id">
+			<generator class="native">
+				<param name="sequence">drug_drug_id_seq</param>
+			</generator>
+		</id>
+
+		<property name="maximumDailyDose" type="java.lang.Double"
+				  column="maximum_daily_dose" length="22" />
+		
+		<property name="minimumDailyDose" type="java.lang.Double"
+				  column="minimum_daily_dose" length="22" />
+		
+		<many-to-one name="dosageForm" class="org.openmrs.Concept"
+					 not-null="false" column="dosage_form" />
+		
+		<many-to-one name="doseLimitUnits" class="org.openmrs.Concept"
+					 not-null="false" column="dose_limit_units" />
+		
+	</class>
+</hibernate-mapping>

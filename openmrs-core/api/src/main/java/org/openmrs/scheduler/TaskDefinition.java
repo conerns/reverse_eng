@@ -32,35 +32,34 @@ public class TaskDefinition extends BaseChangeableOpenmrsMetadata {
 	
 	private Task taskInstance = null;
 	
-	// Scheduling metadata
-	private Date startTime;
-	
-	private Date lastExecutionTime;
-	
-	private Long repeatInterval; // NOW in seconds to give us ability to
-	
-	// support longer intervals (years, decades,
-	// milleniums)
-	
-	private Boolean startOnStartup;
-	
-	private String startTimePattern;
-	
-	private Boolean started;
-	
 	// Relationships
 	private Map<String, String> properties;
+
+	private Boolean started;
+	
+	private TaskMetadata taskMetadata;
 	
 	/**
 	 * Default no-arg public constructor
 	 */
 	public TaskDefinition() {
 		this.started = Boolean.FALSE; // default
-		this.startTime = new Date(); // makes it easier during task creation
 		// as we have a default date populated
 		this.properties = new HashMap<>();
+		
+		taskMetadata = new TaskMetadata();
+		taskMetadata.setStartTime(new Date());
+		
 	}
-	
+
+	public TaskMetadata getTaskMetadata() {
+		return taskMetadata;
+	}
+
+	public void setTaskMetadata(TaskMetadata taskMetadata) {
+		this.taskMetadata = taskMetadata;
+	}
+
 	/**
 	 * Public constructor
 	 */
@@ -71,6 +70,8 @@ public class TaskDefinition extends BaseChangeableOpenmrsMetadata {
 		setName(name);
 		setDescription(description);
 		this.taskClass = taskClass;
+
+		taskMetadata = new TaskMetadata();
 	}
 	
 	/**
@@ -128,89 +129,6 @@ public class TaskDefinition extends BaseChangeableOpenmrsMetadata {
 	 */
 	public void setTaskClass(String taskClass) {
 		this.taskClass = taskClass;
-	}
-	
-	/**
-	 * Get the start time for when the task should be executed.
-	 * 
-	 * @return long start time
-	 */
-	public Date getStartTime() {
-		return startTime;
-	}
-	
-	/**
-	 * Set the start time for when the task should be executed. For instance, use "new Date()", if
-	 * you want it to start now.
-	 * 
-	 * @param startTime start time for the task
-	 */
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-	
-	/**
-	 * Get the time the task was last executed.
-	 * 
-	 * @return long last execution time
-	 */
-	public Date getLastExecutionTime() {
-		return lastExecutionTime;
-	}
-	
-	/**
-	 * Set the time the task was last executed
-	 * 
-	 * @param lastExecutionTime last execution time
-	 */
-	public void setLastExecutionTime(Date lastExecutionTime) {
-		this.lastExecutionTime = lastExecutionTime;
-	}
-	
-	/**
-	 * Gets the number of seconds until task is executed again.
-	 * 
-	 * @return long number of seconds.
-	 */
-	public Long getRepeatInterval() {
-		return repeatInterval;
-	}
-	
-	/**
-	 * Sets the number of seconds until task is executed again.
-	 * 
-	 * @param repeatInterval number of seconds, or 0 to indicate to repetition
-	 */
-	public void setRepeatInterval(Long repeatInterval) {
-		this.repeatInterval = repeatInterval;
-	}
-	
-	/**
-	 * Get the date format used to set the start time.
-	 */
-	public String getStartTimePattern() {
-		return this.startTimePattern;
-	}
-	
-	/**
-	 * Sets the date format used to set the start time.
-	 */
-	public void setStartTimePattern(String pattern) {
-		this.startTimePattern = pattern;
-	}
-	
-	/**
-	 * Gets the flag that indicates whether the task should startup as soon as the scheduler starts.
-	 */
-	public Boolean getStartOnStartup() {
-		return this.startOnStartup;
-	}
-	
-	/**
-	 * Sets the flag that indicates whether the task should startup as soon as the scheduler starts.
-	 */
-	public void setStartOnStartup(Boolean startOnStartup) {
-		this.startOnStartup = startOnStartup;
 	}
 	
 	/**
@@ -274,7 +192,7 @@ public class TaskDefinition extends BaseChangeableOpenmrsMetadata {
 	@Override
 	public String toString() {
 		return "[TaskDefinition " + " id=" + getId() + " name=" + getName() + " class=" + getTaskClass() + " startTime="
-		        + getStartTime() + " repeatInterval=" + this.getRepeatInterval() + " secondsUntilNext="
+		        + taskMetadata.getStartTime() + " repeatInterval=" + taskMetadata.getRepeatInterval() + " secondsUntilNext="
 		        + this.getSecondsUntilNextExecutionTime() + "]";
 	}
 	

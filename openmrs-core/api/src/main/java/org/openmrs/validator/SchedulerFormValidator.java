@@ -61,7 +61,7 @@ public class SchedulerFormValidator implements Validator {
 			        "Task class", taskDefinition.getTaskClass() });
 			
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "repeatInterval", "Scheduler.taskForm.required", new Object[] {
-			        "Repeat interval", taskDefinition.getRepeatInterval() });
+			        "Repeat interval", taskDefinition.getTaskMetadata().getRepeatInterval() });
 			
 			ValidateUtil
 			        .validateFieldLengths(errors, obj.getClass(), "name", "description", "taskClass", "startTimePattern");

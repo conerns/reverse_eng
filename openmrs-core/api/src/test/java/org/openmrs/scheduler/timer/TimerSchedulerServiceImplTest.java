@@ -49,9 +49,9 @@ public class TimerSchedulerServiceImplTest extends BaseContextSensitiveTest {
 		TaskDefinition taskDefinition = new TaskDefinition();
 		taskDefinition.setName(taskName);
 		taskDefinition.setTaskClass(className);
-		taskDefinition.setStartTime(startTime.getTime());
-		taskDefinition.setRepeatInterval(repeatInterval);
-		taskDefinition.setStartOnStartup(startOnStartup);
+		taskDefinition.getTaskMetadata().setStartTime(startTime.getTime());
+		taskDefinition.getTaskMetadata().setRepeatInterval(repeatInterval);
+		taskDefinition.getTaskMetadata().setStartOnStartup(startOnStartup);
 		
 		Task clientTask = null;
 		

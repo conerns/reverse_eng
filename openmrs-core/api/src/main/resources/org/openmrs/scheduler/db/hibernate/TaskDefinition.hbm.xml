@@ -43,29 +43,6 @@
 				type="java.lang.String" 
 				column="schedulable_class" 
 				length="1024" />
-		
-		<property name="repeatInterval" 
-				type="java.lang.Long" 
-				column="repeat_interval" />
-		
-		<property name="startTime" 
-				type="java.util.Date" 
-				column="start_time" />
-
-		<property name="startTimePattern" 
-				type="java.lang.String" 
-				column="start_time_pattern"
-				length="50" />
-
-		<property name="lastExecutionTime" 
-				type="java.util.Date" 
-				column="last_execution_time" />
-		
-		<property name="startOnStartup" 
-				type="java.lang.Boolean" 
-				column="start_on_startup" 
-				length="1" 
-				not-null="true"/>		
 
 		<property name="started" 
 				type="java.lang.Boolean" 
@@ -122,6 +99,8 @@
 				not-null="false"
 				length="19" 
 				/>
+
+		<one-to-one name="taskMetadata" class="org.openmrs.scheduler.TaskMetadata"/>
 
 	</class>
 </hibernate-mapping>

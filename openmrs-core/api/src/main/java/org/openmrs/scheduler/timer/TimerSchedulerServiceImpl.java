@@ -104,7 +104,7 @@ public class TimerSchedulerServiceImpl extends BaseOpenmrsService implements Sch
 				try {
 					// If the task is configured to start on startup, we schedule it to run
 					// Otherwise it needs to be started manually.
-					if (taskDefinition.getStartOnStartup()) {
+					if (taskDefinition.getTaskMetadata().getStartOnStartup()) {
 						scheduleTask(taskDefinition);
 					}
 					
@@ -229,11 +229,11 @@ public class TimerSchedulerServiceImpl extends BaseOpenmrsService implements Sch
 					// we record by seconds.  
 					
 					long repeatInterval = 0;
-					if (taskDefinition.getRepeatInterval() != null) {
-						repeatInterval = taskDefinition.getRepeatInterval() * SchedulerConstants.SCHEDULER_MILLIS_PER_SECOND;
+					if (taskDefinition.getTaskMetadata().getRepeatInterval() != null) {
+						repeatInterval = taskDefinition.getTaskMetadata().getRepeatInterval() * SchedulerConstants.SCHEDULER_MILLIS_PER_SECOND;
 					}
 					
-					if (taskDefinition.getStartTime() != null) {
+					if (taskDefinition.getTaskMetadata().getStartTime() != null) {
 						// Need to calculate the "next execution time" because the scheduled time is most likely in the past
 						// and the JDK timer will run the task X number of times from the start time until now to catch up.
 						Date nextTime = SchedulerUtil.getNextExecution(taskDefinition);
@@ -349,7 +349,7 @@ public class TimerSchedulerServiceImpl extends BaseOpenmrsService implements Sch
 			Set<Integer> taskIds = scheduledTasks.keySet();
 			for (Integer id : taskIds) {
 				TaskDefinition task = getTask(id);
-				log.debug("Adding scheduled task " + id + " to list (" + task.getRepeatInterval() + ")");
+				log.debug("Adding scheduled task " + id + " to list (" + task.getTaskMetadata().getRepeatInterval() + ")");
 				list.add(task);
 			}
 		}
