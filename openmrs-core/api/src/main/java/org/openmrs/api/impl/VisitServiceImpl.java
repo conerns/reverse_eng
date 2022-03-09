@@ -59,83 +59,7 @@ public class VisitServiceImpl extends BaseOpenmrsService implements VisitService
 		return dao;
 	}
 	
-	/**
-	 * @see org.openmrs.api.VisitService#getAllVisitTypes()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<VisitType> getAllVisitTypes() {
-		return getVisitDAO().getAllVisitTypes();
-	}
 	
-	/**
-	 * @see org.openmrs.api.VisitService#getAllVisitTypes(boolean)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<VisitType> getAllVisitTypes(boolean includeRetired) {
-		return dao.getAllVisitTypes(includeRetired);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitType(java.lang.Integer)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public VisitType getVisitType(Integer visitTypeId) {
-		return getVisitDAO().getVisitType(visitTypeId);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitTypeByUuid(java.lang.String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public VisitType getVisitTypeByUuid(String uuid) {
-		return getVisitDAO().getVisitTypeByUuid(uuid);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitTypes(java.lang.String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<VisitType> getVisitTypes(String fuzzySearchPhrase) {
-		return getVisitDAO().getVisitTypes(fuzzySearchPhrase);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#saveVisitType(org.openmrs.VisitType)
-	 */
-	@Override
-	public VisitType saveVisitType(VisitType visitType) throws APIException {
-		ValidateUtil.validate(visitType);
-		return getVisitDAO().saveVisitType(visitType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#retireVisitType(org.openmrs.VisitType, java.lang.String)
-	 */
-	@Override
-	public VisitType retireVisitType(VisitType visitType, String reason) {
-		return Context.getVisitService().saveVisitType(visitType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#unretireVisitType(org.openmrs.VisitType)
-	 */
-	@Override
-	public VisitType unretireVisitType(VisitType visitType) {
-		return Context.getVisitService().saveVisitType(visitType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#purgeVisitType(org.openmrs.VisitType)
-	 */
-	@Override
-	public void purgeVisitType(VisitType visitType) {
-		getVisitDAO().purgeVisitType(visitType);
-	}
 	
 	/**
 	 * @see org.openmrs.api.VisitService#getAllVisits()
@@ -278,81 +202,12 @@ public class VisitServiceImpl extends BaseOpenmrsService implements VisitService
 	}
 	
 	/**
-	 * @see org.openmrs.api.VisitService#getAllVisitAttributeTypes()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<VisitAttributeType> getAllVisitAttributeTypes() {
-		return dao.getAllVisitAttributeTypes();
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitAttributeType(java.lang.Integer)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public VisitAttributeType getVisitAttributeType(Integer id) {
-		return dao.getVisitAttributeType(id);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitAttributeTypeByUuid(java.lang.String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public VisitAttributeType getVisitAttributeTypeByUuid(String uuid) {
-		return dao.getVisitAttributeTypeByUuid(uuid);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#saveVisitAttributeType(org.openmrs.VisitAttributeType)
-	 */
-	@Override
-	public VisitAttributeType saveVisitAttributeType(VisitAttributeType visitAttributeType) {
-		return dao.saveVisitAttributeType(visitAttributeType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#retireVisitAttributeType(org.openmrs.VisitAttributeType,
-	 *      java.lang.String)
-	 */
-	@Override
-	public VisitAttributeType retireVisitAttributeType(VisitAttributeType visitAttributeType, String reason) {
-		return dao.saveVisitAttributeType(visitAttributeType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#unretireVisitAttributeType(org.openmrs.VisitAttributeType)
-	 */
-	@Override
-	public VisitAttributeType unretireVisitAttributeType(VisitAttributeType visitAttributeType) {
-		return Context.getVisitService().saveVisitAttributeType(visitAttributeType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#purgeVisitAttributeType(org.openmrs.VisitAttributeType)
-	 */
-	@Override
-	public void purgeVisitAttributeType(VisitAttributeType visitAttributeType) {
-		dao.deleteVisitAttributeType(visitAttributeType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitAttributeByUuid(java.lang.String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public VisitAttribute getVisitAttributeByUuid(String uuid) {
-		return dao.getVisitAttributeByUuid(uuid);
-	}
-	
-	/**
 	 * @see org.openmrs.api.VisitService#stopVisits(Date)
 	 */
 	@Override
 	public void stopVisits(Date maximumStartDate) {
 		
-		final List<VisitType> visitTypesToStop = getVisitTypesToStop();
+		final List<VisitType> visitTypesToStop = Context.getVisitTypeService().getVisitTypesToStop();
 		
 		if (maximumStartDate == null) {
 			maximumStartDate = new Date();
@@ -379,33 +234,8 @@ public class VisitServiceImpl extends BaseOpenmrsService implements VisitService
 		}
 	}
 	
-	private List<VisitType> getVisitTypesToStop() {
-		String gpValue = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_VISIT_TYPES_TO_AUTO_CLOSE);
-		if (StringUtils.isBlank(gpValue)) {
-			return Collections.emptyList();
-		} else {
-			String[] visitTypeNames = getVisitTypeNamesFromGlobalPropertyValue(gpValue);
-			return getVisitTypesFromVisitTypeNames(visitTypeNames);
-		}
-	}
+
 	
-	private String[] getVisitTypeNamesFromGlobalPropertyValue(String commaSeparatedNames) {
-		String[] result = StringUtils.split(commaSeparatedNames.trim(), ",");
-		for (int i = 0; i < result.length; i++) {
-			String currName = result[i];
-			result[i] = currName.trim().toLowerCase();
-		}
-		return result;
-	}
-	
-	private List<VisitType> getVisitTypesFromVisitTypeNames(String[] visitTypeNames) {
-		List<VisitType> result = new ArrayList<>();
-		for (VisitType visitType : Context.getVisitService().getAllVisitTypes()) {
-			if (ArrayUtils.contains(visitTypeNames, visitType.getName().toLowerCase())) {
-				result.add(visitType);
-			}
-		}
-		return result;
-	}
+
 
 }

@@ -103,7 +103,7 @@ public class VisitValidator extends BaseCustomizableValidator implements Validat
 		ValidateUtil.validateFieldLengths(errors, target.getClass(), "voidReason");
 		
 		// check attributes
-		super.validateAttributes(visit, errors, Context.getVisitService().getAllVisitAttributeTypes());
+		super.validateAttributes(visit, errors, Context.getVisitAttributeService().getAllVisitAttributeTypes());
 		
 		// check start and end dates
 		if (disallowOverlappingVisits()) {

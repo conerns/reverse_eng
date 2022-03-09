@@ -22,6 +22,7 @@ import org.openmrs.VisitType;
 import org.openmrs.api.APIException;
 import org.openmrs.api.GlobalPropertyListener;
 import org.openmrs.api.VisitService;
+import org.openmrs.api.VisitTypeService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
@@ -110,7 +111,7 @@ public class ExistingOrNewVisitAssignmentHandler extends ExistingVisitAssignment
 		// or encounterTypeUuid:visitTypeUuid o a mixture of uuids and id
 		if (!StringUtils.isBlank(value)) {
 			
-			VisitService visitService = Context.getVisitService();
+			VisitTypeService visitService = Context.getVisitTypeService();
 			String targetEncounterTypeId = encounterType.getId().toString();
 			
 			String[] mappings = value.split(",");
@@ -138,7 +139,7 @@ public class ExistingOrNewVisitAssignmentHandler extends ExistingVisitAssignment
 			throw new APIException("GlobalProperty.error.loadVisitType", new Object[] { encounterType.getName() });
 		}
 		
-		return Context.getVisitService().getAllVisitTypes().get(0);
+		return Context.getVisitTypeService().getAllVisitTypes().get(0);
 	}
 	
 	@Override

@@ -32,29 +32,8 @@ import org.openmrs.PersonName;
 import org.openmrs.Privilege;
 import org.openmrs.Role;
 import org.openmrs.User;
-import org.openmrs.api.APIException;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.CohortService;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.ConditionService;
-import org.openmrs.api.DatatypeService;
-import org.openmrs.api.DiagnosisService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.FormService;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.OpenmrsService;
-import org.openmrs.api.OrderService;
-import org.openmrs.api.OrderSetService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.ProgramWorkflowService;
-import org.openmrs.api.ProviderService;
-import org.openmrs.api.SerializationService;
-import org.openmrs.api.UserService;
-import org.openmrs.api.VisitService;
+import org.openmrs.api.*;
 import org.openmrs.api.db.ContextDAO;
-import org.openmrs.api.UserRolesService;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.logic.LogicService;
 import org.openmrs.messagesource.MessageSourceService;
@@ -455,6 +434,10 @@ public class Context {
 	 */
 	public static PersonService getPersonService() {
 		return getServiceContext().getPersonService();
+	}
+	
+	public static VisitAttributeService getVisitAttributeService(){
+		return getServiceContext().getVisitAttributeService();
 	}
 
 	/**
@@ -1277,6 +1260,10 @@ public class Context {
 	 */
 	public static VisitService getVisitService() {
 		return getServiceContext().getVisitService();
+	}
+	
+	public static VisitTypeService getVisitTypeService(){
+		return getServiceContext().getVisitTypeService();
 	}
 
 	/**

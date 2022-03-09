@@ -33,99 +33,6 @@ import org.openmrs.util.PrivilegeConstants;
 public interface VisitService extends OpenmrsService {
 	
 	/**
-	 * Gets all visit types.
-	 * 
-	 * @return a list of visit type objects.
-	 * <strong>Should</strong> get all visit types
-	 */
-	@Authorized( { PrivilegeConstants.GET_VISIT_TYPES })
-	List<VisitType> getAllVisitTypes();
-	
-	/**
-	 * Get all visit types based on includeRetired flag
-	 * 
-	 * @param includeRetired
-	 * @return List of all visit types
-	 * @since 1.9
-	 * <strong>Should</strong> get all visit types based on include retired flag.
-	 */
-	@Authorized( { PrivilegeConstants.MANAGE_VISIT_TYPES })
-	public List<VisitType> getAllVisitTypes(boolean includeRetired);
-	
-	/**
-	 * Gets a visit type by its visit type id.
-	 * 
-	 * @param visitTypeId the visit type id.
-	 * @return the visit type object found with the given id, else null.
-	 * <strong>Should</strong> get correct visit type
-	 */
-	@Authorized( { PrivilegeConstants.GET_VISIT_TYPES })
-	VisitType getVisitType(Integer visitTypeId);
-	
-	/**
-	 * Gets a visit type by its UUID.
-	 * 
-	 * @param uuid the visit type UUID.
-	 * @return the visit type object found with the given uuid, else null.
-	 * <strong>Should</strong> get correct visit type
-	 */
-	@Authorized( { PrivilegeConstants.GET_VISIT_TYPES })
-	VisitType getVisitTypeByUuid(String uuid);
-	
-	/**
-	 * Gets all visit types whose names are similar to or contain the given search phrase.
-	 * 
-	 * @param fuzzySearchPhrase the search phrase to use.
-	 * @return a list of all visit types with names similar to or containing the given phrase
-	 * <strong>Should</strong> get correct visit types
-	 */
-	@Authorized( { PrivilegeConstants.GET_VISIT_TYPES })
-	List<VisitType> getVisitTypes(String fuzzySearchPhrase);
-	
-	/**
-	 * Creates or updates the given visit type in the database.
-	 * 
-	 * @param visitType the visit type to create or update.
-	 * @return the created or updated visit type.
-	 * <strong>Should</strong> save new visit type
-	 * <strong>Should</strong> save edited visit type
-	 * <strong>Should</strong> throw error when name is null
-	 * <strong>Should</strong> throw error when name is empty string
-	 */
-	@Authorized( { PrivilegeConstants.MANAGE_VISIT_TYPES })
-	VisitType saveVisitType(VisitType visitType) throws APIException;
-	
-	/**
-	 * Retires a given visit type.
-	 * 
-	 * @param visitType the visit type to retire.
-	 * @param reason the reason why the visit type is retired.
-	 * @return the visit type that has been retired.
-	 * <strong>Should</strong> retire given visit type
-	 */
-	@Authorized( { PrivilegeConstants.MANAGE_VISIT_TYPES })
-	VisitType retireVisitType(VisitType visitType, String reason);
-	
-	/**
-	 * Unretires a visit type.
-	 * 
-	 * @param visitType the visit type to unretire.
-	 * @return the unretired visit type
-	 * <strong>Should</strong> unretire given visit type
-	 */
-	@Authorized( { PrivilegeConstants.MANAGE_VISIT_TYPES })
-	VisitType unretireVisitType(VisitType visitType);
-	
-	/**
-	 * Completely removes a visit type from the database. This is not reversible.
-	 * 
-	 * @param visitType the visit type to delete from the database.
-	 * <strong>Should</strong> delete given visit type
-	 */
-	@Authorized( { PrivilegeConstants.MANAGE_VISIT_TYPES })
-	void purgeVisitType(VisitType visitType);
-	
-	/**
 	 * Gets all unvoided visits in the database.
 	 * 
 	 * @return a list of visit objects.
@@ -294,89 +201,17 @@ public interface VisitService extends OpenmrsService {
 	@Authorized(PrivilegeConstants.GET_VISITS)
 	public List<Visit> getVisitsByPatient(Patient patient, boolean includeInactive, boolean includeVoided)
 	        throws APIException;
-	
-	/**
-	 * @return all {@link VisitAttributeType}s
-	 * <strong>Should</strong> return all visit attribute types including retired ones
-	 */
-	@Authorized(PrivilegeConstants.GET_VISIT_ATTRIBUTE_TYPES)
-	List<VisitAttributeType> getAllVisitAttributeTypes();
-	
-	/**
-	 * @param id
-	 * @return the {@link VisitAttributeType} with the given internal id
-	 * <strong>Should</strong> return the visit attribute type with the given id
-	 * <strong>Should</strong> return null if no visit attribute type exists with the given id
-	 */
-	@Authorized(PrivilegeConstants.GET_VISIT_ATTRIBUTE_TYPES)
-	VisitAttributeType getVisitAttributeType(Integer id);
-	
-	/**
-	 * @param uuid
-	 * @return the {@link VisitAttributeType} with the given uuid
-	 * <strong>Should</strong> return the visit attribute type with the given uuid
-	 * <strong>Should</strong> return null if no visit attribute type exists with the given uuid
-	 */
-	@Authorized(PrivilegeConstants.GET_VISIT_ATTRIBUTE_TYPES)
-	VisitAttributeType getVisitAttributeTypeByUuid(String uuid);
-	
-	/**
-	 * Creates or updates the given visit attribute type in the database
-	 * 
-	 * @param visitAttributeType
-	 * @return the VisitAttributeType created/saved
-	 * <strong>Should</strong> create a new visit attribute type
-	 * <strong>Should</strong> edit an existing visit attribute type
-	 */
-	@Authorized(PrivilegeConstants.MANAGE_VISIT_ATTRIBUTE_TYPES)
-	VisitAttributeType saveVisitAttributeType(VisitAttributeType visitAttributeType);
-	
-	/**
-	 * Retires the given visit attribute type in the database
-	 * 
-	 * @param visitAttributeType
-	 * @return the visitAttribute retired
-	 * <strong>Should</strong> retire a visit attribute type
-	 */
-	@Authorized(PrivilegeConstants.MANAGE_VISIT_ATTRIBUTE_TYPES)
-	VisitAttributeType retireVisitAttributeType(VisitAttributeType visitAttributeType, String reason);
-	
-	/**
-	 * Restores a visit attribute type that was previous retired in the database
-	 * 
-	 * @param visitAttributeType
-	 * @return the VisitAttributeType unretired
-	 * <strong>Should</strong> unretire a retired visit attribute type
-	 */
-	@Authorized(PrivilegeConstants.MANAGE_VISIT_ATTRIBUTE_TYPES)
-	VisitAttributeType unretireVisitAttributeType(VisitAttributeType visitAttributeType);
-	
-	/**
-	 * Completely removes a visit attribute type from the database
-	 * 
-	 * @param visitAttributeType
-	 * <strong>Should</strong> completely remove a visit attribute type
-	 */
-	@Authorized(PrivilegeConstants.PURGE_VISIT_ATTRIBUTE_TYPES)
-	void purgeVisitAttributeType(VisitAttributeType visitAttributeType);
-	
-	/**
-	 * @param uuid
-	 * @return the {@link VisitAttribute} with the given uuid
-	 * <strong>Should</strong> get the visit attribute with the given uuid
-	 * <strong>Should</strong> return null if no visit attribute has the given uuid
-	 */
-	@Authorized(PrivilegeConstants.GET_VISITS)
-	VisitAttribute getVisitAttributeByUuid(String uuid);
-	
+
 	/**
 	 * Stops all active visits started before or on the specified date which match any of the visit
 	 * types specified by the {@link OpenmrsConstants#GP_VISIT_TYPES_TO_AUTO_CLOSE} global property.
 	 * If startDatetime is null, the default will be end of the current day.
-	 * 
+	 *
 	 * @param maximumStartDate Visits started on or before this date time value will get stopped
 	 * <strong>Should</strong> close all unvoided active visit matching the specified visit types
 	 */
 	@Authorized(PrivilegeConstants.EDIT_VISITS)
 	public void stopVisits(Date maximumStartDate);
+	
+	
 }

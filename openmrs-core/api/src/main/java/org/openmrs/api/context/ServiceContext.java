@@ -19,29 +19,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.aopalliance.aop.Advice;
-import org.openmrs.api.APIException;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.CohortService;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.ConditionService;
-import org.openmrs.api.DatatypeService;
-import org.openmrs.api.DiagnosisService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.FormService;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.OpenmrsService;
-import org.openmrs.api.OrderService;
-import org.openmrs.api.OrderSetService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.ProgramWorkflowService;
-import org.openmrs.api.ProviderService;
-import org.openmrs.api.SerializationService;
-import org.openmrs.api.ServiceNotFoundException;
-import org.openmrs.api.UserService;
-import org.openmrs.api.VisitService;
-import org.openmrs.api.UserRolesService;
+import org.openmrs.api.*;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.logic.LogicService;
 import org.openmrs.messagesource.MessageSourceService;
@@ -997,6 +975,10 @@ public class ServiceContext implements ApplicationContextAware {
 		return getService(VisitService.class);
 	}
 	
+	public VisitTypeService getVisitTypeService(){
+		return getService(VisitTypeService.class);
+	}
+	
 	/**
 	 * Sets the visit service.
 	 *
@@ -1006,6 +988,8 @@ public class ServiceContext implements ApplicationContextAware {
 	public void setVisitService(VisitService visitService) {
 		setService(VisitService.class, visitService);
 	}
+	
+	public void setVisitTypeService(VisitTypeService visitTypeService) { setService(VisitTypeService.class, visitTypeService); }
 	
 	/**
 	 * Gets the provider service.
@@ -1046,5 +1030,11 @@ public class ServiceContext implements ApplicationContextAware {
 	 */
 	public void setDatatypeService(DatatypeService datatypeService) {
 		setService(DatatypeService.class, datatypeService);
+	}
+	
+	public VisitAttributeService getVisitAttributeService(){ return getService(VisitAttributeService.class); }
+	
+	public void setVisitAttributeService(VisitAttributeService visitAttributeService){
+		setService(VisitAttributeService.class, visitAttributeService);
 	}
 }

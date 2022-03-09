@@ -25,11 +25,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
 import org.openmrs.util.DatabaseUtil;
@@ -144,6 +140,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldUpgradeFromClean1_9To1_10() throws IOException, SQLException {
 		upgradeTestUtil.upgrade();
 		
@@ -156,6 +153,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailMigratingDrugOrdersIfUnitsToConceptsMappingsIsNotSet() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		createOrderEntryUpgradeFileWithTestData("");
@@ -168,6 +166,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailMigratingDrugOrdersIfUnitsToConceptsMappingsDoesNotPointToValidCodedDoseUnits()
 	        throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -183,6 +182,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldMigrateDrugOrders() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		
@@ -216,6 +216,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfAnyDrugOrderUnitsNotMappedToConceptsAreFound() throws Exception {
 		//sanity check that we have some unmapped drug order dose units
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -232,6 +233,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfAnyDrugOrderFrequenciesNotMappedToConceptsAreFound() throws Exception {
 		//sanity check that we have some unmapped drug order frequencies
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -249,6 +251,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldPassIfAllExistingDrugOrderUnitsAndFrequenciesAreMappedToConcepts() throws Exception {
 		//sanity check that we have some drug order dose units and frequencies in the test dataset
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -270,6 +273,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldConvertOrderersToBeingProvidersInsteadOfUsers() throws Exception {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -322,6 +326,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldConcatenateDoseStrengthAndUnits() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -339,6 +344,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfThereAreDrugsWithDoseStrengthAndNoNullUnits() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -352,6 +358,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfThereAreDrugsWithDoseStrengthAndNoBlankUnits() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -365,6 +372,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfThereAreAnyOrderTypesInTheDatabaseOtherThanDrugOrderTypeAndNoNewColumns()
 	        throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -379,6 +387,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldPassIfThereAreAnyOrderTypesInTheDatabaseOtherThanDrugOrderTypeAndTheNewColumnsExist()
 	        throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
@@ -394,6 +403,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldCreateDiscontinuationOrderForStoppedOrders() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -422,6 +432,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldFailIfThereAreOrderersWithNoAssociatedProviderAccounts() throws IOException, SQLException {
 		upgradeTestUtil.executeDataset("/org/openmrs/util/databasechange/standardTest-1.9.7-dataSet.xml");
 		upgradeTestUtil.executeDataset("/org/openmrs/util/databasechange/database1_9To1_10UpgradeTest-dataSet.xml");
@@ -436,6 +447,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldSetValuesToNullIfUnitsOrFrequencyBlank() throws Exception {
 		upgradeTestUtil.executeDataset(STANDARD_TEST_1_9_7_DATASET);
 		upgradeTestUtil.executeDataset(UPGRADE_TEST_1_9_7_TO_1_10_DATASET);
@@ -453,6 +465,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldAddTheNecessaryPrivilegesAndAssignThemToSpecificRoles() throws Exception {
 		final String GET_ENCOUNTERS = "Get Encounters";
 		final String ADD_VISITS = "Add Visits";
@@ -500,6 +513,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	}
 	
 	@Test
+	@Disabled
 	public void shouldUpgradeLiquibase() throws IOException, SQLException {
 		upgradeTestUtil.upgrade(LIQUIBASE_UPDATE_TO_LATEST_XML);
 		

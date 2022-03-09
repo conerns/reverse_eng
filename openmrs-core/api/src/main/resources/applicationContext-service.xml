@@ -123,6 +123,8 @@
 		<property name="providerService" ref="providerService"/>
 		
 		<property name="userRolesService" ref="userRolesService"/>
+		<property name="visitTypeService" ref="visitTypeService"/>
+		<property name="visitAttributeService" ref="visitAttributeService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -214,6 +216,13 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
+	<bean id="visitTypeDAO" class="org.openmrs.api.db.hibernate.HibernateVisitTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="visitAttributeDAO" class="org.openmrs.api.db.hibernate.HibernateVisitAttributeDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
 
 	<!--  **************************  SCHEDULER SERVICE  *************************  -->
 	<!-- 
@@ -302,6 +311,13 @@
 	</bean>
 	<bean id="providerServiceTarget" class="org.openmrs.api.impl.ProviderServiceImpl">
 		<property name="providerDAO" ref="providerDAO"/>
+	</bean>
+	
+	<bean id="visitTypeServiceTarget" class="org.openmrs.api.impl.VisitTypeServiceImpl">
+		<property name="visitTypeDAO" ref="visitTypeDAO"/>
+	</bean>
+	<bean id="visitAttributeServiceTarget" class="org.openmrs.api.impl.VisitAttributeServiceImpl">
+		<property name="visitAttributeDAO" ref="visitAttributeDAO"/>
 	</bean>
 
 	<!-- Cohort Service setup -->
@@ -515,6 +531,18 @@
 	<bean id="visitService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="visitServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="visitAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="visitAttributeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="visitTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="visitTypeServiceTarget"/>
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>

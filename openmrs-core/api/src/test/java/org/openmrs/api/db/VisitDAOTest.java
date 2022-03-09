@@ -31,6 +31,7 @@ public class VisitDAOTest extends BaseContextSensitiveTest {
 	protected static final String VISITS_INCLUDE_VISITS_TO_AUTO_CLOSE_XML = "org/openmrs/api/include/VisitServiceTest-includeVisitsAndTypeToAutoClose.xml";
 	
 	private VisitDAO dao = null;
+	private VisitTypeDAO visitTypeDAO = null;
 	
 	/**
 	 * Run this before each unit test in this class.
@@ -43,6 +44,9 @@ public class VisitDAOTest extends BaseContextSensitiveTest {
 		if (dao == null)
 			// fetch the dao from the spring application context
 			dao = (VisitDAO) applicationContext.getBean("visitDAO");
+		
+		if(visitTypeDAO == null)
+			visitTypeDAO = (VisitTypeDAO) applicationContext.getBean("visitTypeDAO");
 	}
 	
 	/**
@@ -70,7 +74,7 @@ public class VisitDAOTest extends BaseContextSensitiveTest {
 	public void getNextVisit_shouldReturnTheNextUnvoidedActiveVisitMatchingTheSpecifiedTypesAndStartDate() {
 		executeDataSet(VISITS_INCLUDE_VISITS_TO_AUTO_CLOSE_XML);
 		ArrayList<VisitType> visitTypes = new ArrayList<>();
-		visitTypes.add(dao.getVisitType(4));
+		visitTypes.add(visitTypeDAO.getVisitType(4));
 		Calendar cal = Calendar.getInstance();
 		cal.set(2005, 0, 4, 23, 59, 59);
 		cal.set(Calendar.MILLISECOND, 999);

@@ -26,11 +26,11 @@ public class VisitTypeEditor extends OpenmrsPropertyEditor<VisitType> {
 	
 	@Override
 	protected VisitType getObjectById(Integer id) {
-		return Context.getVisitService().getVisitType(id);
+		return Context.getVisitTypeService().getVisitType(id);
 	}
 	
 	@Override
 	protected VisitType getObjectByUuid(String uuid) {
-		return Context.getVisitService().getVisitTypeByUuid(uuid);
+		return Context.getVisitTypeService().getVisitTypeByUuid(uuid);
 	}
 }

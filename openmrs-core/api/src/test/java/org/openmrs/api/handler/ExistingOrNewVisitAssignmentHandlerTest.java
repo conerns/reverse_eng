@@ -81,7 +81,7 @@ public class ExistingOrNewVisitAssignmentHandlerTest extends BaseContextSensitiv
 	 */
 	@Test
 	public void beforeCreateEncounter_shouldAssignFirstVisitTypeIfMappingGlobalPropertyIsNotSet() {
-		VisitType visitType = Context.getVisitService().getAllVisitTypes().get(0);
+		VisitType visitType = Context.getVisitTypeService().getAllVisitTypes().get(0);
 		
 		Encounter encounter = Context.getEncounterService().getEncounter(1);
 		assertNull(encounter.getVisit());
@@ -122,7 +122,7 @@ public class ExistingOrNewVisitAssignmentHandlerTest extends BaseContextSensitiv
 		
 		//should be set according to: 1:2 encounterTypeId:visitTypeId
 		assertEquals(1, encounter.getEncounterType().getEncounterTypeId().intValue());
-		assertEquals(Context.getVisitService().getVisitType(2), encounter.getVisit().getVisitType());
+		assertEquals(Context.getVisitTypeService().getVisitType(2), encounter.getVisit().getVisitType());
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class ExistingOrNewVisitAssignmentHandlerTest extends BaseContextSensitiv
 		
 		//should be set according toencounterTypeUuid:visitTypeUuid
 		assertEquals(1, encounter.getEncounterType().getEncounterTypeId().intValue());
-		assertEquals(Context.getVisitService().getVisitTypeByUuid(visitTypeUuid), encounter.getVisit()
+		assertEquals(Context.getVisitTypeService().getVisitTypeByUuid(visitTypeUuid), encounter.getVisit()
 		                .getVisitType());
 	}
 }

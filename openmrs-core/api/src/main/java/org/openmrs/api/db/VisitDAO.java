@@ -32,41 +32,6 @@ import org.openmrs.api.VisitService;
 public interface VisitDAO {
 	
 	/**
-	 * @see org.openmrs.api.VisitService#getAllVisitTypes()
-	 */
-	List<VisitType> getAllVisitTypes() throws APIException;
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getAllVisitTypes(boolean)
-	 */
-	public List<VisitType> getAllVisitTypes(boolean includeRetired) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitType(java.lang.Integer)
-	 */
-	VisitType getVisitType(Integer visitTypeId);
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitTypeByUuid(java.lang.String)
-	 */
-	VisitType getVisitTypeByUuid(String uuid);
-	
-	/**
-	 * @see org.openmrs.api.VisitService#getVisitTypes(java.lang.String)
-	 */
-	List<VisitType> getVisitTypes(String fuzzySearchPhrase);
-	
-	/**
-	 * @see org.openmrs.api.VisitService#saveVisitType(org.openmrs.VisitType)
-	 */
-	VisitType saveVisitType(VisitType visitType);
-	
-	/**
-	 * @see org.openmrs.api.VisitService#purgeVisitType(org.openmrs.VisitType)
-	 */
-	void purgeVisitType(VisitType visitType);
-	
-	/**
 	 * @see VisitService#getVisit(Integer)
 	 * @throws DAOException
 	 */
@@ -112,42 +77,10 @@ public interface VisitDAO {
 	        Collection<Location> locations, Collection<Concept> indications, Date minStartDatetime, Date maxStartDatetime,
 	        Date minEndDatetime, Date maxEndDatetime, Map<VisitAttributeType, String> serializedAttributeValues,
 	        boolean includeInactive, boolean includeVoided) throws DAOException;
-	
-	/**
-	 * @see VisitService#getAllVisitAttributeTypes()
-	 */
-	List<VisitAttributeType> getAllVisitAttributeTypes();
-	
-	/**
-	 * @see VisitService#getVisitAttributeType(Integer)
-	 */
-	VisitAttributeType getVisitAttributeType(Integer id);
-	
-	/**
-	 * @see VisitService#getVisitAttributeTypeByUuid(String)
-	 */
-	VisitAttributeType getVisitAttributeTypeByUuid(String uuid);
-	
-	/**
-	 * @see VisitService#saveVisitAttributeType(VisitAttributeType)
-	 */
-	VisitAttributeType saveVisitAttributeType(VisitAttributeType visitAttributeType);
-	
-	/**
-	 * Completely removes a visit attribute type from the database
-	 * 
-	 * @param visitAttributeType
-	 */
-	void deleteVisitAttributeType(VisitAttributeType visitAttributeType);
-	
-	/**
-	 * @see VisitService#getVisitAttributeByUuid(String)
-	 */
-	VisitAttribute getVisitAttributeByUuid(String uuid);
-	
+
 	/**
 	 * Gets the next active visit which matches the specified visit types
-	 * 
+	 *
 	 * @param previousVisit the visit that precedes the one we are fetching
 	 * @param visitTypes a collection of visit types to match against
 	 * @param maximumStartDate the next visit should have been created before or at this date time
@@ -155,5 +88,7 @@ public interface VisitDAO {
 	 * <strong>Should</strong> return the next unvoided active visit matching the specified types and startDate
 	 */
 	public Visit getNextVisit(Visit previousVisit, Collection<VisitType> visitTypes, Date maximumStartDate);
+	
+	
 	
 }

@@ -45,7 +45,7 @@ public class AttributeIntegrationTest extends BaseContextSensitiveTest {
 	@Test
 	public void shouldTestAddingAnAttributeToSomethingAndSavingIt() throws InvalidCustomValueException, ParseException {
 		Visit visit = service.getVisit(1);
-		VisitAttributeType auditDate = service.getVisitAttributeType(1);
+		VisitAttributeType auditDate = Context.getVisitAttributeService().getVisitAttributeType(1);
 		
 		VisitAttribute legalDate = new VisitAttribute();
 		legalDate.setAttributeType(auditDate);

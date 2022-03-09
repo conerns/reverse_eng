@@ -33,6 +33,7 @@ import org.openmrs.Visit;
 import org.openmrs.VisitAttribute;
 import org.openmrs.api.APIException;
 import org.openmrs.api.VisitService;
+import org.openmrs.api.VisitTypeService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
 import org.openmrs.util.GlobalPropertiesTestHelper;
@@ -47,6 +48,7 @@ public class VisitValidatorTest extends BaseContextSensitiveTest {
 	private GlobalPropertiesTestHelper globalPropertiesTestHelper;
 	
 	private VisitService visitService;
+	private VisitTypeService visitTypeService;
 	
 	private Calendar calendar;
 	
@@ -60,6 +62,7 @@ public class VisitValidatorTest extends BaseContextSensitiveTest {
 	public void before() throws ParseException {
 		executeDataSet(DATA_XML);
 		visitService = Context.getVisitService();
+		visitTypeService = Context.getVisitTypeService();
 		
 		//The only reason for adding the four lines below is because without them,
 		//some tests fail on my macbook.
@@ -123,13 +126,13 @@ public class VisitValidatorTest extends BaseContextSensitiveTest {
 		Visit visit = new Visit();
 		visit.setPatient(Context.getPatientService().getPatient(patientId));
 		visit.setStartDatetime(new Date());
-		visit.setVisitType(visitService.getVisitType(1));
+		visit.setVisitType(visitTypeService.getVisitType(1));
 		return visit;
 	}
 	
 	private VisitAttribute makeAttribute(Object typedValue) {
 		VisitAttribute attr = new VisitAttribute();
-		attr.setAttributeType(visitService.getVisitAttributeType(1));
+		attr.setAttributeType(Context.getVisitAttributeService().getVisitAttributeType(1));
 		attr.setValue(typedValue);
 		return attr;
 	}
@@ -139,7 +142,7 @@ public class VisitValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfPatientIsNotSet() {
-		VisitService vs = Context.getVisitService();
+		VisitTypeService vs = Context.getVisitTypeService();
 		Visit visit = new Visit();
 		visit.setVisitType(vs.getVisitType(1));
 		visit.setStartDatetime(new Date());
@@ -153,7 +156,7 @@ public class VisitValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfStartDatetimeIsNotSet() {
-		VisitService vs = Context.getVisitService();
+		VisitTypeService vs = Context.getVisitTypeService();
 		Visit visit = new Visit();
 		visit.setVisitType(vs.getVisitType(1));
 		visit.setPatient(Context.getPatientService().getPatient(2));
