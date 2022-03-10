@@ -38,75 +38,75 @@ import org.openmrs.util.OpenmrsUtil;
 @Entity
 @Table(name = "allergy")
 public class Allergy extends BaseFormRecordableOpenmrsData {
-	
+
 	public static final long serialVersionUID = 1;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "allergy_id")
 	private Integer allergyId;
-	
+
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
-	
+
 	@Embedded
 	private Allergen allergen;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "severity_concept_id")
 	private Concept severity;
-	
+
 	@Column(name = "comments", length = 1024)
 	private String comments;
-	
 
 	@OneToMany(mappedBy = "allergy", cascade = CascadeType.ALL, orphanRemoval = true)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<AllergyReaction> reactions = new ArrayList<>();
-	
+
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "encounter_id")
 	private Encounter encounter;
-	
+
 	/**
 	 * Default constructor
 	 */
-	public Allergy(){
+	public Allergy() {
 	}
-	
+
 	/**
-	 * @param patient the patient to set.
-	 * @param allergen the allergen to set
-	 * @param severity the severity to set
-	 * @param comments the comment to set
+	 * @param patient   the patient to set.
+	 * @param allergen  the allergen to set
+	 * @param severity  the severity to set
+	 * @param comments  the comment to set
 	 * @param reactions the reactions to set
 	 */
-	public Allergy(Patient patient, Allergen allergen, Concept severity, String comments, List<AllergyReaction> reactions) {
+	public Allergy(Patient patient, Allergen allergen, Concept severity, String comments,
+			List<AllergyReaction> reactions) {
 		this.patient = patient;
 		this.allergen = allergen;
 		this.severity = severity;
 		this.comments = comments;
-		
-		//we do not allow to be in a state where reactions is null
+
+		// we do not allow to be in a state where reactions is null
 		if (reactions != null) {
 			this.reactions = reactions;
 		}
 	}
-	
-    /**
-     * @return the allergyId
-     */
-    public Integer getAllergyId() {
-    	return allergyId;
-    }
 
-    /**
-     * @param allergyId the allergyId to set
-     */
-    public void setAllergyId(Integer allergyId) {
-    	this.allergyId = allergyId;
-    }
+	/**
+	 * @return the allergyId
+	 */
+	public Integer getAllergyId() {
+		return allergyId;
+	}
+
+	/**
+	 * @param allergyId the allergyId to set
+	 */
+	public void setAllergyId(Integer allergyId) {
+		this.allergyId = allergyId;
+	}
 
 	/**
 	 * @see org.openmrs.OpenmrsObject#getId()
@@ -115,7 +115,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public Integer getId() {
 		return allergyId;
 	}
-	
+
 	/**
 	 * @see org.openmrs.OpenmrsObject#setId(java.lang.Integer)
 	 */
@@ -123,71 +123,76 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public void setId(Integer allergyId) {
 		this.allergyId = allergyId;
 	}
-	
-	
+
 	/**
 	 * @return Returns the patient
 	 */
 	public Patient getPatient() {
 		return patient;
 	}
-	
+
 	/**
 	 * @param patient the patient to set
 	 */
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+
 	/**
 	 * @return the allergyType
 	 */
 	public AllergenType getAllergenType() {
 		return allergen.getAllergenType();
 	}
-	
+
 	/**
 	 * set the allergyType of the Allergy
+	 * 
 	 * @param allergenType the allergyType to set
 	 */
 	public void setAllergenType(AllergenType allergenType) {
 		this.allergen.setAllergenType(allergenType);
 	}
-	
+
 	/**
-	 * set the allergyType of the Allergy. Here the allergy type will be chosen from the enum values in the {@link AllergenType}, according to the given String type. 
-	 * @param type the allergyType to set   
+	 * set the allergyType of the Allergy. Here the allergy type will be chosen from
+	 * the enum values in the {@link AllergenType}, according to the given String
+	 * type.
+	 * 
+	 * @param type the allergyType to set
 	 */
 	public void setAllergenType(String type) {
 		this.allergen.setAllergenType(StringUtils.isBlank(type) ? null : AllergenType.valueOf(type));
 	}
-	
+
 	/**
 	 * @return Returns the allergen
 	 */
 	public Allergen getAllergen() {
 		return allergen;
 	}
-	
+
 	/**
 	 * @param allergen the allergen to set
 	 */
 	public void setAllergen(Allergen allergen) {
 		this.allergen = allergen;
 	}
+
 	/**
 	 * @return Returns the severity
 	 */
 	public Concept getSeverity() {
 		return severity;
 	}
-	
+
 	/**
 	 * @param severity the severity to set
 	 */
 	public void setSeverity(Concept severity) {
 		this.severity = severity;
 	}
-	
+
 	/**
 	 * @return Returns the comment
 	 * @deprecated as of 2.3.0, replaced by {@link #getComments()}
@@ -196,7 +201,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public String getComment() {
 		return getComments();
 	}
-	
+
 	/**
 	 * @param comment the comment to set
 	 * @deprecated as of 2.3.0, replaced by {@link #setComments(String)}
@@ -205,7 +210,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public void setComment(String comment) {
 		setComments(comment);
 	}
-	
+
 	/**
 	 * @return Returns the comments
 	 * @since 2.3.0
@@ -213,7 +218,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public String getComments() {
 		return comments;
 	}
-	
+
 	/**
 	 * @param comments the comments to set
 	 * @since 2.3.0
@@ -221,22 +226,22 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+
 	/**
 	 * @return Returns the reactions
 	 */
 	public List<AllergyReaction> getReactions() {
 		return reactions;
 	}
-	
+
 	/**
 	 * @param reactions the reactions to set
 	 */
 	public void setReactions(List<AllergyReaction> reactions) {
-		//we do not allow to be in a state where reactions is null
+		// we do not allow to be in a state where reactions is null
 		if (reactions != null) {
 			this.reactions = reactions;
-		}
-		else {
+		} else {
 			this.reactions.clear();
 		}
 	}
@@ -248,13 +253,13 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	 * @return true if the reaction was added, else false
 	 */
 	public boolean addReaction(AllergyReaction reaction) {
-        if(getReactionConcepts().contains(reaction.getReaction())){
-            return false;
-        }
+		if (getReactionConcepts().contains(reaction.getReaction())) {
+			return false;
+		}
 		reaction.setAllergy(this);
 		return getReactions().add(reaction);
 	}
-	
+
 	/**
 	 * Removes an allergy reaction
 	 * 
@@ -264,14 +269,14 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public boolean removeReaction(AllergyReaction reaction) {
 		return getReactions().remove(reaction);
 	}
-	
+
 	public Date getDateLastUpdated() {
 		if (getDateChanged() != null) {
 			return getDateChanged();
 		}
 		return getDateCreated();
 	}
-	
+
 	/**
 	 * Checks if this allergy has the same values as a given one.
 	 * 
@@ -283,38 +288,40 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 			return false;
 		}
 		if (!OpenmrsUtil.nullSafeEquals(getPatient(), allergy.getPatient())) {
-			//if object instances are different but with the same patient id, then not changed
+			// if object instances are different but with the same patient id, then not
+			// changed
 			if (getPatient() != null && allergy.getPatient() != null) {
 				if (!OpenmrsUtil.nullSafeEquals(getPatient().getPatientId(), allergy.getPatient().getPatientId())) {
 					return false;
 				}
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
 		if (!OpenmrsUtil.nullSafeEquals(getAllergen().getCodedAllergen(), allergy.getAllergen().getCodedAllergen())) {
-			//if object instances are different but with the same concept id, then not changed
+			// if object instances are different but with the same concept id, then not
+			// changed
 			if (getAllergen().getCodedAllergen() != null && allergy.getAllergen().getCodedAllergen() != null) {
-				if (!OpenmrsUtil.nullSafeEquals(getAllergen().getCodedAllergen().getConceptId(), allergy.getAllergen().getCodedAllergen().getConceptId())) {
+				if (!OpenmrsUtil.nullSafeEquals(getAllergen().getCodedAllergen().getConceptId(),
+						allergy.getAllergen().getCodedAllergen().getConceptId())) {
 					return false;
 				}
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getAllergen().getNonCodedAllergen(), allergy.getAllergen().getNonCodedAllergen())) {
+		if (!OpenmrsUtil.nullSafeEquals(getAllergen().getNonCodedAllergen(),
+				allergy.getAllergen().getNonCodedAllergen())) {
 			return false;
 		}
 		if (!OpenmrsUtil.nullSafeEquals(getSeverity(), allergy.getSeverity())) {
-			//if object instances are different but with the same concept id, then not changed
+			// if object instances are different but with the same concept id, then not
+			// changed
 			if (getSeverity() != null && allergy.getSeverity() != null) {
 				if (!OpenmrsUtil.nullSafeEquals(getSeverity().getConceptId(), allergy.getSeverity().getConceptId())) {
 					return false;
 				}
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -323,7 +330,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 		}
 		return hasSameReactions(allergy);
 	}
-	
+
 	/**
 	 * Checks if this allergy has the same reaction values as those in the given one
 	 * 
@@ -334,17 +341,15 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 		if (getReactions().size() != allergy.getReactions().size()) {
 			return false;
 		}
-		
-		for (AllergyReaction reaction : getReactions()) {
-			AllergyReaction rc = allergy.getAllergyReaction(reaction.getAllergyReactionId());
-			if (!reaction.hasSameValues(rc)) {
+		for (int i = 0; i < reactions.size(); i++) {
+			if (!reactions.get(i).hasSameValues(allergy.getAllergyReaction(reactions.get(i).getAllergyReactionId()))) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Gets an allergy reaction with a given id
 	 * 
@@ -352,15 +357,15 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	 * @return the allergy reaction with a matching id
 	 */
 	public AllergyReaction getAllergyReaction(Integer allergyReactionId) {
-		for (AllergyReaction reaction : reactions) {
-			if (OpenmrsUtil.nullSafeEquals(reaction.getAllergyReactionId(), allergyReactionId)) {
-				return reaction;
+		for (int i = 0; i < reactions.size(); i++) {
+			if (OpenmrsUtil.nullSafeEquals(reactions.get(i).getAllergyReactionId(), allergyReactionId)) {
+				return reactions.get(i);
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Copies all property values, apart from the id and uuid,
 	 * from the given allergy into this object
@@ -377,34 +382,41 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 		setSeverity(allergy.getSeverity());
 		setComment(allergy.getComment());
 		setReactions(new ArrayList<>());
-		
-		for (AllergyReaction reaction : allergy.getReactions()) {
-			reactions.add(reaction);
-			reaction.setAllergyReactionId(null);
-			reaction.setUuid(UUID.randomUUID().toString());
+
+		for (int i = 0; i < allergy.getReactions().size(); i++) {
+			reactions.add(allergy.getReactions().get(i));
+			allergy.getReactions().get(i).setAllergyReactionId(null);
+			allergy.getReactions().get(i).setUuid(UUID.randomUUID().toString());
 		}
+		/*
+		 * for (AllergyReaction reaction : allergy.getReactions()) {
+		 * reactions.add(reaction);
+		 * reaction.setAllergyReactionId(null);
+		 * reaction.setUuid(UUID.randomUUID().toString());
+		 * }
+		 */
 	}
 
-    private List<Concept> getReactionConcepts(){
-        List<Concept> reactionConcepts = new ArrayList<>(getReactions().size());
-        for (AllergyReaction ar : getReactions()) {
-            reactionConcepts.add(ar.getReaction());
-        }
-        return reactionConcepts;
-    }
-    
-    /**
+	private List<Concept> getReactionConcepts() {
+		List<Concept> reactionConcepts = new ArrayList<>(getReactions().size());
+		for (int i = 0; i < reactions.size(); i++) {
+			reactionConcepts.add(reactions.get(i).getReaction());
+		}
+		return reactionConcepts;
+	}
+
+	/**
 	 * @return Returns the reactionNonCoded
 	 */
 	public String getReactionNonCoded() {
-		for (AllergyReaction reaction : reactions) {
-			if (StringUtils.isNotBlank(reaction.getReactionNonCoded())) {
-				return reaction.getReactionNonCoded();
+		for (int i = 0; i < reactions.size(); i++) {
+			if (StringUtils.isNotBlank(reactions.get(i).getReactionNonCoded())) {
+				return reactions.get(i).getReactionNonCoded();
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets the reaction with a given concept
 	 * 
@@ -412,14 +424,14 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	 * @return the reaction if any exists
 	 */
 	public AllergyReaction getReaction(Concept concept) {
-		for (AllergyReaction reaction : reactions) {
-			if (reaction.getReaction().equals(concept)) {
-				return reaction;
+		for (int i = 0; i < reactions.size(); i++) {
+			if (reactions.get(i).getReaction().equals(concept)) {
+				return reactions.get(i);
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Checks if we have the same allergen as that in the given allergy
 	 * 
@@ -432,7 +444,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 		}
 		return allergen.isSameAllergen(allergy.getAllergen());
 	}
-	
+
 	/**
 	 * Basic property getter for encounter
 	 * 
@@ -442,10 +454,10 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	public Encounter getEncounter() {
 		return encounter;
 	}
-	
+
 	/**
 	 * Basic property setter for encounter
-	 *  
+	 * 
 	 * @param encounter - the encounter to set
 	 * @since 2.5.0
 	 */
