@@ -85,7 +85,7 @@ public class LocationAttributeTypeValidatorTest extends BaseContextSensitiveTest
 	@Test
 	public void validate_shouldFailIfLocationAttributeTypeNameIsDuplicate() {
 		
-		assertNotNull(Context.getLocationService().getLocationAttributeTypeByName("Audit Date"));
+		assertNotNull(Context.getLocationAttributeService().getLocationAttributeTypeByName("Audit Date"));
 		
 		LocationAttributeType type = new LocationAttributeType();
 		type.setName("Audit Date");
@@ -102,7 +102,7 @@ public class LocationAttributeTypeValidatorTest extends BaseContextSensitiveTest
 	@Test
 	public void validate_shouldPassEditingLocationAttributeTypeName() {
 		
-		LocationAttributeType et = Context.getLocationService().getLocationAttributeTypeByName("Audit Date");
+		LocationAttributeType et = Context.getLocationAttributeService().getLocationAttributeTypeByName("Audit Date");
 		assertNotNull(et);
 		Errors errors = new BindException(et, "locationAttributeType");
 		new LocationAttributeTypeValidator().validate(et, errors);

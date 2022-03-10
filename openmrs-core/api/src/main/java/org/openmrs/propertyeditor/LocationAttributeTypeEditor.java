@@ -21,11 +21,11 @@ public class LocationAttributeTypeEditor extends OpenmrsPropertyEditor<LocationA
 	
 	@Override
 	protected LocationAttributeType getObjectById(Integer id) {
-		return Context.getLocationService().getLocationAttributeType(id);
+		return Context.getLocationAttributeService().getLocationAttributeType(id);
 	}
 	
 	@Override
 	protected LocationAttributeType getObjectByUuid(String uuid) {
-		return Context.getLocationService().getLocationAttributeTypeByUuid(uuid);
+		return Context.getLocationAttributeService().getLocationAttributeTypeByUuid(uuid);
 	}
 }

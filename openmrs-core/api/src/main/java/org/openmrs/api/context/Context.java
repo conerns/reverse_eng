@@ -26,12 +26,7 @@ import javax.mail.Session;
 
 import org.aopalliance.aop.Advice;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.Allergen;
-import org.openmrs.GlobalProperty;
-import org.openmrs.PersonName;
-import org.openmrs.Privilege;
-import org.openmrs.Role;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.api.*;
 import org.openmrs.api.db.ContextDAO;
 import org.openmrs.api.UserRolesService;
@@ -410,6 +405,21 @@ public class Context {
 	 */
 	public static LocationService getLocationService() {
 		return getServiceContext().getLocationService();
+	}
+
+
+	public static LocationTagService getLocationTagService() {
+		return getServiceContext().getLocationTagService();
+	}
+
+
+	public static LocationAttributeService getLocationAttributeService() {
+		return getServiceContext().getLocationAttributeService();
+	}
+
+
+	public static AddressService getAddressService() {
+		return getServiceContext().getAddressService();
 	}
 
 	/**

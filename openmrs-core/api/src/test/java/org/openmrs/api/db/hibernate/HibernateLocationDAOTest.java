@@ -25,6 +25,9 @@ public class HibernateLocationDAOTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	private HibernateLocationDAO dao;
+
+	@Autowired
+	private HibernateLocationTagDAO locationTagDAO;
 	
 	private static final String LOC_INITIAL_DATA_XML = "org/openmrs/api/include/LocationServiceTest-initialData.xml";
 	
@@ -36,21 +39,21 @@ public class HibernateLocationDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getLocationsHavingAllTags_shouldGetLocationsHavingAllTags() {
 		List<LocationTag> list1 = new ArrayList<>();
-		list1.add(dao.getLocationTag(1));
-		list1.add(dao.getLocationTag(2));
+		list1.add(locationTagDAO.getLocationTag(1));
+		list1.add(locationTagDAO.getLocationTag(2));
 		
 		List<LocationTag> list2 = new ArrayList<>();
-		list2.add(dao.getLocationTag(3));
-		list2.add(dao.getLocationTag(4));
+		list2.add(locationTagDAO.getLocationTag(3));
+		list2.add(locationTagDAO.getLocationTag(4));
 		
 		List<LocationTag> list3 = new ArrayList<>();
-		list3.add(dao.getLocationTag(1));
-		list3.add(dao.getLocationTag(2));
-		list3.add(dao.getLocationTag(3));
-		list3.add(dao.getLocationTag(4));
+		list3.add(locationTagDAO.getLocationTag(1));
+		list3.add(locationTagDAO.getLocationTag(2));
+		list3.add(locationTagDAO.getLocationTag(3));
+		list3.add(locationTagDAO.getLocationTag(4));
 		
 		List<LocationTag> list4 = new ArrayList<>();
-		list4.add(dao.getLocationTag(4));
+		list4.add(locationTagDAO.getLocationTag(4));
 		
 		assertEquals(1, dao.getLocationsHavingAllTags(list1).size());
 		assertEquals(2, dao.getLocationsHavingAllTags(list2).size());
@@ -61,14 +64,14 @@ public class HibernateLocationDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getLocationsHavingAllTags_shouldReturnEmptyListWhenNoLocationHasTheGivenTags() {
 		assertEquals(0, dao.getLocationsHavingAllTags(
-		    Collections.singletonList(dao.getLocationTagByName("Nobody got this tag"))).size());
+		    Collections.singletonList(locationTagDAO.getLocationTagByName("Nobody got this tag"))).size());
 	}
 	
 	@Test
 	public void getLocationsHavingAllTags_shouldIgnoreNullValuesInLocationTagList() {
 		List<LocationTag> list1 = new ArrayList<>();
-		list1.add(dao.getLocationTag(1));
-		list1.add(dao.getLocationTag(2));
+		list1.add(locationTagDAO.getLocationTag(1));
+		list1.add(locationTagDAO.getLocationTag(2));
 		list1.add(null);
 		
 		assertEquals(1, dao.getLocationsHavingAllTags(list1).size());

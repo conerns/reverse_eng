@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Contains methods pertaining to management of Programs, ProgramWorkflows, ProgramWorkflowStates,
- * PatientPrograms, PatientStates, and ConceptStateConversions Use:<br>
+ * PatientPrograms (12), PatientStates (1), and ConceptStateConversions (10) Use:<br>
  * 
  * <pre>
  *   Program program = new Program();

@@ -11,7 +11,7 @@ package org.openmrs.propertyeditor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.openmrs.LocationTag;
-import org.openmrs.api.LocationService;
+import org.openmrs.api.LocationTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LocationTagEditorTest extends BasePropertyEditorTest<LocationTag, LocationTagEditor> {
@@ -21,7 +21,7 @@ public class LocationTagEditorTest extends BasePropertyEditorTest<LocationTag, L
 	private static final Integer EXISTING_ID = 1;
 	
 	@Autowired
-	private LocationService locationService;
+	private LocationTagService locationTagService;
 	
 	@BeforeEach
 	public void prepareData() {
@@ -35,6 +35,6 @@ public class LocationTagEditorTest extends BasePropertyEditorTest<LocationTag, L
 	
 	@Override
 	protected LocationTag getExistingObject() {
-		return locationService.getLocationTag(EXISTING_ID);
+		return locationTagService.getLocationTag(EXISTING_ID);
 	}
 }

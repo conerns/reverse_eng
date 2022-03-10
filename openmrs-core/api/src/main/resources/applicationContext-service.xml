@@ -126,6 +126,9 @@
 		<property name="visitTypeService" ref="visitTypeService"/>
 		<property name="visitAttributeService" ref="visitAttributeService"/>
 		<property name="providerAttributeService" ref="providerAttributeService"/>
+		<property name="locationTagService" ref="locationTagService"/>
+		<property name="locationAttributeService" ref="locationAttributeService"/>
+		<property name="addressService" ref="addressService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -162,6 +165,12 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="locationDAO" class="org.openmrs.api.db.hibernate.HibernateLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="locationTagDAO" class="org.openmrs.api.db.hibernate.HibernateLocationTagDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="locationAttributeDAO" class="org.openmrs.api.db.hibernate.HibernateLocationAttributeDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="orderDAO" class="org.openmrs.api.db.hibernate.HibernateOrderDAO">
@@ -282,6 +291,15 @@
 	</bean>
 	<bean id="locationServiceTarget" class="org.openmrs.api.impl.LocationServiceImpl">
 		<property name="locationDAO" ref="locationDAO"/>
+	</bean>
+	<bean id="locationTagServiceTarget" class="org.openmrs.api.impl.LocationTagServiceImpl">
+		<property name="locationTagDAO" ref="locationTagDAO"/>
+	</bean>
+	<bean id="locationAttributeServiceTarget" class="org.openmrs.api.impl.LocationAttributeServiceImpl">
+		<property name="locationAttributeDAO" ref="locationAttributeDAO"/>
+	</bean>
+	<bean id="addressServiceTarget" class="org.openmrs.api.impl.AddressServiceImpl">
+		<!--<property name="locationDAO" ref="locationDAO"/>-->
 	</bean>
 	<bean id="orderServiceTarget" class="org.openmrs.api.impl.OrderServiceImpl">
 		<property name="orderDAO" ref="orderDAO"/>
@@ -562,6 +580,26 @@
 	<bean id="providerAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="providerAttributeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+
+
+	<bean id="locationTagService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="locationTagServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="locationAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="locationAttributeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="addressService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="addressServiceTarget"/>
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>

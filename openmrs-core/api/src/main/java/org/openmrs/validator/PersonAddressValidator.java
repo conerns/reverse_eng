@@ -90,7 +90,7 @@ public class PersonAddressValidator implements Validator {
 			        + "'" }, "The End Date for address '" + addressString + "' shouldn't be earlier than the Start Date");
 		}
 		
-		String xml = Context.getLocationService().getAddressTemplate();
+		String xml = Context.getAddressService().getAddressTemplate();
 		List<String> requiredElements;
 		
 		try {

@@ -11,6 +11,7 @@ package org.openmrs.validator;
 
 import org.openmrs.LocationAttributeType;
 import org.openmrs.annotation.Handler;
+import org.openmrs.api.LocationAttributeService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.springframework.validation.Errors;
@@ -46,7 +47,7 @@ public class LocationAttributeTypeValidator extends BaseAttributeTypeValidator<L
 	public void validate(Object obj, Errors errors) {
 		super.validate(obj, errors);
 		LocationAttributeType locationObj = (LocationAttributeType) obj;
-		LocationService ls = Context.getLocationService();
+		LocationAttributeService ls = Context.getLocationAttributeService();
 		if (locationObj.getName() != null && !locationObj.getName().isEmpty()) {
 			LocationAttributeType loc = ls.getLocationAttributeTypeByName(locationObj.getName());
 			if (loc != null && !loc.getUuid().equals(locationObj.getUuid())) {

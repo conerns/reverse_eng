@@ -375,6 +375,29 @@ public class ServiceContext implements ApplicationContextAware {
 	public void setLocationService(LocationService locationService) {
 		setService(LocationService.class, locationService);
 	}
+
+
+	public LocationTagService getLocationTagService() {
+		return getService(LocationTagService.class);
+	}
+	public void setLocationTagService(LocationTagService locationTagService) {
+		setService(LocationTagService.class, locationTagService);
+	}
+
+	public AddressService getAddressService() {
+		return getService(AddressService.class);
+	}
+	public void setAddressService(AddressService addressService) {
+		setService(AddressService.class, addressService);
+	}
+
+	public LocationAttributeService getLocationAttributeService() {
+		return getService(LocationAttributeService.class);
+	}
+	public void setLocationAttributeService(LocationAttributeService locationService) {
+		setService(LocationAttributeService.class, locationService);
+	}
+	
 	
 	/**
 	 * @param formService the formService to set

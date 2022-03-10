@@ -11,6 +11,7 @@ package org.openmrs.propertyeditor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.openmrs.LocationAttributeType;
+import org.openmrs.api.LocationAttributeService;
 import org.openmrs.api.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +20,7 @@ public class LocationAttributeTypeEditorTest extends BasePropertyEditorTest<Loca
 	private static final Integer EXISTING_ID = 1;
 	
 	@Autowired
-	private LocationService locationService;
+	private LocationAttributeService locationAttributeService;
 	
 	@BeforeEach
 	public void initializeData() {
@@ -33,6 +34,6 @@ public class LocationAttributeTypeEditorTest extends BasePropertyEditorTest<Loca
 	
 	@Override
 	protected LocationAttributeType getExistingObject() {
-		return locationService.getLocationAttributeType(EXISTING_ID);
+		return locationAttributeService.getLocationAttributeType(EXISTING_ID);
 	}
 }
