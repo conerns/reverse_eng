@@ -27,28 +27,26 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 
 /**
- * Reflection utilities to search the classpath for classes that have a given
- * annotation, implement
+ * Reflection utilities to search the classpath for classes that have a given annotation, implement
  * a given interface, etc
  * 
  * @since 1.10
  */
 public class OpenmrsClassScanner {
-
+	
 	private static final Logger log = LoggerFactory.getLogger(OpenmrsClassScanner.class);
-
+	
 	private final MetadataReaderFactory metadataReaderFactory;
-
+	
 	private final ResourcePatternResolver resourceResolver;
-
+	
 	private Map<Class<?>, Set<Class<?>>> annotationToClassMap;
-	private OpenmrsClassLoader OpenClassLoadInstance = OpenmrsClassLoader.getInstance();
-
+	
 	private OpenmrsClassScanner() {
-		this.metadataReaderFactory = new SimpleMetadataReaderFactory(OpenClassLoadInstance);
-		this.resourceResolver = new PathMatchingResourcePatternResolver(OpenClassLoadInstance);
+		this.metadataReaderFactory = new SimpleMetadataReaderFactory(OpenmrsClassLoader.getInstance());
+		this.resourceResolver = new PathMatchingResourcePatternResolver(OpenmrsClassLoader.getInstance());
 	}
-
+	
 	/**
 	 * @return the instance
 	 */
@@ -56,14 +54,14 @@ public class OpenmrsClassScanner {
 		if (OpenmrsClassScannerHolder.INSTANCE == null) {
 			OpenmrsClassScannerHolder.INSTANCE = new OpenmrsClassScanner();
 		}
-
+		
 		return OpenmrsClassScannerHolder.INSTANCE;
 	}
-
+	
 	public static void destroyInstance() {
 		OpenmrsClassScannerHolder.INSTANCE = null;
 	}
-
+	
 	/**
 	 * Searches for classes with a given annotation.
 	 * 
@@ -71,7 +69,7 @@ public class OpenmrsClassScanner {
 	 * @return the list of found classes
 	 */
 	public Set<Class<?>> getClassesWithAnnotation(Class annotationClass) {
-
+		
 		if (annotationToClassMap != null) {
 			if (annotationToClassMap.containsKey(annotationClass)) {
 				return annotationToClassMap.get(annotationClass);
@@ -79,10 +77,10 @@ public class OpenmrsClassScanner {
 		} else {
 			annotationToClassMap = new HashMap<>();
 		}
-
+		
 		Set<Class<?>> types = new HashSet<>();
 		String pattern = "classpath*:org/openmrs/**/*.class";
-
+		
 		try {
 			Resource[] resources = resourceResolver.getResources(pattern);
 			TypeFilter typeFilter = new AnnotationTypeFilter(annotationClass);
@@ -92,37 +90,38 @@ public class OpenmrsClassScanner {
 					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
 						String classname = metadataReader.getClassMetadata().getClassName();
 						try {
-							Class<?> metadata = OpenClassLoadInstance.loadClass(classname);
+							Class<?> metadata = OpenmrsClassLoader.getInstance().loadClass(classname);
 							types.add(metadata);
-						} catch (ClassNotFoundException e) {
+						}
+						catch (ClassNotFoundException e) {
 							throw new IOException("Class cannot be loaded: " + classname, e);
 						}
 					}
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					log.debug("Resource cannot be loaded: " + resource);
 				}
 			}
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			log.error("Failed to look for classes with annocation" + annotationClass, ex);
 		}
-
+		
 		annotationToClassMap.put(annotationClass, types);
-
+		
 		return types;
 	}
-
+	
 	/**
-	 * Private class to hold the one class scanner used throughout openmrs. This is
-	 * an alternative
-	 * to storing the instance object on {@link OpenmrsClassScanner} itself so that
-	 * garbage
+	 * Private class to hold the one class scanner used throughout openmrs. This is an alternative
+	 * to storing the instance object on {@link OpenmrsClassScanner} itself so that garbage
 	 * collection can happen correctly.
 	 */
 	private static class OpenmrsClassScannerHolder {
 
 		private OpenmrsClassScannerHolder() {
 		}
-
+		
 		private static OpenmrsClassScanner INSTANCE = null;
 	}
 }
