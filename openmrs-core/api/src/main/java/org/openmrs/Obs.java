@@ -22,9 +22,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.annotation.AllowDirectAccess;
-
-import org.openmrs.api.*;
-
+import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
 import org.openmrs.util.Format;

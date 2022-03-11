@@ -19,25 +19,27 @@ import java.util.Locale;
  * @since 1.10
  */
 public class SimpleDosingInstructions extends BaseDosingInstructions {
-	
+
 	private Double dose;
-	
+
 	private Concept doseUnits;
-	
+
+	private DrugOrder temp;
+
 	private Concept route;
-	
+
 	private OrderFrequency frequency;
-	
+
 	private Integer duration;
-	
+
 	private Concept durationUnits;
-	
+
 	private Boolean asNeeded;
-	
+
 	private String asNeededCondition;
-	
+
 	private String administrationInstructions;
-	
+
 	/**
 	 * @see DosingInstructions#getDosingInstructionsAsString(java.util.Locale)
 	 */
@@ -71,51 +73,56 @@ public class SimpleDosingInstructions extends BaseDosingInstructions {
 		}
 		return dosingInstructions.toString();
 	}
-	
+
 	/**
 	 * @see DosingInstructions#setDosingInstructions(DrugOrder)
 	 */
 	@Override
 	public void setDosingInstructions(DrugOrder order) {
-		order.setDosingType(this.getClass());
-		order.setDose(this.dose);
-		order.setDoseUnits(this.doseUnits);
-		order.setRoute(this.route);
-		order.setFrequency(this.frequency);
-		order.setDuration(this.duration);
-		order.setDurationUnits(this.durationUnits);
-		order.setAsNeeded(this.asNeeded);
-		order.setAsNeededCondition(this.asNeededCondition);
-		order.setDosingInstructions(this.administrationInstructions);
+		temp = new DrugOrder();
+		temp.setDosingType(this.getClass());
+		temp.setDose(this.dose);
+		temp.setDoseUnits(this.doseUnits);
+		temp.setRoute(this.route);
+		temp.setFrequency(this.frequency);
+		temp.setDuration(this.duration);
+		temp.setDurationUnits(this.durationUnits);
+		temp.setAsNeeded(this.asNeeded);
+		temp.setAsNeededCondition(this.asNeededCondition);
+		temp.setDosingInstructions(this.administrationInstructions);
+		order.copyHelper(temp);
 	}
-	
+
 	/**
 	 * @see DosingInstructions#getDosingInstructions(DrugOrder)
 	 */
 	@Override
 	public DosingInstructions getDosingInstructions(DrugOrder order) {
+		temp.copyHelper(order);
 		if (!order.getDosingType().equals(this.getClass())) {
 			throw new APIException("DrugOrder.error.dosingTypeIsMismatched", new Object[] { this.getClass().getName(),
-			        order.getDosingType() });
+					order.getDosingType() });
 		}
 		SimpleDosingInstructions simpleDosingInstructions = new SimpleDosingInstructions();
-		simpleDosingInstructions.setDose(order.getDose());
-		simpleDosingInstructions.setDoseUnits(order.getDoseUnits());
-		simpleDosingInstructions.setRoute(order.getRoute());
-		simpleDosingInstructions.setFrequency(order.getFrequency());
-		simpleDosingInstructions.setDuration(order.getDuration());
-		simpleDosingInstructions.setDurationUnits(order.getDurationUnits());
-		simpleDosingInstructions.setAsNeeded(order.getAsNeeded());
-		simpleDosingInstructions.setAsNeededCondition(order.getAsNeededCondition());
-		simpleDosingInstructions.setAdministrationInstructions(order.getDosingInstructions());
+		simpleDosingInstructions.setDose(temp.getDose());
+		simpleDosingInstructions.setDoseUnits(temp.getDoseUnits());
+		simpleDosingInstructions.setRoute(temp.getRoute());
+		simpleDosingInstructions.setFrequency(temp.getFrequency());
+		simpleDosingInstructions.setDuration(temp.getDuration());
+		simpleDosingInstructions.setDurationUnits(temp.getDurationUnits());
+		simpleDosingInstructions.setAsNeeded(temp.getAsNeeded());
+		simpleDosingInstructions.setAsNeededCondition(temp.getAsNeededCondition());
+		simpleDosingInstructions.setAdministrationInstructions(temp.getDosingInstructions());
 		return simpleDosingInstructions;
 	}
-	
+
 	/**
-	 * @see DosingInstructions#validate(DrugOrder, org.springframework.validation.Errors)
+	 * @see DosingInstructions#validate(DrugOrder,
+	 *      org.springframework.validation.Errors)
 	 * @param order
 	 * @param errors
-	 * <strong>Should</strong> reject a duration unit with a mapping of an invalid type
+	 *               <strong>Should</strong> reject a duration unit with a mapping
+	 *               of an invalid type
 	 */
 	@Override
 	public void validate(DrugOrder order, Errors errors) {
@@ -124,79 +131,79 @@ public class SimpleDosingInstructions extends BaseDosingInstructions {
 		ValidationUtils.rejectIfEmpty(errors, "route", "DrugOrder.error.routeIsNullForDosingTypeSimple");
 		ValidationUtils.rejectIfEmpty(errors, "frequency", "DrugOrder.error.frequencyIsNullForDosingTypeSimple");
 		if (order.getAutoExpireDate() == null && order.getDurationUnits() != null
-		        && Duration.getCode(order.getDurationUnits()) == null) {
+				&& Duration.getCode(order.getDurationUnits()) == null) {
 			errors.rejectValue("durationUnits", "DrugOrder.error.durationUnitsNotMappedToSnomedCtDurationCode");
 		}
 	}
-	
+
 	public Double getDose() {
 		return dose;
 	}
-	
+
 	public void setDose(Double dose) {
 		this.dose = dose;
 	}
-	
+
 	public Concept getDoseUnits() {
 		return doseUnits;
 	}
-	
+
 	public void setDoseUnits(Concept doseUnits) {
 		this.doseUnits = doseUnits;
 	}
-	
+
 	public Concept getRoute() {
 		return route;
 	}
-	
+
 	public void setRoute(Concept route) {
 		this.route = route;
 	}
-	
+
 	public OrderFrequency getFrequency() {
 		return frequency;
 	}
-	
+
 	public void setFrequency(OrderFrequency frequency) {
 		this.frequency = frequency;
 	}
-	
+
 	public Integer getDuration() {
 		return duration;
 	}
-	
+
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-	
+
 	public Concept getDurationUnits() {
 		return durationUnits;
 	}
-	
+
 	public void setDurationUnits(Concept durationUnits) {
 		this.durationUnits = durationUnits;
 	}
-	
+
 	public Boolean getAsNeeded() {
 		return asNeeded;
 	}
-	
+
 	public void setAsNeeded(Boolean asNeeded) {
 		this.asNeeded = asNeeded;
 	}
-	
+
 	public String getAsNeededCondition() {
 		return asNeededCondition;
 	}
-	
+
 	public void setAsNeededCondition(String asNeededCondition) {
 		this.asNeededCondition = asNeededCondition;
 	}
-	
+
 	public String getAdministrationInstructions() {
 		return administrationInstructions;
 	}
-	
+
 	public void setAdministrationInstructions(String administrationInstructions) {
 		this.administrationInstructions = administrationInstructions;
 	}
