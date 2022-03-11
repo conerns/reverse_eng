@@ -56,7 +56,7 @@ public class OpenmrsServiceTest extends BaseContextSensitiveTest {
 		assertTrue(originalNotPrefEncounterCount > 0);
 		
 		Cohort notPreferredCohort = new Cohort(notPrefPatient.getPatientId().toString());
-		List<PatientProgram> notPrefPrograms = programService.getPatientPrograms(notPreferredCohort, programs);
+		List<PatientProgram> notPrefPrograms = Context.getPatientProgramService().getPatientPrograms(notPreferredCohort, programs);
 		assertTrue(notPrefPrograms.size() > 0);
 		
 		//Set the program to null so that the patient program is rejected on validation with

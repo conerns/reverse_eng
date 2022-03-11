@@ -372,8 +372,9 @@ public class MigrationHelper {
 		}
 		int numAdded = 0;
 		
+		PatientProgramService pps = Context.getPatientProgramService();
 		for (PatientProgram pp : knownPatientPrograms.values()) {
-			pws.savePatientProgram(pp);
+			pps.savePatientProgram(pp);
 			++numAdded;
 		}
 		return numAdded;

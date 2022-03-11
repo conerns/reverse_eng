@@ -2376,7 +2376,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		voidOrders(Collections.singleton(notPreferred));
 		
 		//retrieve program for notProferred patient
-		PatientProgram program = Context.getProgramWorkflowService()
+		PatientProgram program = Context.getPatientProgramService()
 		        .getPatientPrograms(notPreferred, null, null, null, null, null, false).get(0);
 		
 		//merge the two patients and retrieve the audit object
@@ -2384,7 +2384,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		
 		//find the UUID of the program to which the preferred patient was enrolled as a result of the merge
 		String enrolledProgramUuid = null;
-		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(preferred, null, null, null,
+		List<PatientProgram> programs = Context.getPatientProgramService().getPatientPrograms(preferred, null, null, null,
 		    null, null, false);
 		for (PatientProgram p : programs) {
 			if (p.getDateCreated().equals(program.getDateCreated())) {

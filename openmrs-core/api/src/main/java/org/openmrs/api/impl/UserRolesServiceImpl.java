@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class UserRolesServiceImpl implements UserRolesService {
+public class UserRolesServiceImpl extends BaseOpenmrsService implements UserRolesService {
 	
 	protected UserRolesDAO dao;
 

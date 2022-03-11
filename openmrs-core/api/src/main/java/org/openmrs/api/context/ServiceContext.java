@@ -274,6 +274,19 @@ public class ServiceContext implements ApplicationContextAware {
 		return getService(ProgramWorkflowService.class);
 	}
 
+	public PatientProgramService getPatientProgramService() {
+		return getService(PatientProgramService.class);
+	}
+	
+	public ConceptStateService getConceptStateService() {
+		return getService(ConceptStateService.class);
+	}
+
+	public ProgramAttributeTypeService getProgramAttributeTypeService() {
+		return getService(ProgramAttributeTypeService.class);
+	}
+
+
 	/**
 	 * @return logicService
 	 */
@@ -318,6 +331,18 @@ public class ServiceContext implements ApplicationContextAware {
 		setService(ProgramWorkflowService.class, programWorkflowService);
 	}
 
+	public void setPatientProgramService(PatientProgramService patientProgramService) {
+		setService(PatientProgramService.class, patientProgramService);
+	}
+
+	public void setConceptStateService(ConceptStateService conceptStateService) {
+		setService(ConceptStateService.class, conceptStateService);
+	}
+
+	public void setProgramAttributeTypeService(ProgramAttributeTypeService programAttributeTypeService) {
+		setService(ProgramAttributeTypeService.class, programAttributeTypeService);
+	}
+	
 	/**
 	 * @param logicService
 	 */

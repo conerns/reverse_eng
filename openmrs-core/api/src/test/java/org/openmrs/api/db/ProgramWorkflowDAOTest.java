@@ -28,6 +28,8 @@ public class ProgramWorkflowDAOTest extends BaseContextSensitiveTest {
 	
 	private ProgramWorkflowDAO dao = null;
 	
+	private PatientProgramDAO patientProgramDAO = null;
+	
 	/**
 	 * Run this before each unit test in this class. The "@Before" method in
 	 * {@link BaseContextSensitiveTest} is run right before this method.
@@ -39,6 +41,7 @@ public class ProgramWorkflowDAOTest extends BaseContextSensitiveTest {
 		// fetch the dao from the spring application context
 		// this bean name matches the name in /metadata/spring/applicationContext-service.xml
 		dao = (ProgramWorkflowDAO) applicationContext.getBean("programWorkflowDAO");
+		patientProgramDAO = (PatientProgramDAO) applicationContext.getBean("patientProgramDAO");
 	}
 	
 	@Test
@@ -98,7 +101,7 @@ public class ProgramWorkflowDAOTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void getPatientPrograms_shouldReturnListChronologicallySortedByEnrollmentDate() {
-		List<PatientProgram> patientPrograms = dao.getPatientPrograms(null, null, null, null, null, null, true);
+		List<PatientProgram> patientPrograms = patientProgramDAO.getPatientPrograms(null, null, null, null, null, null, true);
 		assertNotNull(patientPrograms);
 		Date previousDate = patientPrograms.get(0).getDateEnrolled();
 		for (PatientProgram patientProgram : patientPrograms) {

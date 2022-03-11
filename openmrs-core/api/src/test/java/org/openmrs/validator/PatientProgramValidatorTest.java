@@ -62,7 +62,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfAnyPatientStateHasAnEndDateBeforeItsStartDate() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		Calendar c = Calendar.getInstance();
 		patientState.setStartDate(c.getTime());
@@ -79,7 +79,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfThereIsMoreThanOnePatientStateWithTheSameStatesAndStartDates() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		Set<PatientState> states = program.getStates();
 		assertNotNull(states);
 		PatientState patientState = states.iterator().next();
@@ -96,7 +96,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfAnyPatientStateHasANullWorkFlowState() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		patientState.setState(null);
 		
@@ -120,7 +120,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfAnyPatientStatesOverlapEachOtherInTheSameWorkFlow() throws InterruptedException {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		//Addition of new states to this program in the test data can make this test useless, so catch it her
 		assertEquals(1, program.getStates().size());
 		PatientState patientState1 = program.getStates().iterator().next();
@@ -146,7 +146,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassForAValidProgram() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		patientState.getPatientProgram().transitionToState(patientState.getState().getProgramWorkflow().getState(4),
 		    new Date());
@@ -158,7 +158,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfAPatientProgramHasDuplicateStatesInTheSameWorkFlow() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		Set<PatientState> states = program.getStates();
 		assertNotNull(states);
 		PatientState patientState = states.iterator().next();
@@ -176,7 +176,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailIfAPatientStateHasAnInvalidWorkFlowState() {
 		executeDataSet("org/openmrs/api/include/ProgramWorkflowServiceTest-otherProgramWorkflows.xml");
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		patientState.setState(Context.getProgramWorkflowService().getStateByUuid("31c82d66-245c-11e1-9cf0-00248140a5eb"));
 		
@@ -190,7 +190,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfAPatientIsInMultipleStatesInTheSameWorkFlow() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		patientState.getPatientProgram().transitionToState(patientState.getState().getProgramWorkflow().getState(4),
 		    new Date());
@@ -206,7 +206,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassIfAPatientIsInMultipleStatesInDifferentWorkFlows() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		
 		//Add another state to another work flow
 		PatientState patientState2 = new PatientState();
@@ -223,7 +223,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassIfTheStartDateOfTheFirstPatientStateInTheWorkFlowIsNull() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		assertEquals(1, program.getStates().size());//sanity check
 		PatientState patientState = program.getStates().iterator().next();
 		patientState.setStartDate(null);
@@ -238,7 +238,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassForPatientStatesThatHaveTheSameStartDatesInTheSameWorkFlow() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		PatientState patientState = program.getStates().iterator().next();
 		//add a new state by moving the patient to a another one
 		ProgramWorkflowState nextState = patientState.getState().getProgramWorkflow().getState(4);
@@ -311,7 +311,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfPatientProgramEndDateComesBeforeItsEnrolledDate() throws ParseException {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date dateEnrolled = sdf.parse("12/04/2014");
 		Date dateCompleted = sdf.parse("21/03/2014");
@@ -328,7 +328,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfPatientProgramEnrolledDateIsInFuture() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		Date date10DaysAfterSystemCurrentDate = new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000);
 		program.setDateEnrolled(date10DaysAfterSystemCurrentDate);
 		
@@ -342,7 +342,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfPatientProgramEndDateIsInFuture() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		Date date10DaysAfterSystemCurrentDate = new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000);
 		program.setDateCompleted(date10DaysAfterSystemCurrentDate);
 		
@@ -356,7 +356,7 @@ public class PatientProgramValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfPatientProgramEnrollDateIsEmpty() {
-		PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(1);
+		PatientProgram program = Context.getPatientProgramService().getPatientProgram(1);
 		program.setDateEnrolled(null);
 		
 		BindException errors = new BindException(program, "");

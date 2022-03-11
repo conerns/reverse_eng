@@ -129,6 +129,9 @@
 		<property name="locationTagService" ref="locationTagService"/>
 		<property name="locationAttributeService" ref="locationAttributeService"/>
 		<property name="addressService" ref="addressService"/>
+		<property name="patientProgramService" ref="patientProgramService"/>
+		<property name="conceptStateService" ref="conceptStateService"/>
+		<property name="programAttributeTypeService" ref="programAttributeTypeService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -186,6 +189,15 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="programWorkflowDAO" class="org.openmrs.api.db.hibernate.HibernateProgramWorkflowDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="patientProgramDAO" class="org.openmrs.api.db.hibernate.HibernatePatientProgramDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="conceptStateDAO" class="org.openmrs.api.db.hibernate.HibernateConceptStateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="programAttributeDAO" class="org.openmrs.api.db.hibernate.HibernateProgramAttributeTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="templateDAO" class="org.openmrs.api.db.hibernate.HibernateTemplateDAO">
@@ -327,6 +339,15 @@
 	</bean>
 	<bean id="programWorkflowServiceTarget" class="org.openmrs.api.impl.ProgramWorkflowServiceImpl">
 		<property name="programWorkflowDAO" ref="programWorkflowDAO"/>
+	</bean>
+	<bean id="patientProgramServiceTarget" class="org.openmrs.api.impl.PatientProgramServiceImpl">
+		<property name="patientProgramDAO" ref="patientProgramDAO"/>
+	</bean>
+	<bean id="programAttributeTypeServiceTarget" class="org.openmrs.api.impl.ProgramAttributeTypeServiceImpl">
+		<property name="programAttributeTypeDAO" ref="programAttributeDAO"/>
+	</bean>
+	<bean id="conceptStateServiceTarget" class="org.openmrs.api.impl.ConceptStateServiceImpl">
+		<property name="conceptStateDAO" ref="conceptStateDAO"/>
 	</bean>
 	<bean id="visitServiceTarget" class="org.openmrs.api.impl.VisitServiceImpl">
 		<property name="visitDAO" ref="visitDAO"/>
@@ -506,6 +527,24 @@
 	<bean id="programWorkflowService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="programWorkflowServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="programAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="programAttributeTypeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="patientProgramService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="patientProgramServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="conceptStateService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="conceptStateServiceTarget"/>
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>

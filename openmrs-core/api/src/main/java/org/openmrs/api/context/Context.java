@@ -563,6 +563,18 @@ public class Context {
 		return getServiceContext().getProgramWorkflowService();
 	}
 	
+	public static ProgramAttributeTypeService getProgramAttributeTypeService() {
+		return getServiceContext().getProgramAttributeTypeService();
+	}
+
+	public static PatientProgramService getPatientProgramService() {
+		return getServiceContext().getPatientProgramService();
+	}
+
+	public static ConceptStateService getConceptStateService() {
+		return getServiceContext().getConceptStateService();
+	}
+	
 	/**
 	 * Get the message service.
 	 *

@@ -28,6 +28,7 @@ import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.db.ProgramWorkflowDAO;
+import org.openmrs.api.impl.PatientProgramServiceImpl;
 import org.openmrs.api.impl.ProgramWorkflowServiceImpl;
 
 /**
@@ -39,11 +40,13 @@ import org.openmrs.api.impl.ProgramWorkflowServiceImpl;
 public class ProgramWorkflowServiceUnitTest {
 	
 	private ProgramWorkflowService pws;
+	private PatientProgramService pps;
 	
 	
 	@BeforeEach
 	public void setup() {
 		pws = new ProgramWorkflowServiceImpl();
+		pps = new PatientProgramServiceImpl();
 	}
 	
 	@Test
@@ -169,7 +172,7 @@ public class ProgramWorkflowServiceUnitTest {
 		
 		PatientProgram patientProgram = new PatientProgram(1);
 		patientProgram.setProgram(new Program(1));
-		APIException exception = assertThrows(APIException.class, () -> pws.savePatientProgram(patientProgram));
+		APIException exception = assertThrows(APIException.class, () -> pps.savePatientProgram(patientProgram));
 		assertThat(exception.getMessage(), is("PatientProgram requires a Patient and a Program"));
 	}
 	
@@ -178,7 +181,7 @@ public class ProgramWorkflowServiceUnitTest {
 		
 		PatientProgram patientProgram = new PatientProgram(1);
 		patientProgram.setPatient(new Patient(1));
-		APIException exception = assertThrows(APIException.class, () -> pws.savePatientProgram(patientProgram));
+		APIException exception = assertThrows(APIException.class, () -> pps.savePatientProgram(patientProgram));
 		assertThat(exception.getMessage(), is("PatientProgram requires a Patient and a Program"));
 	}
 	
@@ -188,7 +191,7 @@ public class ProgramWorkflowServiceUnitTest {
 		PatientProgram patientProgram = new PatientProgram();
 		PatientState patientState = new PatientState();
 		patientProgram.getStates().add(patientState);
-		APIException exception = assertThrows(APIException.class, () -> pws.purgePatientProgram(patientProgram, true));
+		APIException exception = assertThrows(APIException.class, () -> pps.purgePatientProgram(patientProgram, true));
 		assertThat(exception.getMessage(), is("Cascade purging of PatientPrograms is not implemented yet"));
 	}
 	

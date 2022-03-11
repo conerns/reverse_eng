@@ -43,7 +43,10 @@ import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.ConceptStateDAO;
+import org.openmrs.api.db.PatientProgramDAO;
 import org.openmrs.api.db.ProgramWorkflowDAO;
+import org.openmrs.api.impl.PatientProgramServiceImpl;
 import org.openmrs.api.impl.ProgramWorkflowServiceImpl;
 import org.openmrs.test.TestUtil;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
@@ -65,10 +68,20 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
         
 	protected ProgramWorkflowService pws = null;
 	
+	protected PatientProgramService pps = null;
+	
 	@Autowired
 	protected ProgramWorkflowDAO dao = null;
 	
+	@Autowired
+	protected PatientProgramDAO patientProgramDAO;
+	
+	@Autowired
+	protected ConceptStateDAO conceptStateDAO;
+	
 	private ProgramWorkflowServiceImpl pwsi = null;
+	
+	private PatientProgramServiceImpl ppsi = null;
 	
 	protected AdministrationService adminService = null;
 	
@@ -85,6 +98,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
                 
 		if (pws == null) {
 			pws = Context.getProgramWorkflowService();
+			pps = Context.getPatientProgramService();
 			adminService = Context.getAdministrationService();
 			encounterService = Context.getEncounterService();
 			cs = Context.getConceptService();
@@ -95,6 +109,9 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	public void setup() {
 		pwsi = new ProgramWorkflowServiceImpl();
 		pwsi.setProgramWorkflowDAO(dao);
+		
+		ppsi = new PatientProgramServiceImpl();
+		ppsi.setPatientProgramDAO(patientProgramDAO);
 	}
 	
 	/**
@@ -109,7 +126,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		
 		Date today = new Date();
 		
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
 		Date dateCompleted = patientProgram.getDateCompleted();
 		Date dateChanged = patientProgram.getDateChanged();
 		User changedBy = patientProgram.getChangedBy();
@@ -126,12 +143,12 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		patientProgram.setDateCompleted(today);
 		patientProgram.setChangedBy(Context.getAuthenticatedUser());
 		patientProgram.setDateChanged(today);
-		pws.savePatientProgram(patientProgram);
+		pps.savePatientProgram(patientProgram);
 		
 		// Uncomment to commit to database
 		// setComplete( );
 		
-		PatientProgram ptProg = pws.getPatientProgram(1);
+		PatientProgram ptProg = pps.getPatientProgram(1);
 		Date dateCompleted2 = patientProgram.getDateCompleted();
 		Date dateChanged2 = patientProgram.getDateChanged();
 		User changedBy2 = patientProgram.getChangedBy();
@@ -247,7 +264,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		// when
 		Date terminal_date = day3;
 		patientprogram.setDateCompleted(terminal_date);
-		Context.getProgramWorkflowService().savePatientProgram(patientprogram);
+		Context.getPatientProgramService().savePatientProgram(patientprogram);
 
 		// then
 		// End date of recent active states should be set
@@ -364,7 +381,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 
 		// when
 		patientprogram.transitionToState(state2_w1, day3);
-		pws.savePatientProgram(patientprogram);
+		pps.savePatientProgram(patientprogram);
 
 		// then
 		for (PatientState state : patientprogram.getMostRecentStateInEachWorkflow()) {
@@ -437,7 +454,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getConceptStateConversionByUuid_shouldFindObjectGivenValidUuid() {
 		String uuid = "6c72b064-506d-11de-80cb-001e378eb67e";
-		ConceptStateConversion conceptStateConversion = Context.getProgramWorkflowService().getConceptStateConversionByUuid(
+		ConceptStateConversion conceptStateConversion = Context.getConceptStateService().getConceptStateConversionByUuid(
 		    uuid);
 		assertEquals(1, (int) conceptStateConversion.getConceptStateConversionId());
 	}
@@ -447,7 +464,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getConceptStateConversionByUuid_shouldReturnNullIfNoObjectFoundWithGivenUuid() {
-		assertNull(Context.getProgramWorkflowService().getConceptStateConversionByUuid("some invalid uuid"));
+		assertNull(Context.getConceptStateService().getConceptStateConversionByUuid("some invalid uuid"));
 	}
 	
 	/**
@@ -456,7 +473,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getPatientProgramByUuid_shouldFindObjectGivenValidUuid() {
 		String uuid = "2edf272c-bf05-4208-9f93-2fa213ed0415";
-		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(uuid);
+		PatientProgram patientProgram = Context.getPatientProgramService().getPatientProgramByUuid(uuid);
 		assertEquals(2, (int) patientProgram.getPatientProgramId());
 	}
 	
@@ -465,7 +482,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getPatientProgramByUuid_shouldReturnNullIfNoObjectFoundWithGivenUuid() {
-		assertNull(Context.getProgramWorkflowService().getPatientProgramByUuid("some invalid uuid"));
+		assertNull(Context.getPatientProgramService().getPatientProgramByUuid("some invalid uuid"));
 	}
 	
 	/**
@@ -474,7 +491,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getPatientStateByUuid_shouldFindObjectGivenValidUuid() {
 		String uuid = "ea89deaa-23cc-4840-92fe-63d199c37e4c";
-		PatientState patientState = Context.getProgramWorkflowService().getPatientStateByUuid(uuid);
+		PatientState patientState = Context.getPatientProgramService().getPatientStateByUuid(uuid);
 		assertEquals(1, (int) patientState.getPatientStateId());
 	}
 	
@@ -483,7 +500,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getPatientStateByUuid_shouldReturnNullIfNoObjectFoundWithGivenUuid() {
-		assertNull(Context.getProgramWorkflowService().getPatientStateByUuid("some invalid uuid"));
+		assertNull(Context.getPatientProgramService().getPatientStateByUuid("some invalid uuid"));
 	}
 	
 	/**
@@ -666,10 +683,10 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void triggerStateConversion_shouldSkipPastPatientProgramsThatAreAlreadyCompleted() throws InterruptedException {
 		Integer patientProgramId = 1;
-		PatientProgram pp = pws.getPatientProgram(patientProgramId);
+		PatientProgram pp = pps.getPatientProgram(patientProgramId);
 		Date originalDateCompleted = new Date();
 		pp.setDateCompleted(originalDateCompleted);
-		pp = pws.savePatientProgram(pp);
+		pp = pps.savePatientProgram(pp);
 		
 		Concept diedConcept = cs.getConcept(16);
 		//sanity check to ensure the patient died is a possible state in one of the work flows
@@ -677,7 +694,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		
 		Thread.sleep(10);//delay so that we have a time difference
 		
-		pp = pws.getPatientProgram(patientProgramId);
+		pp = pps.getPatientProgram(patientProgramId);
 		assertEquals(originalDateCompleted, pp.getDateCompleted());
 	}
 	
@@ -718,7 +735,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		Program program = Context.getProgramWorkflowService().getProgram(2);
 		
 		// program has at least one patient enrolled
-		List<PatientProgram> patientPrograms = Context.getProgramWorkflowService().getPatientPrograms(null, program, null,
+		List<PatientProgram> patientPrograms = Context.getPatientProgramService().getPatientPrograms(null, program, null,
 		    null, null, null, true);
 		assertTrue(patientPrograms.size() > 0);
 		
@@ -726,44 +743,44 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		
 		// should cascade to patient programs
 		for (PatientProgram patientProgram : patientPrograms) {
-			assertNull(Context.getProgramWorkflowService().getPatientProgram(patientProgram.getId()));
+			assertNull(Context.getPatientProgramService().getPatientProgram(patientProgram.getId()));
 		}
 		// make sure that the program was deleted properly
 		assertNull(Context.getProgramWorkflowService().getProgram(2));
 	}
 	@Test
 	public void shouldTestGetAllProgramAttributeTypes() throws Exception {
-                assertEquals(1, pws.getAllProgramAttributeTypes().size());
+                assertEquals(1, Context.getProgramAttributeTypeService().getAllProgramAttributeTypes().size());
 	}
 
 	@Test
 	public void shouldTestGetProgramAttributeType() throws Exception {
 
-		ProgramAttributeType programAttributeType  = pws.getProgramAttributeType(1);
+		ProgramAttributeType programAttributeType  = Context.getProgramAttributeTypeService().getProgramAttributeType(1);
 		assertEquals("d7477c21-bfc3-4922-9591-e89d8b9c8efb",programAttributeType.getUuid());
 	}
 
 	@Test
 	public void shouldTestGetProgramAttributeTypeByUuid() throws Exception {
-		ProgramAttributeType p = pws.getProgramAttributeTypeByUuid("d7477c21-bfc3-4922-9591-e89d8b9c8efb");
+		ProgramAttributeType p = Context.getProgramAttributeTypeService().getProgramAttributeTypeByUuid("d7477c21-bfc3-4922-9591-e89d8b9c8efb");
 		assertEquals("ProgramId",p.getName());
 	}
 
 	@Test
 	public void shouldTestSaveProgramAttributeType() throws Exception {
-		assertEquals(1,pws.getAllProgramAttributeTypes().size());
+		assertEquals(1,Context.getProgramAttributeTypeService().getAllProgramAttributeTypes().size());
 		ProgramAttributeType programAttributeType = new ProgramAttributeType();
 		programAttributeType.setName("test");
-		pws.saveProgramAttributeType(programAttributeType);
-		assertEquals(2,pws.getAllProgramAttributeTypes().size());
+		Context.getProgramAttributeTypeService().saveProgramAttributeType(programAttributeType);
+		assertEquals(2,Context.getProgramAttributeTypeService().getAllProgramAttributeTypes().size());
 	}
 
 	@Test
 	public void shouldTestPurgeProgramAttributeType() throws Exception {
-		ProgramAttributeType programAttributeType = pws.getProgramAttributeType(1);
-                int totalAttributeTypes = pws.getAllProgramAttributeTypes().size();
-		pws.purgeProgramAttributeType(programAttributeType);
-		assertEquals((totalAttributeTypes - 1), pws.getAllProgramAttributeTypes().size());
+		ProgramAttributeType programAttributeType = Context.getProgramAttributeTypeService().getProgramAttributeType(1);
+                int totalAttributeTypes = Context.getProgramAttributeTypeService().getAllProgramAttributeTypes().size();
+		Context.getProgramAttributeTypeService().purgeProgramAttributeType(programAttributeType);
+		assertEquals((totalAttributeTypes - 1), Context.getProgramAttributeTypeService().getAllProgramAttributeTypes().size());
 	}
 	
 	
@@ -830,22 +847,22 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	
 	@Test
 	public void savePatientProgram_shouldTestThrowPatientStateRequiresException() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
 		for (PatientState state : patientProgram.getStates()) {
 			state.setState(null);
 		}
-		APIException exception = assertThrows(APIException.class, () -> pws.savePatientProgram(patientProgram));
+		APIException exception = assertThrows(APIException.class, () -> pps.savePatientProgram(patientProgram));
 		assertThat(exception.getMessage(), is("'PatientProgram(id=1, patient=Patient#2, program=Program(id=1, concept=Concept #1738, " +
 			"workflows=[ProgramWorkflow(id=1), ProgramWorkflow(id=2)]))' failed to validate with reason: states: State is required for a patient state"));
 	}
 	
 	@Test
 	public void savePatientProgram_shouldTestSetPatientProgram() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
 		for (PatientState state : patientProgram.getStates()) {
 			state.setPatientProgram(null);
 		}
-		pws.savePatientProgram(patientProgram);
+		pps.savePatientProgram(patientProgram);
 		for (PatientState state : patientProgram.getStates()) {
 			assertEquals(state.getPatientProgram(), patientProgram);
 		}
@@ -853,12 +870,12 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	
 	@Test
 	public void savePatientProgram_shouldThrowPatientProgramAlreadyAssignedException() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
-		PatientProgram patientProgram1 = pws.getPatientProgram(2);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
+		PatientProgram patientProgram1 = pps.getPatientProgram(2);
 		for (PatientState state : patientProgram.getStates()) {
 			state.setPatientProgram(patientProgram1);
 		}
-		APIException exception = assertThrows(APIException.class, () -> pws.savePatientProgram(patientProgram));
+		APIException exception = assertThrows(APIException.class, () -> pps.savePatientProgram(patientProgram));
 		assertThat(exception.getMessage(), is("This PatientProgram contains a ProgramWorkflowState whose parent is " +
 			"already assigned to PatientProgram(id=2, patient=Patient#2, program=Program(id=2, concept=Concept #10, " +
 			"workflows=[ProgramWorkflow(id=3)]))"));
@@ -866,13 +883,13 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	
 	@Test
 	public void savePatientProgram_shouldTestSetState() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
-		pws.voidPatientProgram(patientProgram, "test");
+		PatientProgram patientProgram = pps.getPatientProgram(1);
+		pps.voidPatientProgram(patientProgram, "test");
 		for (PatientState state : patientProgram.getStates()) {
 			state.setVoided(false);
 			state.setVoidReason(null);
 		}
-		pws.savePatientProgram(patientProgram);
+		pps.savePatientProgram(patientProgram);
 		for (PatientState state : patientProgram.getStates()) {
 			assertEquals(state.getVoided(), true);
 			assertEquals(state.getVoidReason(), "test");
@@ -884,11 +901,11 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		final String NAMESPACE = "namespace";
 		final String FORMFIELD_PATH = "formFieldPath";
 		
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
 		for (PatientState state : patientProgram.getStates()) {
 			state.setFormField(NAMESPACE, FORMFIELD_PATH);
 		}
-		PatientProgram updatePatientProgram = pws.savePatientProgram(patientProgram);
+		PatientProgram updatePatientProgram = pps.savePatientProgram(patientProgram);
 		for (PatientState state : updatePatientProgram.getStates()) {
 			assertEquals(NAMESPACE + "^" + FORMFIELD_PATH, state.getFormNamespaceAndPath());
 		}
@@ -896,7 +913,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void saveEncounter_shouldTestPatientStateEncounter() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram = pps.getPatientProgram(1);
 		
 		Encounter enc = new Encounter();
 		enc.setEncounterType(Context.getEncounterService().getEncounterType(1));
@@ -908,7 +925,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		for (PatientState state : patientProgram.getStates()) {
 			state.setEncounter(savedEncounter);
 		}
-		PatientProgram updatePatientProgram = pws.savePatientProgram(patientProgram);
+		PatientProgram updatePatientProgram = pps.savePatientProgram(patientProgram);
 		for (PatientState state : updatePatientProgram.getStates()) {
 			assertEquals(savedEncounter.getEncounterId(), state.getEncounter().getEncounterId());
 		}
@@ -919,7 +936,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		Collection<Program> programs = pws.getAllPrograms();
 		List<PatientProgram> patientPrograms;
 		cohort.getMemberIds().clear();
-		patientPrograms = dao.getPatientPrograms(null, programs);
+		patientPrograms = patientProgramDAO.getPatientPrograms(null, programs);
 		assertEquals(patientPrograms.size(), 4);
 	}
 	
@@ -930,25 +947,25 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 		List<PatientProgram> patientPrograms;
 		cohort.addMember(1);
 		cohort.addMember(2);
-		patientPrograms = dao.getPatientPrograms(cohort, programs);
+		patientPrograms = patientProgramDAO.getPatientPrograms(cohort, programs);
 		assertEquals(patientPrograms.size(), 2);
 	}
 	
 	
 	@Test
 	public void voidPatientProgram_shouldTestVoidPatientProgram() {
-		PatientProgram patientProgram = pws.getPatientProgram(1);
-		PatientProgram patientProgram1 = pws.voidPatientProgram(patientProgram, "abc");
+		PatientProgram patientProgram = pps.getPatientProgram(1);
+		PatientProgram patientProgram1 = pps.voidPatientProgram(patientProgram, "abc");
 		assertEquals(patientProgram1.getVoided(), true);
 		assertEquals(patientProgram1.getVoidReason(), "abc");
 	}
 	
 	@Test
 	public void unvoidPatientProgram_shouldTestUnvoidPatientProgram() {
-		PatientProgram existingPatientProgram = pws.getPatientProgram(1);
-		PatientProgram existingPatientProgramVoided = pws.voidPatientProgram(existingPatientProgram, "expired");
+		PatientProgram existingPatientProgram = pps.getPatientProgram(1);
+		PatientProgram existingPatientProgramVoided = pps.voidPatientProgram(existingPatientProgram, "expired");
 		Date patientProgramDateVoided = existingPatientProgramVoided.getDateVoided();
-		existingPatientProgramVoided = pws.unvoidPatientProgram(existingPatientProgram);
+		existingPatientProgramVoided = pps.unvoidPatientProgram(existingPatientProgram);
 		assertEquals(existingPatientProgramVoided.getVoided(), false);
 		for (PatientState state : existingPatientProgram.getStates()) {
 			assertEquals(state.getVoided(), false);
@@ -964,7 +981,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	public void saveConceptStateConversion_shouldThrowConceptStateConversionRequire() {
 		ConceptStateConversion conceptStateConversion = new ConceptStateConversion();
 		conceptStateConversion.setConcept(null);
-		APIException exception = assertThrows(APIException.class, () -> pws.saveConceptStateConversion(conceptStateConversion));
+		APIException exception = assertThrows(APIException.class, () -> Context.getConceptStateService().saveConceptStateConversion(conceptStateConversion));
 		assertThat(exception.getMessage(), is("'ConceptStateConversion: Concept[null] results in State [null] for workflow [null]' failed to validate with reason: " +
 			"concept: Invalid concept, programWorkflow: Invalid Programme Workflow, programWorkflowState: Invalid Programme Workflow State"));
 	}
@@ -972,36 +989,36 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveConceptStateConversion_shouldTestSaveConceptStateConversion() {
 		ConceptStateConversion newConceptStateConversion = new ConceptStateConversion();
-		ConceptStateConversion existingConceptStateConversion = pws.getAllConceptStateConversions().get(0);
+		ConceptStateConversion existingConceptStateConversion = Context.getConceptStateService().getAllConceptStateConversions().get(0);
 		newConceptStateConversion.setConcept(existingConceptStateConversion.getConcept());
 		newConceptStateConversion.setProgramWorkflow(existingConceptStateConversion.getProgramWorkflow());
 		newConceptStateConversion.setProgramWorkflowState(existingConceptStateConversion.getProgramWorkflowState());
 		String conceptStateConversionUuid = newConceptStateConversion.getUuid();
-		pws.saveConceptStateConversion(newConceptStateConversion);
-		ConceptStateConversion conceptStateConversion2 = dao.getConceptStateConversionByUuid(conceptStateConversionUuid);
+		Context.getConceptStateService().saveConceptStateConversion(newConceptStateConversion);
+		ConceptStateConversion conceptStateConversion2 = conceptStateDAO.getConceptStateConversionByUuid(conceptStateConversionUuid);
 		assertEquals(conceptStateConversionUuid, conceptStateConversion2.getUuid());
 	}
 	
 	@Test
 	public void getConceptStateConversion_shouldTestGetConceptStateConversion() {
-		ConceptStateConversion conceptStateConversion1 = pws.getAllConceptStateConversions().get(0);
+		ConceptStateConversion conceptStateConversion1 = Context.getConceptStateService().getAllConceptStateConversions().get(0);
 		int conceptStateConversion1Id = conceptStateConversion1.getId();
-		ConceptStateConversion conceptStateConversion2 = pws.getConceptStateConversion(conceptStateConversion1Id);
+		ConceptStateConversion conceptStateConversion2 = Context.getConceptStateService().getConceptStateConversion(conceptStateConversion1Id);
 		assertEquals(conceptStateConversion1, conceptStateConversion2);
 	}
 	
 	@Test
 	public void getAllConceptStateConversion_shouldTestGetAllConceptStateConversion() {
-		List<ConceptStateConversion> conceptStateConversions = pws.getAllConceptStateConversions();
+		List<ConceptStateConversion> conceptStateConversions = Context.getConceptStateService().getAllConceptStateConversions();
 		assertEquals(conceptStateConversions.size(), 1);
 		
 	}
 	
 	@Test
 	public void purgeConceptStateConversion_shouldTestPurgeConceptStateConversion() {
-		ConceptStateConversion conceptStateConversion = pws.getAllConceptStateConversions().get(0);
-		Context.getProgramWorkflowService().purgeConceptStateConversion(conceptStateConversion, false);
-		List<ConceptStateConversion> list = pws.getAllConceptStateConversions();
+		ConceptStateConversion conceptStateConversion = Context.getConceptStateService().getAllConceptStateConversions().get(0);
+		Context.getConceptStateService().purgeConceptStateConversion(conceptStateConversion, false);
+		List<ConceptStateConversion> list = Context.getConceptStateService().getAllConceptStateConversions();
 		assertEquals(list.size(), 0);
 	}
 	
@@ -1035,9 +1052,9 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void getConceptStateConversion_shouldGetConceptStateConversion(){
 		ProgramWorkflow programWorkflow = pws.getProgram(1).getWorkflow(2);
-		Concept concept = dao.getAllConceptStateConversions().get(0).getConcept();
-		ConceptStateConversion conceptStateConversion = dao.getConceptStateConversion(programWorkflow, concept);
-		assertEquals(conceptStateConversion, dao.getAllConceptStateConversions().get(0));
+		Concept concept = Context.getConceptStateService().getAllConceptStateConversions().get(0).getConcept();
+		ConceptStateConversion conceptStateConversion = Context.getConceptStateService().getConceptStateConversion(programWorkflow, concept);
+		assertEquals(conceptStateConversion, Context.getConceptStateService().getAllConceptStateConversions().get(0));
 	}
 	
 	@Test 
@@ -1051,7 +1068,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	public void triggerStateConversion_shouldThrowConvertStateInvalidPatient(){
 		Concept trigger = Context.getConceptService().getAllConcepts().get(0);
 		Date dateConverted = new Date();
-		APIException exception = assertThrows(APIException.class, () -> pwsi.triggerStateConversion(null, trigger, dateConverted));
+		APIException exception = assertThrows(APIException.class, () -> ppsi.triggerStateConversion(null, trigger, dateConverted));
 		assertThat(exception.getMessage(), is("Attempting to convert state of an invalid patient"));
 	}
 
@@ -1059,7 +1076,7 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	public void triggerStateConversion_shouldThrowConvertStatePatientWithoutValidTrigger(){
 		Patient patient = Context.getPatientService().getAllPatients().get(0);
 		Date dateConverted = new Date();
-		APIException exception = assertThrows(APIException.class, () -> pwsi.triggerStateConversion(patient, null, dateConverted));
+		APIException exception = assertThrows(APIException.class, () -> ppsi.triggerStateConversion(patient, null, dateConverted));
 		assertThat(exception.getMessage(), is("Attempting to convert state for a patient without a valid trigger concept"));
 	}
 
@@ -1067,19 +1084,19 @@ public class ProgramWorkflowServiceTest extends BaseContextSensitiveTest {
 	public void triggerStateConversion_shouldThrowConvertStateInvalidDate(){
 		Patient patient = Context.getPatientService().getAllPatients().get(0);
 		Concept trigger = Context.getConceptService().getAllConcepts().get(0);
-		APIException exception = assertThrows(APIException.class, () -> pwsi.triggerStateConversion(patient, trigger, null));
+		APIException exception = assertThrows(APIException.class, () -> ppsi.triggerStateConversion(patient, trigger, null));
 		assertThat(exception.getMessage(), is("Invalid date for converting patient state"));
 	}
 	
 	@Test
 	public void triggerStateConversion_shouldTestTransitionToState(){
 		Patient patient = Context.getPatientService().getPatientByUuid("6013a8cd-c6a0-4140-bfac-0af565704420");
-		PatientProgram patientProgram = pws.getPatientProgram(1);
+		PatientProgram patientProgram =ppsi.getPatientProgram(1);
 		Concept trigger = Context.getConceptService().getConcept(14);
 		Date dateConverted = new Date();
 		patientProgram.setDateCompleted(null);
 		int patientStatesSize = patientProgram.getStates().size();
-		pwsi.triggerStateConversion(patient, trigger, dateConverted);
+		ppsi.triggerStateConversion(patient, trigger, dateConverted);
 		assertEquals(patientProgram.getStates().size(), (patientStatesSize + 1));
 	}
 	

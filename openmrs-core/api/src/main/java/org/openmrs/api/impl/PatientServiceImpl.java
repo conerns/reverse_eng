@@ -42,20 +42,7 @@ import org.openmrs.PersonName;
 import org.openmrs.Relationship;
 import org.openmrs.User;
 import org.openmrs.Visit;
-import org.openmrs.api.APIException;
-import org.openmrs.api.BlankIdentifierException;
-import org.openmrs.api.DuplicateIdentifierException;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.InsufficientIdentifiersException;
-import org.openmrs.api.MissingRequiredIdentifierException;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.PatientIdentifierException;
-import org.openmrs.api.PatientIdentifierTypeLockedException;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.ProgramWorkflowService;
-import org.openmrs.api.UserService;
-import org.openmrs.api.VisitService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.PatientDAO;
 import org.openmrs.api.db.hibernate.HibernateUtil;
@@ -628,12 +615,13 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 	private void mergeProgramEnrolments(Patient preferred, Patient notPreferred, PersonMergeLogData mergedData) {
 		// copy all program enrollments
 		ProgramWorkflowService programService = Context.getProgramWorkflowService();
-		for (PatientProgram pp : programService.getPatientPrograms(notPreferred, null, null, null, null, null, false)) {
+		PatientProgramService patientProgramService = Context.getPatientProgramService();
+		for (PatientProgram pp : patientProgramService.getPatientPrograms(notPreferred, null, null, null, null, null, false)) {
 			if (!pp.getVoided()) {
 				PatientProgram enroll = pp.copy();
 				enroll.setPatient(preferred);
 				log.debug("Copying patientProgram {} to {}", pp.getPatientProgramId(), preferred.getPatientId());
-				PatientProgram persisted = programService.savePatientProgram(enroll);
+				PatientProgram persisted = patientProgramService.savePatientProgram(enroll);
 				mergedData.addCreatedProgram(persisted.getUuid());
 			}
 		}
