@@ -72,7 +72,7 @@ public class DrugOrder extends Order {
 
 	/**
 	 * @see org.openmrs.Order#copy()
-	 *      <strong>Should</strong> copy all drug order fields
+	 * <strong>Should</strong> copy all drug order fields
 	 */
 	@Override
 	public DrugOrder copy() {
@@ -292,7 +292,8 @@ public class DrugOrder extends Order {
 		try {
 			DosingInstructions instructions = getDosingType().newInstance();
 			return instructions.getDosingInstructions(this);
-		} catch (InstantiationException | IllegalAccessException e) {
+		}
+		catch (InstantiationException | IllegalAccessException e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -411,7 +412,7 @@ public class DrugOrder extends Order {
 
 	/**
 	 * @see org.openmrs.Order#cloneForDiscontinuing()
-	 *      <strong>Should</strong> set all the relevant fields
+	 * <strong>Should</strong> set all the relevant fields
 	 * @since 1.10
 	 */
 	@Override
@@ -429,14 +430,13 @@ public class DrugOrder extends Order {
 	}
 
 	/**
-	 * Creates a DrugOrder for revision from this order, sets the previousOrder,
-	 * action field and
+	 * Creates a DrugOrder for revision from this order, sets the previousOrder, action field and
 	 * other drug order fields.
 	 *
 	 * @return the newly created order
 	 * @since 1.10
-	 *        <strong>Should</strong> set all the relevant fields
-	 *        <strong>Should</strong> set the relevant fields for a DC order
+	 * <strong>Should</strong> set all the relevant fields
+	 * <strong>Should</strong> set the relevant fields for a DC order
 	 */
 	@Override
 	public DrugOrder cloneForRevision() {
@@ -486,9 +486,8 @@ public class DrugOrder extends Order {
 	public String toString() {
 		String prefix = DISCONTINUE == getAction() ? "DC " : "";
 		return prefix + "DrugOrder(" + getDose() + getDoseUnits() + " of "
-				+ (isNonCodedDrug() ? getDrugNonCoded() : (getDrug() != null ? getDrug().getName() : "[no drug]"))
-				+ " from " + getDateActivated() + " to "
-				+ (isDiscontinuedRightNow() ? getDateStopped() : getAutoExpireDate()) + ")";
+		        + (isNonCodedDrug() ? getDrugNonCoded() : (getDrug() != null ? getDrug().getName() : "[no drug]")) + " from " + getDateActivated() + " to "
+		        + (isDiscontinuedRightNow() ? getDateStopped() : getAutoExpireDate()) + ")";
 	}
 
 	/**
@@ -507,36 +506,30 @@ public class DrugOrder extends Order {
 	 * @since 1.10
 	 * @param otherOrder the other order to match on
 	 * @return true if the drugs match
-	 *         <strong>Should</strong> return false if the other order is null
-	 *         <strong>Should</strong> return false if the other order is not a drug
-	 *         order
-	 *         <strong>Should</strong> return false if both drugs are null and the
-	 *         concepts are different
-	 *         <strong>Should</strong> return false if the concepts match and only
-	 *         this has a drug
-	 *         <strong>Should</strong> return false if the concepts match and only
-	 *         the other has a drug
-	 *         <strong>Should</strong> return false if the concepts match and drugs
-	 *         are different and not null
-	 *         <strong>Should</strong> return true if both drugs are null and the
-	 *         concepts match
-	 *         <strong>Should</strong> return true if the drugs match
+	 * <strong>Should</strong> return false if the other order is null
+	 * <strong>Should</strong> return false if the other order is not a drug order
+	 * <strong>Should</strong> return false if both drugs are null and the concepts are different
+	 * <strong>Should</strong> return false if the concepts match and only this has a drug
+	 * <strong>Should</strong> return false if the concepts match and only the other has a drug
+	 * <strong>Should</strong> return false if the concepts match and drugs are different and not null
+	 * <strong>Should</strong> return true if both drugs are null and the concepts match
+	 * <strong>Should</strong> return true if the drugs match
 	 */
 	@Override
 	public boolean hasSameOrderableAs(Order otherOrder) {
-		if (!super.hasSameOrderableAs(otherOrder)) {
-			return false;
-		}
-		if (!(otherOrder instanceof DrugOrder)) {
-			return false;
-		}
-		DrugOrder otherDrugOrder = (DrugOrder) otherOrder;
+        if (!super.hasSameOrderableAs(otherOrder)) {
+            return false;
+        }
+        if (!(otherOrder instanceof DrugOrder)) {
+            return false;
+        }
+        DrugOrder otherDrugOrder = (DrugOrder) otherOrder;
 
-		if (isNonCodedDrug() || otherDrugOrder.isNonCodedDrug()) {
-			return OpenmrsUtil.nullSafeEqualsIgnoreCase(this.getDrugNonCoded(), otherDrugOrder.getDrugNonCoded());
-		}
-		return OpenmrsUtil.nullSafeEquals(this.getDrug(), otherDrugOrder.getDrug());
-	}
+        if (isNonCodedDrug() || otherDrugOrder.isNonCodedDrug()) {
+            return OpenmrsUtil.nullSafeEqualsIgnoreCase(this.getDrugNonCoded(), otherDrugOrder.getDrugNonCoded());
+        }
+        return OpenmrsUtil.nullSafeEquals(this.getDrug(), otherDrugOrder.getDrug());
+    }
 
 	/**
 	 * @since 1.12
@@ -548,7 +541,7 @@ public class DrugOrder extends Order {
 
 	/**
 	 * @since 1.12
-	 *        sets drugNonCoded
+	 * sets drugNonCoded
 	 */
 	public void setDrugNonCoded(String drugNonCoded) {
 		this.drugNonCoded = StringUtils.isNotBlank(drugNonCoded) ? drugNonCoded.trim() : drugNonCoded;
@@ -556,7 +549,7 @@ public class DrugOrder extends Order {
 
 	/**
 	 * @since 1.12
-	 *        return true if a drug is non coded
+	 * return true if a drug is non coded
 	 */
 	public boolean isNonCodedDrug() {
 		return StringUtils.isNotBlank(this.drugNonCoded);
