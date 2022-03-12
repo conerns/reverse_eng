@@ -25,7 +25,7 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptComplex;
 import org.openmrs.EncounterType;
 import org.openmrs.Field;
-import org.openmrs.FieldAnswer;
+import org.openmrs.Field.FieldAnswer;
 import org.openmrs.FieldType;
 import org.openmrs.Form;
 import org.openmrs.FormField;

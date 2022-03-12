@@ -15,7 +15,7 @@ import java.util.List;
 import org.openmrs.Concept;
 import org.openmrs.EncounterType;
 import org.openmrs.Field;
-import org.openmrs.FieldAnswer;
+import org.openmrs.Field.FieldAnswer;
 import org.openmrs.FieldType;
 import org.openmrs.Form;
 import org.openmrs.FormField;
@@ -394,7 +394,7 @@ public interface FormService extends OpenmrsService {
 	@Authorized(PrivilegeConstants.GET_FORMS)
 	public List<Field> getFields(Collection<Form> forms, Collection<FieldType> fieldTypes, Collection<Concept> concepts,
 	        Collection<String> tableNames, Collection<String> attributeNames, Boolean selectMultiple,
-	        Collection<FieldAnswer> containsAllAnswers, Collection<FieldAnswer> containsAnyAnswer, Boolean retired)
+	        Collection<Field.FieldAnswer> containsAllAnswers, Collection<Field.FieldAnswer> containsAnyAnswer, Boolean retired)
 	        throws APIException;
 	
 	/**
@@ -426,7 +426,7 @@ public interface FormService extends OpenmrsService {
 	 * <strong>Should</strong> find object given valid uuid
 	 * <strong>Should</strong> return null if no object found with given uuid
 	 */
-	public FieldAnswer getFieldAnswerByUuid(String uuid) throws APIException;
+	public Field.FieldAnswer getFieldAnswerByUuid(String uuid) throws APIException;
 	
 	/**
 	 * Creates or updates the given Field
