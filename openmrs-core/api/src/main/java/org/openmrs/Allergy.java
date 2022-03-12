@@ -38,6 +38,7 @@ import org.openmrs.util.OpenmrsUtil;
 @Entity
 @Table(name = "allergy")
 public class Allergy extends BaseFormRecordableOpenmrsData {
+	
 	public class AllergyReaction extends BaseOpenmrsObject implements java.io.Serializable{
 		
 		public static final long serialVersionUID = 1;

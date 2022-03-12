@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Diagnosis;
-import org.openmrs.DiagnosisAttribute;
+import org.openmrs.DiagnosisAttributeType.DiagnosisAttribute;
 import org.openmrs.DiagnosisAttributeType;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
@@ -108,5 +108,5 @@ public interface DiagnosisDAO {
 	/**
 	 * @see org.openmrs.api.DiagnosisService#getDiagnosisAttributeByUuid(String)
 	 */
-	DiagnosisAttribute getDiagnosisAttributeByUuid(String uuid) throws DAOException;
+	DiagnosisAttributeType.DiagnosisAttribute getDiagnosisAttributeByUuid(String uuid) throws DAOException;
 }

@@ -11,7 +11,7 @@ package org.openmrs.api.impl;
 
 import org.openmrs.CodedOrFreeText;
 import org.openmrs.Diagnosis;
-import org.openmrs.DiagnosisAttribute;
+import org.openmrs.DiagnosisAttributeType.DiagnosisAttribute;
 import org.openmrs.DiagnosisAttributeType;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;

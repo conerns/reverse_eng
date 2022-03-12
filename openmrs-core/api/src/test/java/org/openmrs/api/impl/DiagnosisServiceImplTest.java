@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.openmrs.Condition;
 import org.openmrs.ConditionVerificationStatus;
 import org.openmrs.Diagnosis;
-import org.openmrs.DiagnosisAttribute;
+import org.openmrs.DiagnosisAttributeType.DiagnosisAttribute;
 import org.openmrs.DiagnosisAttributeType;
 import org.openmrs.Encounter;
 import org.openmrs.Visit;
@@ -496,7 +496,8 @@ public class DiagnosisServiceImplTest extends BaseContextSensitiveTest {
 		final String FORMFIELD_PATH = "formFieldPath";
 		final DiagnosisAttributeType DIAGNOSIS_ATTRIBUTE_TYPE = Context.getDiagnosisService()
 				.getDiagnosisAttributeTypeByUuid("949daf5b-a83e-4b65-b914-502a553243d3");
-		DiagnosisAttribute diagnosisAttribute = new DiagnosisAttribute();
+		DiagnosisAttributeType a = new DiagnosisAttributeType();
+		DiagnosisAttribute diagnosisAttribute = a.new DiagnosisAttribute();
 		diagnosisAttribute.setAttributeType(DIAGNOSIS_ATTRIBUTE_TYPE);
 		diagnosisAttribute.setCreator(Context.getUserService().getUser(1));
 		diagnosisAttribute.setVoided(false);

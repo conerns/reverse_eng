@@ -9,7 +9,9 @@
  */
 package org.openmrs;
 
+import org.openmrs.attribute.Attribute;
 import org.openmrs.attribute.AttributeType;
+import org.openmrs.attribute.BaseAttribute;
 import org.openmrs.attribute.BaseAttributeType;
 
 /**
@@ -18,6 +20,55 @@ import org.openmrs.attribute.BaseAttributeType;
  * @since 2.5.0
  */
 public class DiagnosisAttributeType extends BaseAttributeType<Diagnosis> implements AttributeType<Diagnosis> {
+	
+	public class DiagnosisAttribute extends BaseAttribute<DiagnosisAttributeType, Diagnosis> implements Attribute<DiagnosisAttributeType, Diagnosis> {
+		
+		private Integer diagnosisAttributeId;
+
+		/**
+		 * @return the diagnosisAttributeId
+		 */
+		public Integer getDiagnosisAttributeId() {
+			return diagnosisAttributeId;
+		}
+		
+		/**
+		 * @param diagnosisAttributeId the DiagnosisAttributeId to set
+		 */
+		public void setDiagnosisAttributeId(Integer diagnosisAttributeId) {
+			this.diagnosisAttributeId = diagnosisAttributeId;
+		}
+		
+		/**
+		 * @return the diagnosis
+		 */
+		public Diagnosis getDiagnosis() {
+			return getOwner();
+		}
+		
+		/**
+		 * @param diagnosis the diagnosis to set
+		 */
+		public void setDiagnosis(Diagnosis diagnosis) {
+			setOwner(diagnosis);
+		}
+		
+		/**
+		 * @see org.openmrs.OpenmrsObject#getId()
+		 */
+		@Override
+		public Integer getId() {
+			return getDiagnosisAttributeId();
+		}
+		
+		/**
+		 * @see org.openmrs.OpenmrsObject#setId(Integer)
+		 */
+		@Override
+		public void setId(Integer id) {
+			setDiagnosisAttributeId(id);
+		}
+	}
 
 	private Integer diagnosisAttributeTypeId;
 

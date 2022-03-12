@@ -10,7 +10,7 @@
 
 package org.openmrs.api;
 
-import org.openmrs.DiagnosisAttribute;
+import org.openmrs.DiagnosisAttributeType.DiagnosisAttribute;
 import org.openmrs.DiagnosisAttributeType;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;

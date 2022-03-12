@@ -17,7 +17,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.ConditionVerificationStatus;
 import org.openmrs.Diagnosis;
-import org.openmrs.DiagnosisAttribute;
+import org.openmrs.DiagnosisAttributeType.DiagnosisAttribute;
 import org.openmrs.DiagnosisAttributeType;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
@@ -228,8 +228,8 @@ public class HibernateDiagnosisDAO implements DiagnosisDAO {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public DiagnosisAttribute getDiagnosisAttributeByUuid(String uuid) throws DAOException {
-		return (DiagnosisAttribute) sessionFactory.getCurrentSession().createCriteria(DiagnosisAttribute.class).add(Restrictions.eq("uuid", uuid))
+	public DiagnosisAttributeType.DiagnosisAttribute getDiagnosisAttributeByUuid(String uuid) throws DAOException {
+		return (DiagnosisAttributeType.DiagnosisAttribute) sessionFactory.getCurrentSession().createCriteria(DiagnosisAttributeType.DiagnosisAttribute.class).add(Restrictions.eq("uuid", uuid))
 				.uniqueResult();
 	}
 }

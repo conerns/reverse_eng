@@ -44,7 +44,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "encounter_diagnosis")
-public class Diagnosis extends BaseCustomizableData<DiagnosisAttribute> implements FormRecordable {
+public class Diagnosis extends BaseCustomizableData<DiagnosisAttributeType.DiagnosisAttribute> implements FormRecordable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -82,7 +82,7 @@ public class Diagnosis extends BaseCustomizableData<DiagnosisAttribute> implemen
 	@OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("voided asc")
 	@BatchSize(size = 100)
-	private Set<DiagnosisAttribute> attributes = new LinkedHashSet<>();
+	private Set<DiagnosisAttributeType.DiagnosisAttribute> attributes = new LinkedHashSet<>();
 
 	@Column(name="form_namespace_and_path")
 	private String formNamespaceAndPath;
