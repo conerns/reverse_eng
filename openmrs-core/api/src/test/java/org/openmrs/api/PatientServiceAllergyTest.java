@@ -22,7 +22,7 @@ import org.openmrs.Allergen;
 import org.openmrs.AllergenType;
 import org.openmrs.Allergies;
 import org.openmrs.Allergy;
-import org.openmrs.AllergyReaction;
+import org.openmrs.Allergy.AllergyReaction;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
@@ -99,7 +99,8 @@ public class PatientServiceAllergyTest extends BaseContextSensitiveTest {
 		Allergen allergen = new Allergen(AllergenType.DRUG, new Concept(3), null);
 		Concept severity = new Concept(4);
 		Allergy allergy = new Allergy(patient, allergen, severity, "some comment", new ArrayList<>());
-		AllergyReaction reaction = new AllergyReaction(allergy, new Concept(21), null);
+		Allergy a = new Allergy();
+		Allergy.AllergyReaction reaction = a.new AllergyReaction(allergy, new Concept(21), null); //  .AllergyReaction(allergy, new Concept(21), null);
 		allergy.addReaction(reaction);
 		allergies = new Allergies();
 		allergies.add(allergy);
@@ -131,7 +132,8 @@ public class PatientServiceAllergyTest extends BaseContextSensitiveTest {
 		allergies.get(0).getReactions().remove(0);
 		
 		//add a reaction to the third allergy
-		AllergyReaction reaction = new AllergyReaction(null, new Concept(22), null);
+		Allergy a = new Allergy();
+		AllergyReaction reaction = a.new AllergyReaction(null, new Concept(22), null);
 		allergies.get(2).addReaction(reaction);
 		
 		allergyService.setAllergies(patient, allergies);
@@ -396,7 +398,8 @@ public class PatientServiceAllergyTest extends BaseContextSensitiveTest {
 		//clear any cache for this object such that the next calls fetch it from the database
 		Context.evictFromSession(editedAllergy);
 		//add a reaction
-		AllergyReaction reaction = new AllergyReaction(null, new Concept(22), null);
+		Allergy a = new Allergy();
+		AllergyReaction reaction = a.new AllergyReaction(null, new Concept(22), null);
 		editedAllergy.addReaction(reaction);
 		
 		assertTrue(allergies.contains(editedAllergy));
