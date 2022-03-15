@@ -25,7 +25,7 @@ import org.openmrs.api.context.Context;
  * to attribute the alert to. Alerts are not intended to be sent from user to user and a user cannot
  * send a "reply alert"
  */
-public class Alert extends BaseOpenmrsObject implements Auditable, Serializable {
+public class Alert extends AuditableOpenmrsObject implements Serializable {
 	
 	private static final long serialVersionUID = -507111111109152L;
 	
@@ -34,22 +34,16 @@ public class Alert extends BaseOpenmrsObject implements Auditable, Serializable 
 	private Integer alertId;
 	
 	private String text;
+
+	private Set<AlertRecipient> recipients;
+	
+	private Date dateToExpire;
 	
 	private Boolean satisfiedByAny = Boolean.FALSE;
 	
 	private Boolean alertRead = Boolean.FALSE;
+
 	
-	private Date dateToExpire;
-	
-	private User creator;
-	
-	private Date dateCreated;
-	
-	private User changedBy;
-	
-	private Date dateChanged;
-	
-	private Set<AlertRecipient> recipients;
 	
 	/**
 	 * Default empty constructor
@@ -100,38 +94,6 @@ public class Alert extends BaseOpenmrsObject implements Auditable, Serializable 
 	 */
 	public void setAlertId(Integer alertId) {
 		this.alertId = alertId;
-	}
-	
-	/**
-	 * @return Returns the creator.
-	 */
-	@Override
-	public User getCreator() {
-		return creator;
-	}
-	
-	/**
-	 * @param creator The creator to set.
-	 */
-	@Override
-	public void setCreator(User creator) {
-		this.creator = creator;
-	}
-	
-	/**
-	 * @return Returns the dateCreated.
-	 */
-	@Override
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-	
-	/**
-	 * @param dateCreated The dateCreated to set.
-	 */
-	@Override
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
 	}
 	
 	/**
@@ -202,38 +164,6 @@ public class Alert extends BaseOpenmrsObject implements Auditable, Serializable 
 	 */
 	public void setAlertRead(Boolean alertRead) {
 		this.alertRead = alertRead;
-	}
-	
-	/**
-	 * @return Returns the changedBy.
-	 */
-	@Override
-	public User getChangedBy() {
-		return changedBy;
-	}
-	
-	/**
-	 * @param changedBy The user that changed this alert
-	 */
-	@Override
-	public void setChangedBy(User changedBy) {
-		this.changedBy = changedBy;
-	}
-	
-	/**
-	 * @return Returns the date this alert was changed
-	 */
-	@Override
-	public Date getDateChanged() {
-		return dateChanged;
-	}
-	
-	/**
-	 * @param dateChanged The date this alert was changed
-	 */
-	@Override
-	public void setDateChanged(Date dateChanged) {
-		this.dateChanged = dateChanged;
 	}
 	
 	/**
