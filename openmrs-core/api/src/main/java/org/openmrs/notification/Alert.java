@@ -16,9 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.openmrs.Auditable;
+import org.openmrs.AuditableOpenmrsObject;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.info.AuditableInfo;
 
 /**
  * Alerts are the simplest form of communication. An Administrator (or script) sets the user or role
@@ -49,6 +51,7 @@ public class Alert extends AuditableOpenmrsObject implements Serializable {
 	 * Default empty constructor
 	 */
 	public Alert() {
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -56,6 +59,7 @@ public class Alert extends AuditableOpenmrsObject implements Serializable {
 	 */
 	public Alert(Integer alertId) {
 		this.alertId = alertId;
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -69,6 +73,7 @@ public class Alert extends AuditableOpenmrsObject implements Serializable {
 		for (User user : users) {
 			addRecipient(user);
 		}
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -80,6 +85,7 @@ public class Alert extends AuditableOpenmrsObject implements Serializable {
 	public Alert(String text, User user) {
 		setText(text);
 		addRecipient(user);
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**

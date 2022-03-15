@@ -1,11 +1,13 @@
-package org.openmrs.notification;
+package org.openmrs.info;
 
 import org.openmrs.Auditable;
 import org.openmrs.User;
 
 import java.util.Date;
 
-public abstract class AuditableOpenmrsObject implements Auditable {
+public class AuditableInfo implements Auditable {
+	
+	private Integer auditableInfoId;
 	
 	private User creator;
 
@@ -14,47 +16,52 @@ public abstract class AuditableOpenmrsObject implements Auditable {
 	private User changedBy;
 
 	private Date dateChanged;
+	
+	
+	public AuditableInfo(){}
 
-	@Override
+	public Integer getAuditableInfoId() {
+		return auditableInfoId;
+	}
+
+	public void setAuditableInfoId(Integer auditableInfoId) {
+		this.auditableInfoId = auditableInfoId;
+	}
+
 	public User getCreator() {
 		return creator;
 	}
 
-	@Override
 	public void setCreator(User creator) {
 		this.creator = creator;
 	}
 
-	@Override
 	public Date getDateCreated() {
 		return dateCreated;
 	}
 
-	@Override
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
-	@Override
 	public User getChangedBy() {
 		return changedBy;
 	}
 
-	@Override
 	public void setChangedBy(User changedBy) {
 		this.changedBy = changedBy;
 	}
 
-	@Override
 	public Date getDateChanged() {
 		return dateChanged;
 	}
 
-	@Override
 	public void setDateChanged(Date dateChanged) {
 		this.dateChanged = dateChanged;
 	}
 
+	
+	
 	@Override
 	public Integer getId() {
 		return null;

@@ -53,6 +53,7 @@ public class HibernateAlertDAO implements AlertDAO {
 	 */
 	@Override
 	public Alert saveAlert(Alert alert) throws DAOException {
+		sessionFactory.getCurrentSession().saveOrUpdate(alert.getAuditableInfo());
 		sessionFactory.getCurrentSession().saveOrUpdate(alert);
 		return alert;
 	}
@@ -122,7 +123,7 @@ public class HibernateAlertDAO implements AlertDAO {
 			crit.add(Restrictions.eq("recipient.alertRead", false));
 		}
 		
-		crit.addOrder(Order.desc("dateChanged"));
+		//crit.addOrder(Order.desc("dateChanged"));
 		
 		return crit.list();
 	}

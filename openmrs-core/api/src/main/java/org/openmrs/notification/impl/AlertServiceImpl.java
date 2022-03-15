@@ -63,16 +63,16 @@ public class AlertServiceImpl extends BaseOpenmrsService implements Serializable
 	public Alert saveAlert(Alert alert) throws APIException {
 		log.debug("Create a alert " + alert);
 		
-		if (alert.getCreator() == null) {
-			alert.setCreator(Context.getAuthenticatedUser());
+		if (alert.getAuditableInfo().getCreator() == null) {
+			alert.getAuditableInfo().setCreator(Context.getAuthenticatedUser());
 		}
-		if (alert.getDateCreated() == null) {
-			alert.setDateCreated(new Date());
+		if (alert.getAuditableInfo().getDateCreated() == null) {
+			alert.getAuditableInfo().setDateCreated(new Date());
 		}
 		
 		if (alert.getAlertId() != null) {
-			alert.setChangedBy(Context.getAuthenticatedUser());
-			alert.setDateChanged(new Date());
+			alert.getAuditableInfo().setChangedBy(Context.getAuthenticatedUser());
+			alert.getAuditableInfo().setDateChanged(new Date());
 		}
 		
 		// Make sure all recipients are assigned to this alert
@@ -197,9 +197,9 @@ public class AlertServiceImpl extends BaseOpenmrsService implements Serializable
 		alert.setSatisfiedByAny(true);
 		
 		//If there is not user creator for the alert ( because it is being created at start-up )create a user
-		if (alert.getCreator() == null) { 
+		if (alert.getAuditableInfo().getCreator() == null) { 
 			User daemonUser = Context.getUserService().getUserByUuid(Daemon.getDaemonUserUuid());
-			alert.setCreator(daemonUser);
+			alert.getAuditableInfo().setCreator(daemonUser);
 		} 
 		
 		// save the alert to send it to all administrators

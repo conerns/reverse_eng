@@ -35,14 +35,9 @@
 		
 		<property name="dateToExpire" column="date_to_expire" type="java.util.Date" 
 			not-null="false" length="19" />
-			
-		<many-to-one name="creator" class="org.openmrs.User" not-null="true" />
-		<property name="dateCreated" type="java.util.Date"
-			column="date_created" not-null="true" length="19" />
 		
-		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
-		<property name="dateChanged" type="java.util.Date"
-			column="date_changed" length="19" />
+		
+		<many-to-one name="auditableInfo" class="org.openmrs.info.AuditableInfo" />
 		
 		<set name="recipients" lazy="true" inverse="true" cascade="all-delete-orphan" table="notification_alert_recipients">
 			<key column="alert_id" />
