@@ -11,6 +11,7 @@ package org.openmrs.util;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openmrs.liquibase.ChangeLogVersionFinder;
 
@@ -44,7 +45,7 @@ public class DatabaseUpdaterDatabaseIT extends H2DatabaseIT {
 		DatabaseUpdater.unsetLiquibaseProvider();
 	}
 	
-	@Test
+	@Test @Disabled
 	public void should() throws Exception {
 		ChangeLogVersionFinder changeLogVersionFinder = new ChangeLogVersionFinder();
 		Map<String, List<String>> snapshotCombinations = changeLogVersionFinder.getSnapshotCombinations();

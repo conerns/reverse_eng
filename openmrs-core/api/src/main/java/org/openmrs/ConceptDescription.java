@@ -9,13 +9,15 @@
  */
 package org.openmrs;
 
+import org.openmrs.info.AuditableInfo;
+
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * ConceptDescription is the localized description of a concept.
  */
-public class ConceptDescription extends BaseOpenmrsObject implements Auditable, java.io.Serializable {
+public class ConceptDescription extends BaseOpenmrsObject implements java.io.Serializable {
 	
 	private static final long serialVersionUID = -7223075113369136584L;
 	
@@ -28,18 +30,15 @@ public class ConceptDescription extends BaseOpenmrsObject implements Auditable, 
 	
 	private Locale locale;
 	
-	private User creator;
+	private AuditableInfo auditableInfo;
 	
-	private Date dateCreated;
 	
-	private User changedBy;
-	
-	private Date dateChanged;
 	
 	// Constructors
 	
 	/** default constructor */
 	public ConceptDescription() {
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -49,6 +48,7 @@ public class ConceptDescription extends BaseOpenmrsObject implements Auditable, 
 	 */
 	public ConceptDescription(Integer conceptDescriptionId) {
 		this.conceptDescriptionId = conceptDescriptionId;
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -60,6 +60,7 @@ public class ConceptDescription extends BaseOpenmrsObject implements Auditable, 
 	public ConceptDescription(String description, Locale locale) {
 		setLocale(locale);
 		setDescription(description);
+		auditableInfo = new AuditableInfo();
 	}
 	
 	/**
@@ -101,73 +102,15 @@ public class ConceptDescription extends BaseOpenmrsObject implements Auditable, 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-	
-	/**
-	 * @return Returns the creator.
-	 */
-	@Override
-	public User getCreator() {
-		return creator;
+
+	public AuditableInfo getAuditableInfo() {
+		return auditableInfo;
 	}
-	
-	/**
-	 * @param creator The creator to set.
-	 */
-	@Override
-	public void setCreator(User creator) {
-		this.creator = creator;
+
+	public void setAuditableInfo(AuditableInfo auditableInfo) {
+		this.auditableInfo = auditableInfo;
 	}
-	
-	/**
-	 * @return Returns the dateCreated.
-	 */
-	@Override
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-	
-	/**
-	 * @param dateCreated The dateCreated to set.
-	 */
-	@Override
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	/**
-	 * @return Returns the User who last changed the description.
-	 */
-	@Override
-	public User getChangedBy() {
-		return changedBy;
-	}
-	
-	/**
-	 * @param changedBy The user who changed this description
-	 */
-	@Override
-	public void setChangedBy(User changedBy) {
-		this.changedBy = changedBy;
-	}
-	
-	/**
-	 * @return Returns the date the description was last changed.
-	 */
-	@Override
-	public Date getDateChanged() {
-		return dateChanged;
-	}
-	
-	/**
-	 * Sets the date when the description was changed.
-	 * 
-	 * @param dateChanged the data the description was changed.
-	 */
-	@Override
-	public void setDateChanged(Date dateChanged) {
-		this.dateChanged = dateChanged;
-	}
-	
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

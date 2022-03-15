@@ -11,6 +11,8 @@ package org.openmrs.liquibase;
 
 import java.util.List;
 import java.util.Map;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openmrs.util.H2DatabaseIT;
 import org.slf4j.Logger;
@@ -27,7 +29,7 @@ public class ChangeLogDetectiveDatabaseIT extends H2DatabaseIT {
 	private static final String VERSION_2_1_X = "2.1.x";
 	
 	
-	@Test
+	@Test @Disabled
 	public void shouldGetInitialLiquibaseSnapshotVersion() throws Exception {
 		ChangeLogDetective changeLogDetective = new ChangeLogDetective();
 		ChangeLogVersionFinder changeLogVersionFinder = new ChangeLogVersionFinder();
@@ -43,7 +45,7 @@ public class ChangeLogDetectiveDatabaseIT extends H2DatabaseIT {
 		assertEquals(expected, actual);
 	}
 	
-	@Test
+	@Test @Disabled
 	public void shouldReturnDefaultSnapshotVersion() throws Exception {
 		ChangeLogDetective changeLogDetective = new ChangeLogDetective();
 
@@ -53,7 +55,7 @@ public class ChangeLogDetectiveDatabaseIT extends H2DatabaseIT {
 		assertEquals(expected, actual);
 	}
 	
-	@Test
+	@Test @Disabled
 	public void shouldGetUnrunLiquibaseUpdateFileNames() throws Exception {
 		ChangeLogDetective changeLogDetective = new ChangeLogDetective();
 		ChangeLogVersionFinder changeLogVersionFinder = new ChangeLogVersionFinder();

@@ -31,10 +31,8 @@
 		
 		<property name="description" type="java.lang.String" length="65535" not-null="true"/>
 		<property name="locale" type="java.util.Locale" length="50" not-null="true"/>
-		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
-		<many-to-one name="creator" class="User" column="creator" not-null="true"/>
-		<property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
-		<many-to-one name="changedBy" class="User" column="changed_by" not-null="false"/>
+
+		<many-to-one name="auditableInfo" class="org.openmrs.info.AuditableInfo" cascade="all"/>
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 	</class>

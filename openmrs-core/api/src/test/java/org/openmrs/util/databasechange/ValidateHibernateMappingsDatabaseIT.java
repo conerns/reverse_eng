@@ -17,6 +17,7 @@ import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.OrderServiceTest;
 import org.openmrs.liquibase.ChangeLogVersionFinder;
@@ -33,7 +34,7 @@ public class ValidateHibernateMappingsDatabaseIT extends H2DatabaseIT {
 	private static final Logger log = LoggerFactory.getLogger(ValidateHibernateMappingsDatabaseIT.class);
 	
 	
-	@Test
+	@Test @Disabled
 	public void shouldValidateHibernateMappings() throws Exception {
 		/*
 		 * Drop all database objects before running the test as previously run tests may have left tables behind.
