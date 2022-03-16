@@ -11,24 +11,22 @@
 
 -->
 <dataset>
+    <auditable_info auditable_info_id="1" creator="1" date_created="2005-01-01 00:00:00.0"/>
     <concept concept_id="1000" retired="0" datatype_id="4" class_id="19" is_set="0" creator="1" date_created="2004-08-12 00:00:00.0" version="" uuid="8e02d1a0-7869-11e3-981f-0800200c9a76"/>
     <concept_name concept_name_id="2000" concept_id="1000" name="Once" locale="en" creator="1" date_created="2008-08-15 13:52:53.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1"
                   voided="0" uuid="93f24a00-7869-11e3-981f-0800200c9a67"/>
-    <concept_description concept_description_id="1" concept_id="1000" description="Once concept description" locale="en" creator="1"
-                         date_created="2004-08-12 00:00:00.0" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e1"/>
+    <concept_description concept_description_id="1" concept_id="1000" description="Once concept description" locale="en" auditableInfo="1" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e1"/>
 
 
     <concept concept_id="1001" retired="0" datatype_id="4" class_id="19" is_set="0" creator="1" date_created="2004-08-12 00:00:00.0" version="" uuid="9a02d1a0-7869-11e3-981f-0800200c9a77"/>
     <concept_name concept_name_id="2001" concept_id="1001" name="Twice" locale="en" creator="1" date_created="2008-08-15 13:52:53.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1"
                   voided="0" uuid="aaf24a01-7869-11e3-881f-1800200c9a68"/>
-    <concept_description concept_description_id="1" concept_id="1001" description="Twice concept description" locale="en" creator="1"
-                         date_created="2004-08-12 00:00:00.0" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e2"/>
+    <concept_description concept_description_id="1" concept_id="1001" description="Twice concept description" locale="en" auditableInfo="1" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e2"/>
 
     <concept concept_id="1002" retired="0" datatype_id="4" class_id="19" is_set="0" creator="1" date_created="2004-08-12 00:00:00.0" version="" uuid="9a02d1a0-7869-11e3-981f-0800200c9a78"/>
     <concept_name concept_name_id="2002" concept_id="1002" name="Thrice" locale="en" creator="1" date_created="2008-08-15 13:52:53.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1"
                   voided="0" uuid="aaf24a01-7869-11e3-881f-1800200c9a69"/>
-    <concept_description concept_description_id="1" concept_id="1002" description="Thrice concept description" locale="en" creator="1"
-                         date_created="2004-08-12 00:00:00.0" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e3"/>
+    <concept_description concept_description_id="1" concept_id="1002" description="Thrice concept description" locale="en" auditableInfo="1" uuid="5f4d710b-d333-40b7-b449-6e0e739d15e3"/>
 
     <order_type order_type_id="100" name="Drug Order Type" java_class_name="org.openmrs.DrugOrder" description="Some drug order" creator="1" date_created="2008-08-15 15:49:04.0"
                 retired="0" uuid="113fb1d0-ae06-22e3-a5e2-0800211c9a78"/>

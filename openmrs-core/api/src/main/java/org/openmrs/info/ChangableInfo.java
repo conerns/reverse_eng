@@ -1,4 +1,3 @@
 package org.openmrs.info;
 
-public class ChangableInfo {
-}
+public class ChangableInfo {}

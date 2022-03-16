@@ -1,4 +1,3 @@
 package org.openmrs.info;
 
-public class CreatorInfo {
-}
+public class CreatorInfo {}
