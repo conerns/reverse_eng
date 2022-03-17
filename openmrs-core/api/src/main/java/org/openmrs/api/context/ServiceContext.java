@@ -408,6 +408,48 @@ public class ServiceContext implements ApplicationContextAware {
 	public void setLocationTagService(LocationTagService locationTagService) {
 		setService(LocationTagService.class, locationTagService);
 	}
+	
+	public CareSettingService getCareSettingService(){
+		return getService(CareSettingService.class);
+	}
+	public void setCareSettingService(CareSettingService careSettingService){
+		setService(CareSettingService.class, careSettingService);
+	}
+
+	public DrugService getDrugService(){
+		return getService(DrugService.class);
+	}
+	public void setDrugService(DrugService DrugService){
+		setService(DrugService.class, DrugService);
+	}
+	
+	public OrderAttributeService getOrderAttributeService(){
+		return getService(OrderAttributeService.class);
+	}
+	public void setOrderAttributeService(OrderAttributeService OrderAttributeService){
+		setService(OrderAttributeService.class, OrderAttributeService);
+	}
+
+	public OrderGroupService getOrderGroupService(){
+		return getService(OrderGroupService.class);
+	}
+	public void setOrderGroupService(OrderGroupService OrderGroupService){
+		setService(OrderGroupService.class, OrderGroupService);
+	}
+
+	public OrderFrequencyService getOrderFrequencyService(){
+		return getService(OrderFrequencyService.class);
+	}
+	public void setOrderFrequencyService(OrderFrequencyService OrderFrequencyService){
+		setService(OrderFrequencyService.class, OrderFrequencyService);
+	}
+
+	public OrderTypeService getOrderTypeService(){
+		return getService(OrderTypeService.class);
+	}
+	public void setOrderTypeService(OrderTypeService OrderTypeService){
+		setService(OrderTypeService.class, OrderTypeService);
+	}
 
 	public AddressService getAddressService() {
 		return getService(AddressService.class);

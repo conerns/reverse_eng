@@ -439,6 +439,30 @@ public class Context {
 	public static CohortService getCohortService() {
 		return getServiceContext().getCohortService();
 	}
+	
+	public static CareSettingService getCareSettingService(){
+		return getServiceContext().getCareSettingService();
+	}
+	
+	public static DrugService getDrugService(){
+		return getServiceContext().getDrugService();
+	}
+
+	public static OrderAttributeService getOrderAttributeService(){
+		return getServiceContext().getOrderAttributeService();
+	}
+	
+	public static OrderFrequencyService getOrderFrequencyService(){
+		return getServiceContext().getOrderFrequencyService();
+	}
+	
+	public static OrderGroupService getOrderGroupService(){
+		return getServiceContext().getOrderGroupService();
+	}
+	
+	public static OrderTypeService getOrderTypeService(){
+		return getServiceContext().getOrderTypeService();
+	}
 
 	/**
 	 * @return person-related services

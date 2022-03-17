@@ -321,7 +321,7 @@ public class OrderValidatorTest extends BaseContextSensitiveTest {
 		order.setConcept(Context.getConceptService().getConcept(88));
 		order.setPatient(Context.getPatientService().getPatient(2));
 		order.setOrderer(Context.getProviderService().getProvider(1));
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Test order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Test order"));
 		
 		Errors errors = new BindException(order, "order");
 		new OrderValidator().validate(order, errors);
@@ -339,7 +339,7 @@ public class OrderValidatorTest extends BaseContextSensitiveTest {
 		order.setConcept(Context.getConceptService().getConcept(88));
 		order.setPatient(Context.getPatientService().getPatient(2));
 		order.setOrderer(Context.getProviderService().getProvider(1));
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
 		
 		Errors errors = new BindException(order, "order");
 		new OrderValidator().validate(order, errors);
@@ -366,7 +366,7 @@ public class OrderValidatorTest extends BaseContextSensitiveTest {
 		order.setEncounter(encounter);
 		order.setUrgency(Order.Urgency.ROUTINE);
 		order.setAction(Order.Action.NEW);
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
 		
 		Errors errors = new BindException(order, "order");
 		new OrderValidator().validate(order, errors);
@@ -382,11 +382,11 @@ public class OrderValidatorTest extends BaseContextSensitiveTest {
 		Patient patient = Context.getPatientService().getPatient(7);
 		TestOrder order = new TestOrder();
 		order.setPatient(patient);
-		order.setOrderType(orderService.getOrderTypeByName("Test order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Test order"));
 		order.setEncounter(Context.getEncounterService().getEncounter(3));
 		order.setConcept(Context.getConceptService().getConcept(5497));
 		order.setOrderer(Context.getProviderService().getProvider(1));
-		order.setCareSetting(orderService.getCareSetting(1));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.HOUR_OF_DAY, 1);
 		order.setDateActivated(cal.getTime());

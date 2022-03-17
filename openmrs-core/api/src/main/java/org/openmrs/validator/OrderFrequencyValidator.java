@@ -65,7 +65,7 @@ public class OrderFrequencyValidator implements Validator {
 					errors.rejectValue("concept", "OrderFrequency.concept.shouldBeClassFrequency");
 				}
 				
-				OrderFrequency of = Context.getOrderService().getOrderFrequencyByConcept(concept);
+				OrderFrequency of = Context.getOrderFrequencyService().getOrderFrequencyByConcept(concept);
 				if (of != null && !of.equals(orderFrequency)) {
 					errors.rejectValue("concept", "OrderFrequency.concept.shouldNotBeShared");
 				}

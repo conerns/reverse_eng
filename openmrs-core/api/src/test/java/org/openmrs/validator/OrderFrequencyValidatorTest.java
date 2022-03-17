@@ -111,7 +111,7 @@ public class OrderFrequencyValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassForAValidExistingOrderFrequency() {
-		OrderFrequency orderFrequency = Context.getOrderService().getOrderFrequency(1);
+		OrderFrequency orderFrequency = Context.getOrderFrequencyService().getOrderFrequency(1);
 		assertNotNull(orderFrequency);
 		Errors errors = new BindException(orderFrequency, "orderFrequency");
 		new OrderFrequencyValidator().validate(orderFrequency, errors);
@@ -124,10 +124,10 @@ public class OrderFrequencyValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldBeInvokedWhenAnOrderFrequencyIsSaved() {
-		OrderFrequency orderFrequency = Context.getOrderService().getOrderFrequency(2);
+		OrderFrequency orderFrequency = Context.getOrderFrequencyService().getOrderFrequency(2);
 		orderFrequency.setConcept(null);
 		String expectedMsg = "'" + orderFrequency + "' failed to validate with reason: concept: " + Context.getMessageSourceService().getMessage("Concept.noConceptSelected");
-		APIException exception = assertThrows(APIException.class, () -> Context.getOrderService().saveOrderFrequency(orderFrequency));
+		APIException exception = assertThrows(APIException.class, () -> Context.getOrderFrequencyService().saveOrderFrequency(orderFrequency));
 		assertThat(exception.getMessage(), is(expectedMsg));
 	}
 	

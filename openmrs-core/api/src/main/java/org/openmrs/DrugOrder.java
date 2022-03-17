@@ -33,10 +33,12 @@ public class DrugOrder extends Order {
 
 	private Boolean asNeeded = false;
 
+	
 	private Double quantity;
 
 	private Concept quantityUnits;
 
+	
 	private Drug drug;
 
 	private String asNeededCondition;

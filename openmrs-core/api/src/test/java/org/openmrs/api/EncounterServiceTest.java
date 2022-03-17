@@ -824,7 +824,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		order.setConcept(Context.getConceptService().getConcept(5497));
 		order.setPatient(new Patient(2));
 		order.setDateActivated(new Date());
-		order.setOrderType(os.getOrderType(2));
+		order.setOrderType(Context.getOrderTypeService().getOrderType(2));
 		order.setOrderer(Context.getProviderService().getProvider(1));
 		Field field = Order.class.getDeclaredField("orderNumber");
 		field.setAccessible(true);
@@ -833,7 +833,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 		order.setDateCreated(date);
 		order.setCreator(creator);
 		
-		order.setCareSetting(os.getCareSetting(1));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		encounter.addOrder(order);
 		
 		// make sure the logged in user isn't the user we're testing with

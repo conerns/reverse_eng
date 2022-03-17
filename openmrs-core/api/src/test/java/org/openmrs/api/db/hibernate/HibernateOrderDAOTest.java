@@ -44,6 +44,12 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	
 	@Autowired
 	private HibernateOrderDAO dao;
+	
+	@Autowired
+	private HibernateOrderGroupDAO orderGroupDAO;
+	
+	@Autowired
+	private HibernateOrderAttributeDAO orderAttributeDAO;
 
 	private static final String ORDER_SET = "org/openmrs/api/include/OrderSetServiceTest-general.xml";
 	
@@ -77,7 +83,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 			}
 		});
 		
-		OrderGroup savedOrderGroup = dao.saveOrderGroup(newOrderGroup);
+		OrderGroup savedOrderGroup = orderGroupDAO.saveOrderGroup(newOrderGroup);
 		assertNotNull(savedOrderGroup.getOrderGroupId(), "OrderGroup gets saved");
 		
 		for (Order savedOrder : savedOrderGroup.getOrders()) {
@@ -91,7 +97,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getOrderGroupsByEncounter_shouldFailGivenNullEncounter() {
-		assertThrows(APIException.class, () -> dao.getOrderGroupsByEncounter(null));
+		assertThrows(APIException.class, () -> orderGroupDAO.getOrderGroupsByEncounter(null));
 	}
 	
 	/**
@@ -100,7 +106,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getOrderGroupsByPatient_shouldFailGivenNullPatient() {
-		assertThrows(APIException.class, () -> dao.getOrderGroupsByPatient(null));
+		assertThrows(APIException.class, () -> orderGroupDAO.getOrderGroupsByPatient(null));
 	}
 	
 	/**
@@ -110,7 +116,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getOrderGroupsByEncounter_shouldGetOrderGroupsFromAnEncounter() {
 		Encounter existingEncounter = Context.getEncounterService().getEncounter(4);
-		List<OrderGroup> ordergroups = Context.getOrderService().getOrderGroupsByEncounter(existingEncounter);
+		List<OrderGroup> ordergroups = Context.getOrderGroupService().getOrderGroupsByEncounter(existingEncounter);
 		assertEquals(1, ordergroups.size());
 	}
 	
@@ -121,7 +127,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getOrderGroupsByPatient_shouldGetOrderGroupsGivenPatient() {
 		Patient existingPatient = Context.getPatientService().getPatient(8);
-		List<OrderGroup> ordergroups = Context.getOrderService().getOrderGroupsByPatient(existingPatient);
+		List<OrderGroup> ordergroups = Context.getOrderGroupService().getOrderGroupsByPatient(existingPatient);
 		assertEquals(1, ordergroups.size());
 		
 	}
@@ -132,7 +138,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getAllOrderGroupAttributeTypes_shouldGetAllOrderGroupAttributeTypes() {
-		List<OrderGroupAttributeType> orderGroupAttributeTypes = dao.getAllOrderGroupAttributeTypes();
+		List<OrderGroupAttributeType> orderGroupAttributeTypes = orderGroupDAO.getAllOrderGroupAttributeTypes();
 		assertEquals(orderGroupAttributeTypes.size(), 4);
 	}
 	
@@ -142,7 +148,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getOrderGroupAttributeTypeByUuid_shouldGetOrderGroupAttributeTypeGivenUuid() {
-		OrderGroupAttributeType orderGroupAttributeType = dao
+		OrderGroupAttributeType orderGroupAttributeType = orderGroupDAO
 		        .getOrderGroupAttributeTypeByUuid("9cf1bce0-d18e-11ea-87d0-0242ac130003");
 		assertEquals("Bacteriology", orderGroupAttributeType.getName());
 	}
@@ -153,7 +159,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void getOrderGroupAttributeType_shouldReturnOrderGroupAttributeType() {
-		OrderGroupAttributeType orderGroupAttributeType = dao.getOrderGroupAttributeType(4);
+		OrderGroupAttributeType orderGroupAttributeType = orderGroupDAO.getOrderGroupAttributeType(4);
 		assertEquals("ECG", orderGroupAttributeType.getName());
 	}
 	
@@ -164,7 +170,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getOrderGroupAttributeTypeByName_shouldGetOrderGroupAttributeTypeByName() {
 		final String NAME = "ECG";
-		OrderGroupAttributeType OrderGroupAttributeType = dao.getOrderGroupAttributeTypeByName(NAME);
+		OrderGroupAttributeType OrderGroupAttributeType = orderGroupDAO.getOrderGroupAttributeTypeByName(NAME);
 		assertEquals(NAME, OrderGroupAttributeType.getName());
 		assertEquals(4, OrderGroupAttributeType.getId());
 		assertEquals("9cf1bdb2-d18e-11ea-87d0-0242ac130003", OrderGroupAttributeType.getUuid());
@@ -177,16 +183,16 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void deleteOrderGroupAttributeType_shouldDeleteOrderGroupAttributeTypeFromDatabase() {
 		final String UUID = "9cf1bdb2-d18e-11ea-87d0-0242ac130003";
-		OrderGroupAttributeType orderGroupAttributeType = dao.getOrderGroupAttributeTypeByUuid(UUID);
+		OrderGroupAttributeType orderGroupAttributeType = orderGroupDAO.getOrderGroupAttributeTypeByUuid(UUID);
 		assertNotNull(orderGroupAttributeType);
-		dao.deleteOrderGroupAttributeType(orderGroupAttributeType);
-		assertNull(dao.getOrderGroupAttributeByUuid(UUID));
+		orderGroupDAO.deleteOrderGroupAttributeType(orderGroupAttributeType);
+		assertNull(orderGroupDAO.getOrderGroupAttributeByUuid(UUID));
 	}
 	
 	@Test
 	public void saveOrderAttributeType_shouldSaveTheProvidedOrderAttributeTypeToDatabase() {
 		final Order order = Context.getOrderService().getOrder(1);
-		final int ORIGINAL_COUNT = dao.getAllOrderAttributeTypes().size();
+		final int ORIGINAL_COUNT = Context.getOrderAttributeService().getAllOrderAttributeTypes().size();
 		OrderAttributeType orderAttributeType = new OrderAttributeType();
 		orderAttributeType.setName("External Referral");
 		orderAttributeType.setMinOccurs(1);
@@ -196,10 +202,10 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 		orderAttributeType.setDateCreated(order.getDateCreated());
 		orderAttributeType.setRetired(false);
 		orderAttributeType.setUuid("81b95c51-865b-48c6-aacf-cc8f21e69f5e");
-		dao.saveOrderAttributeType(orderAttributeType);
+		orderAttributeDAO.saveOrderAttributeType(orderAttributeType);
 		assertNotNull(orderAttributeType.getOrderAttributeTypeId(), "Saved OrderAttribute Type");
-		assertEquals(ORIGINAL_COUNT + 1, dao.getAllOrderAttributeTypes().size());
-		OrderAttributeType savedOrderAttributeType = dao.getOrderAttributeTypeByUuid("81b95c51-865b-48c6-aacf-cc8f21e69f5e");
+		assertEquals(ORIGINAL_COUNT + 1, orderAttributeDAO.getAllOrderAttributeTypes().size());
+		OrderAttributeType savedOrderAttributeType = orderAttributeDAO.getOrderAttributeTypeByUuid("81b95c51-865b-48c6-aacf-cc8f21e69f5e");
 		assertEquals("External Referral", savedOrderAttributeType.getName());
 		assertEquals(1, savedOrderAttributeType.getMinOccurs());
 		assertEquals(5, savedOrderAttributeType.getMaxOccurs());
@@ -216,7 +222,7 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void getOrderAttributeTypeByName_shouldReturnOrderAttributeTypeUsingProvidedName() {
 		final String NAME = "Referral";
-		OrderAttributeType orderAttributeType = dao.getOrderAttributeTypeByName(NAME);
+		OrderAttributeType orderAttributeType = orderAttributeDAO.getOrderAttributeTypeByName(NAME);
 		assertEquals(NAME, orderAttributeType.getName());
 		assertEquals(1, orderAttributeType.getId());
 		assertEquals("9758d106-79b0-4f45-8d8c-ae8b3f25d72a", orderAttributeType.getUuid());
@@ -229,11 +235,11 @@ public class HibernateOrderDAOTest extends BaseContextSensitiveTest {
 	@Test
 	public void deleteOrderAttributeType_shouldDeleteTheProvidedOrderAttributeTypeFromDatabase() {
 		final String UUID = "9a9e852b-868a-4c78-8e4d-805b52d4b33f";
-		final int ORIGINAL_COUNT = dao.getAllOrderAttributeTypes().size();
-		OrderAttributeType orderAttributeType = dao.getOrderAttributeTypeByUuid(UUID);
+		final int ORIGINAL_COUNT = orderAttributeDAO.getAllOrderAttributeTypes().size();
+		OrderAttributeType orderAttributeType = orderAttributeDAO.getOrderAttributeTypeByUuid(UUID);
 		assertNotNull(orderAttributeType);
-		dao.deleteOrderAttributeType(orderAttributeType);
-		assertNull(dao.getOrderAttributeTypeByUuid(UUID));
-		assertEquals(ORIGINAL_COUNT - 1, dao.getAllOrderAttributeTypes().size());
+		orderAttributeDAO.deleteOrderAttributeType(orderAttributeType);
+		assertNull(orderAttributeDAO.getOrderAttributeTypeByUuid(UUID));
+		assertEquals(ORIGINAL_COUNT - 1, orderAttributeDAO.getAllOrderAttributeTypes().size());
 	}
 }

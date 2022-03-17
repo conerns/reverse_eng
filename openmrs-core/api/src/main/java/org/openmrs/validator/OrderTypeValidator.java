@@ -72,12 +72,12 @@ public class OrderTypeValidator implements Validator {
 				    "Parent of " + orderType.getName() + " is among its descendants");
 			}
 			
-			OrderType duplicate = Context.getOrderService().getOrderTypeByName(name);
+			OrderType duplicate = Context.getOrderTypeService().getOrderTypeByName(name);
 			if (duplicate != null && !orderType.equals(duplicate)) {
 				errors.rejectValue("name", "OrderType.duplicate.name", "Duplicate order type name: " + name);
 			}
 			
-			for (OrderType ot : Context.getOrderService().getOrderTypes(true)) {
+			for (OrderType ot : Context.getOrderTypeService().getOrderTypes(true)) {
 				if (ot != null) {
 					//If this was an edit, skip past the order we are actually validating 
 					if (orderType.equals(ot)) {

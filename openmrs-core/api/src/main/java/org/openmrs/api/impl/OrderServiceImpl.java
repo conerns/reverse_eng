@@ -109,34 +109,6 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		return saveOrder(order, orderContext, false);
 	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#saveOrderGroup(org.openmrs.OrderGroup)
-	 */
-	@Override
-	public OrderGroup saveOrderGroup(OrderGroup orderGroup) throws APIException {
-		if (orderGroup.getId() == null) {
-			// an OrderGroup requires an encounter, which has a patient, so it
-			// is odd that OrderGroup has a patient field. There is no obvious
-			// reason why they should ever be different.
-			orderGroup.setPatient(orderGroup.getEncounter().getPatient());
-			CustomDatatypeUtil.saveAttributesIfNecessary(orderGroup);
-			dao.saveOrderGroup(orderGroup);
-		}
-		List<Order> orders = orderGroup.getOrders();
-		for (Order order : orders) {
-			if (order.getId() == null) {
-				order.setEncounter(orderGroup.getEncounter());
-				Context.getOrderService().saveOrder(order, null);
-			}
-		}
-		Set<OrderGroup> nestedGroups = orderGroup.getNestedOrderGroups();
-		if (nestedGroups != null) {
-			for (OrderGroup nestedGroup : nestedGroups) {
-				Context.getOrderService().saveOrderGroup(nestedGroup);
-			}
-		}
-		return orderGroup;
-	}
 	
 	/**
 	 * @see org.openmrs.api.OrderService#saveOrder(org.openmrs.Order, org.openmrs.api.OrderContext)
@@ -248,16 +220,16 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 			orderType = orderContext.getOrderType();
 		}
 		if (orderType == null) {
-			orderType = getOrderTypeByConcept(order.getConcept());
+			orderType = Context.getOrderTypeService().getOrderTypeByConcept(order.getConcept());
 		}
 		if (orderType == null && order instanceof DrugOrder) {
-			orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+			orderType = Context.getOrderTypeService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
 		}
 		if (orderType == null && order instanceof TestOrder) {
-			orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
+			orderType = Context.getOrderTypeService().getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
 		}
 		if (orderType == null && order instanceof ReferralOrder) {
-			orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.REFERRAL_ORDER_TYPE_UUID);
+			orderType = Context.getOrderTypeService().getOrderTypeByUuid(OrderType.REFERRAL_ORDER_TYPE_UUID);
 		}
 		if (orderType == null) {
 			throw new OrderEntryException("Order.type.cannot.determine");
@@ -296,7 +268,7 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		        && !OpenmrsUtil.nullSafeEquals(firstOrder.getPreviousOrder(), secondOrder)
 		        && OrderUtil.checkScheduleOverlap(firstOrder, secondOrder)
 		        && firstOrder.getOrderType().equals(
-		            Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID));
+		            Context.getOrderTypeService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID));
 	}
 
 	private boolean isDrugOrder(Order order) {
@@ -563,7 +535,7 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		if (orderType != null) {
 			orderTypes = new ArrayList<>();
 			orderTypes.add(orderType);
-			orderTypes.addAll(getSubtypes(orderType, true));
+			orderTypes.addAll(Context.getOrderTypeService().getSubtypes(orderType, true));
 		}
 		return dao.getOrders(patient, careSetting, orderTypes, includeVoided, false);
 	}
@@ -688,86 +660,13 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		if (orderType != null) {
 			orderTypes = new ArrayList<>();
 			orderTypes.add(orderType);
-			orderTypes.addAll(getSubtypes(orderType, true));
+			orderTypes.addAll(Context.getOrderTypeService().getSubtypes(orderType, true));
 		}
 		return dao.getActiveOrders(patient, orderTypes, careSetting, asOfDate);
 	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#getCareSetting(Integer)
-	 */
-	@Override
-	public CareSetting getCareSetting(Integer careSettingId) {
-		return dao.getCareSetting(careSettingId);
-	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#getCareSettingByUuid(String)
-	 */
-	@Override
-	public CareSetting getCareSettingByUuid(String uuid) {
-		return dao.getCareSettingByUuid(uuid);
-	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#getCareSettingByName(String)
-	 */
-	@Override
-	public CareSetting getCareSettingByName(String name) {
-		return dao.getCareSettingByName(name);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getCareSettings(boolean)
-	 */
-	@Override
-	public List<CareSetting> getCareSettings(boolean includeRetired) {
-		return dao.getCareSettings(includeRetired);
-	}
-	
-	/**
-	 * @see OrderService#getOrderTypeByName(String)
-	 */
-	@Override
-	public OrderType getOrderTypeByName(String orderTypeName) {
-		return dao.getOrderTypeByName(orderTypeName);
-	}
-	
-	/**
-	 * @see OrderService#getOrderFrequency(Integer)
-	 */
-	@Override
-	public OrderFrequency getOrderFrequency(Integer orderFrequencyId) {
-		return dao.getOrderFrequency(orderFrequencyId);
-	}
-	
-	/**
-	 * @see OrderService#getOrderFrequencyByUuid(String)
-	 */
-	@Override
-	public OrderFrequency getOrderFrequencyByUuid(String uuid) {
-		return dao.getOrderFrequencyByUuid(uuid);
-	}
-	
-	/**
-	 * @see OrderService#getOrderFrequencies(boolean)
-	 */
-	@Override
-	public List<OrderFrequency> getOrderFrequencies(boolean includeRetired) {
-		return dao.getOrderFrequencies(includeRetired);
-	}
-	
-	/**
-	 * @see OrderService#getOrderFrequencies(String, java.util.Locale, boolean, boolean)
-	 */
-	@Override
-	public List<OrderFrequency> getOrderFrequencies(String searchPhrase, Locale locale, boolean exactLocale,
-	                                                boolean includeRetired) {
-		if (searchPhrase == null) {
-			throw new IllegalArgumentException("searchPhrase is required");
-		}
-		return dao.getOrderFrequencies(searchPhrase, locale, exactLocale, includeRetired);
-	}
 	
 	/**
 	 * @see org.openmrs.api.OrderService#discontinueOrder(org.openmrs.Order, org.openmrs.Concept,
@@ -842,52 +741,6 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		saveOrderInternal(orderToStop, null);
 	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#saveOrderFrequency(org.openmrs.OrderFrequency)
-	 */
-	@Override
-	public OrderFrequency saveOrderFrequency(OrderFrequency orderFrequency) throws APIException {
-		return dao.saveOrderFrequency(orderFrequency);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#retireOrderFrequency(org.openmrs.OrderFrequency,
-	 *      java.lang.String)
-	 */
-	@Override
-	public OrderFrequency retireOrderFrequency(OrderFrequency orderFrequency, String reason) {
-		return dao.saveOrderFrequency(orderFrequency);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#unretireOrderFrequency(org.openmrs.OrderFrequency)
-	 */
-	@Override
-	public OrderFrequency unretireOrderFrequency(OrderFrequency orderFrequency) {
-		return Context.getOrderService().saveOrderFrequency(orderFrequency);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#purgeOrderFrequency(org.openmrs.OrderFrequency)
-	 */
-	@Override
-	public void purgeOrderFrequency(OrderFrequency orderFrequency) {
-		
-		if (dao.isOrderFrequencyInUse(orderFrequency)) {
-			throw new CannotDeleteObjectInUseException("Order.frequency.cannot.delete", (Object[]) null);
-		}
-		
-		dao.purgeOrderFrequency(orderFrequency);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderFrequencyByConcept(org.openmrs.Concept)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderFrequency getOrderFrequencyByConcept(Concept concept) {
-		return dao.getOrderFrequencyByConcept(concept);
-	}
 	
 	/**
 	 * @see GlobalPropertyListener#supportsPropertyName(String)
@@ -924,334 +777,9 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 	 * @see org.openmrs.api.OrderService#getOrderType(Integer)
 	 */
 	
-	@Override
-	@Transactional(readOnly = true)
-	public OrderType getOrderType(Integer orderTypeId) {
-		return dao.getOrderType(orderTypeId);
-	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderTypeByUuid(String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderType getOrderTypeByUuid(String uuid) {
-		return dao.getOrderTypeByUuid(uuid);
-	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderTypes(boolean)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<OrderType> getOrderTypes(boolean includeRetired) {
-		return dao.getOrderTypes(includeRetired);
-	}
 	
-	/**
-	 * @see org.openmrs.api.OrderService#saveOrderType(org.openmrs.OrderType)
-	 */
-	@Override
-	public OrderType saveOrderType(OrderType orderType) {
-		return dao.saveOrderType(orderType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#purgeOrderType(org.openmrs.OrderType)
-	 */
-	@Override
-	public void purgeOrderType(OrderType orderType) {
-		if (dao.isOrderTypeInUse(orderType)) {
-			throw new CannotDeleteObjectInUseException("Order.type.cannot.delete", (Object[]) null);
-		}
-		dao.purgeOrderType(orderType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#retireOrderType(org.openmrs.OrderType, String)
-	 */
-	@Override
-	public OrderType retireOrderType(OrderType orderType, String reason) {
-		return saveOrderType(orderType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#unretireOrderType(org.openmrs.OrderType)
-	 */
-	@Override
-	public OrderType unretireOrderType(OrderType orderType) {
-		return saveOrderType(orderType);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getSubtypes(org.openmrs.OrderType, boolean)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<OrderType> getSubtypes(OrderType orderType, boolean includeRetired) {
-		List<OrderType> allSubtypes = new ArrayList<>();
-		List<OrderType> immediateAncestors = dao.getOrderSubtypes(orderType, includeRetired);
-		while (!immediateAncestors.isEmpty()) {
-			List<OrderType> ancestorsAtNextLevel = new ArrayList<>();
-			for (OrderType type : immediateAncestors) {
-				allSubtypes.add(type);
-				ancestorsAtNextLevel.addAll(dao.getOrderSubtypes(type, includeRetired));
-			}
-			immediateAncestors = ancestorsAtNextLevel;
-		}
-		return allSubtypes;
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderTypeByConceptClass(org.openmrs.ConceptClass)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderType getOrderTypeByConceptClass(ConceptClass conceptClass) {
-		return dao.getOrderTypeByConceptClass(conceptClass);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderTypeByConcept(org.openmrs.Concept)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderType getOrderTypeByConcept(Concept concept) {
-		return Context.getOrderService().getOrderTypeByConceptClass(concept.getConceptClass());
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getDrugRoutes()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<Concept> getDrugRoutes() {
-		return getSetMembersOfConceptSetFromGP(OpenmrsConstants.GP_DRUG_ROUTES_CONCEPT_UUID);
-	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public List<Concept> getDrugDosingUnits() {
-		return getSetMembersOfConceptSetFromGP(OpenmrsConstants.GP_DRUG_DOSING_UNITS_CONCEPT_UUID);
-	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public List<Concept> getDrugDispensingUnits() {
-		List<Concept> dispensingUnits = new ArrayList<>(
-				getSetMembersOfConceptSetFromGP(OpenmrsConstants.GP_DRUG_DISPENSING_UNITS_CONCEPT_UUID));
-		for (Concept concept : getDrugDosingUnits()) {
-			if (!dispensingUnits.contains(concept)) {
-				dispensingUnits.add(concept);
-			}
-		}
-		return dispensingUnits;
-	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public List<Concept> getDurationUnits() {
-		return getSetMembersOfConceptSetFromGP(OpenmrsConstants.GP_DURATION_UNITS_CONCEPT_UUID);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getTestSpecimenSources()
-	 */
-	@Override
-	public List<Concept> getTestSpecimenSources() {
-		return getSetMembersOfConceptSetFromGP(OpenmrsConstants.GP_TEST_SPECIMEN_SOURCES_CONCEPT_UUID);
-	}
-	
-	@Override
-	public Concept getNonCodedDrugConcept() {
-		String conceptUuid = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_DRUG_ORDER_DRUG_OTHER);
-		if (StringUtils.hasText(conceptUuid)) {
-			return Context.getConceptService().getConceptByUuid(conceptUuid);
-		}
-		return null;
-	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroup getOrderGroupByUuid(String uuid) throws APIException {
-		return dao.getOrderGroupByUuid(uuid);
-	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroup getOrderGroup(Integer orderGroupId) throws APIException {
-		return dao.getOrderGroupById(orderGroupId);
-	}
-	
-	private List<Concept> getSetMembersOfConceptSetFromGP(String globalProperty) {
-		String conceptUuid = Context.getAdministrationService().getGlobalProperty(globalProperty);
-		Concept concept = Context.getConceptService().getConceptByUuid(conceptUuid);
-		if (concept != null && concept.getSet()) {
-			return concept.getSetMembers();
-		}
-		return Collections.emptyList();
-	}
-	@Override
-	public List<OrderGroup> getOrderGroupsByPatient(Patient patient) throws APIException {
-		return dao.getOrderGroupsByPatient(patient);
-	}
 
-	@Override
-	public List<OrderGroup> getOrderGroupsByEncounter(Encounter encounter) throws APIException {
-		return dao.getOrderGroupsByEncounter(encounter);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderGroupAttributeTypes()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<OrderGroupAttributeType> getAllOrderGroupAttributeTypes() throws APIException {
-		return dao.getAllOrderGroupAttributeTypes();
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderGroupAttributeTypeById()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroupAttributeType getOrderGroupAttributeType(Integer id) throws APIException {
-		return dao.getOrderGroupAttributeType(id);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderGroupAttributeTypeByUuid()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroupAttributeType getOrderGroupAttributeTypeByUuid(String uuid)throws APIException {
-		return dao.getOrderGroupAttributeTypeByUuid(uuid);
-	}
-	
-	/**
-	 * @see org.openmrs.api.OrderService#saveOrderGroupAttributeType()
-	 */
-	@Override
-	public OrderGroupAttributeType saveOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) throws APIException{
-		return dao.saveOrderGroupAttributeType(orderGroupAttributeType);
-	}
 
-	/**
-	 * @see org.openmrs.api.OrderService#retireOrderGroupAttributeType()
-	 */
-	@Override
-	public OrderGroupAttributeType retireOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType, String reason)throws APIException {
-		return Context.getOrderService().saveOrderGroupAttributeType(orderGroupAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#unretireOrderGroupAttributeType()
-	 */
-	@Override
-	public OrderGroupAttributeType unretireOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType)throws APIException {
-		return Context.getOrderService().saveOrderGroupAttributeType(orderGroupAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#purgeOrderGroupAttributeType()
-	 */
-	@Override
-	public void purgeOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) throws APIException{
-		dao.deleteOrderGroupAttributeType(orderGroupAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderGroupAttributeTypeByName()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroupAttributeType getOrderGroupAttributeTypeByName(String orderGroupAttributeTypeName)throws APIException {
-		return dao.getOrderGroupAttributeTypeByName(orderGroupAttributeTypeName);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderGroupAttributeByUuid()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderGroupAttribute getOrderGroupAttributeByUuid(String uuid)throws APIException {
-		return dao.getOrderGroupAttributeByUuid(uuid);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getAllOrderAttributeTypes()
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<OrderAttributeType> getAllOrderAttributeTypes() throws APIException {
-		return dao.getAllOrderAttributeTypes();
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderAttributeTypeById(Integer)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderAttributeType getOrderAttributeTypeById(Integer id) throws APIException {
-		return dao.getOrderAttributeTypeById(id);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderAttributeTypeByUuid(String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderAttributeType getOrderAttributeTypeByUuid(String uuid)throws APIException {
-		return dao.getOrderAttributeTypeByUuid(uuid);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#saveOrderAttributeType(OrderAttributeType)
-	 */
-	@Override
-	public OrderAttributeType saveOrderAttributeType(OrderAttributeType orderAttributeType) throws APIException{
-		return dao.saveOrderAttributeType(orderAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#retireOrderAttributeType(OrderAttributeType)
-	 */
-	@Override
-	public OrderAttributeType retireOrderAttributeType(OrderAttributeType orderAttributeType, String reason)throws APIException {
-		return Context.getOrderService().saveOrderAttributeType(orderAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#unretireOrderAttributeType(OrderAttributeType)
-	 */
-	@Override
-	public OrderAttributeType unretireOrderAttributeType(OrderAttributeType orderAttributeType)throws APIException {
-		return Context.getOrderService().saveOrderAttributeType(orderAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#purgeOrderAttributeType(OrderAttributeType)
-	 */
-	@Override
-	public void purgeOrderAttributeType(OrderAttributeType orderAttributeType) throws APIException{
-		dao.deleteOrderAttributeType(orderAttributeType);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderAttributeTypeByName(String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderAttributeType getOrderAttributeTypeByName(String orderAttributeTypeName)throws APIException {
-		return dao.getOrderAttributeTypeByName(orderAttributeTypeName);
-	}
-
-	/**
-	 * @see org.openmrs.api.OrderService#getOrderAttributeByUuid(String)
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public OrderAttribute getOrderAttributeByUuid(String uuid)throws APIException {
-		return dao.getOrderAttributeByUuid(uuid);
-	}
 }

@@ -120,9 +120,9 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
 		order.setDateActivated(cal.getTime());
 		order.setAutoExpireDate(new Date());
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
 		order.setDrug(Context.getConceptService().getDrug(3));
-		order.setCareSetting(Context.getOrderService().getCareSetting(1));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		order.setQuantity(2.00);
 		order.setQuantityUnits(Context.getConceptService().getConcept(51));
 		order.setNumRefills(10);
@@ -138,14 +138,14 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailValidationIfQuantityIsNullForOutpatientCareSetting() {
 		DrugOrder OutpatientOrder = new DrugOrder();
-		OutpatientOrder.setCareSetting(Context.getOrderService().getCareSetting(1));
+		OutpatientOrder.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		OutpatientOrder.setQuantity(null);
 		Errors OutpatientOrderErrors = new BindException(OutpatientOrder, "order");
 		new DrugOrderValidator().validate(OutpatientOrder, OutpatientOrderErrors);
 		assertTrue(OutpatientOrderErrors.hasFieldErrors("quantity"));
 		
 		DrugOrder inPatientOrder = new DrugOrder();
-		inPatientOrder.setCareSetting(Context.getOrderService().getCareSetting(2));
+		inPatientOrder.setCareSetting(Context.getCareSettingService().getCareSetting(2));
 		inPatientOrder.setQuantity(null);
 		Errors InpatientOrderErrors = new BindException(inPatientOrder, "order");
 		new DrugOrderValidator().validate(inPatientOrder, InpatientOrderErrors);
@@ -158,14 +158,14 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailValidationIfNumberOfRefillsIsNullForOutpatientCareSetting() {
 		DrugOrder OutpatientOrder = new DrugOrder();
-		OutpatientOrder.setCareSetting(Context.getOrderService().getCareSetting(1));
+		OutpatientOrder.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		OutpatientOrder.setNumRefills(null);
 		Errors OutpatientOrderErrors = new BindException(OutpatientOrder, "order");
 		new DrugOrderValidator().validate(OutpatientOrder, OutpatientOrderErrors);
 		assertTrue(OutpatientOrderErrors.hasFieldErrors("numRefills"));
 		
 		DrugOrder inPatientOrder = new DrugOrder();
-		inPatientOrder.setCareSetting(Context.getOrderService().getCareSetting(2));
+		inPatientOrder.setCareSetting(Context.getCareSettingService().getCareSetting(2));
 		inPatientOrder.setNumRefills(null);
 		Errors InpatientOrderErrors = new BindException(inPatientOrder, "order");
 		new DrugOrderValidator().validate(inPatientOrder, InpatientOrderErrors);
@@ -181,7 +181,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		as.setGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_OUTPATIENT_QUANTITY, "false");
 		
 		DrugOrder OutpatientOrder = new DrugOrder();
-		OutpatientOrder.setCareSetting(Context.getOrderService().getCareSetting(1));
+		OutpatientOrder.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		OutpatientOrder.setQuantity(null);
 		OutpatientOrder.setQuantityUnits(null);
 		OutpatientOrder.setNumRefills(null);
@@ -350,7 +350,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailValidationIfDoseUnitsIsNotADoseUnitConcept() {
 		Concept concept = Context.getConceptService().getConcept(3);
-		assertThat(concept, not(isIn(Context.getOrderService().getDrugDosingUnits())));
+		assertThat(concept, not(isIn(Context.getDrugService().getDrugDosingUnits())));
 		
 		DrugOrder order = new DrugOrder();
 		order.setDosingType(FreeTextDosingInstructions.class);
@@ -372,7 +372,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailValidationIfQuantityUnitsItNotAQuantityUnitConcept() {
 		Concept concept = Context.getConceptService().getConcept(3);
-		assertThat(concept, not(isIn(Context.getOrderService().getDrugDispensingUnits())));
+		assertThat(concept, not(isIn(Context.getDrugService().getDrugDispensingUnits())));
 		
 		DrugOrder order = new DrugOrder();
 		order.setDosingType(FreeTextDosingInstructions.class);
@@ -394,7 +394,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailValidationIfDurationUnitsIsNotADurationUnitConcept() {
 		Concept concept = Context.getConceptService().getConcept(3);
-		assertThat(concept, not(isIn(Context.getOrderService().getDurationUnits())));
+		assertThat(concept, not(isIn(Context.getDrugService().getDurationUnits())));
 		
 		DrugOrder order = new DrugOrder();
 		order.setDosingType(FreeTextDosingInstructions.class);
@@ -416,7 +416,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailIfRouteIsNotAValidConcept() {
 		Concept concept = Context.getConceptService().getConcept(3);
-		assertThat(concept, not(isIn(Context.getOrderService().getDrugRoutes())));
+		assertThat(concept, not(isIn(Context.getDrugService().getDrugRoutes())));
 		
 		DrugOrder order = new DrugOrder();
 		order.setDosingType(FreeTextDosingInstructions.class);
@@ -469,7 +469,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	public void validate_shouldPassIfConceptIsNullAndDrugIsSet() {
 		DrugOrder order = new DrugOrder();
 		order.setPatient(Context.getPatientService().getPatient(7));
-		order.setCareSetting(Context.getOrderService().getCareSetting(2));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(2));
 		order.setEncounter(Context.getEncounterService().getEncounter(3));
 		order.setOrderer(Context.getProviderService().getProvider(1));
 		Drug drug = Context.getConceptService().getDrug(3);
@@ -504,9 +504,9 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
 		order.setDateActivated(cal.getTime());
 		order.setAutoExpireDate(new Date());
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
 		order.setDrug(Context.getConceptService().getDrug(3));
-		order.setCareSetting(Context.getOrderService().getCareSetting(1));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		order.setQuantity(2.00);
 		order.setQuantityUnits(Context.getConceptService().getConcept(51));
 		order.setNumRefills(10);
@@ -538,8 +538,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		Context.getAdministrationService().saveGlobalProperty(gp);
 		
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		
 		//place drug order
 		DrugOrder order = new DrugOrder();
@@ -567,8 +567,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "false");
 		Context.getAdministrationService().saveGlobalProperty(gp);
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		
 		//place drug order
 		DrugOrder order = new DrugOrder();
@@ -597,8 +597,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		deleteAllData();
 		baseSetupWithStandardDataAndAuthentication();
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		assertNull(Context.getAdministrationService().getGlobalPropertyObject(
 		    OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG));
 		//place drug order
@@ -625,8 +625,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailIfDurationUnitsHasNoMappingToSNOMEDCTSource() {
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		
 		//place drug order
 		DrugOrder order = new DrugOrder();
@@ -670,9 +670,9 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
 		order.setDateActivated(cal.getTime());
 		order.setAutoExpireDate(new Date());
-		order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
 		order.setDrug(Context.getConceptService().getDrug(3));
-		order.setCareSetting(Context.getOrderService().getCareSetting(1));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
 		order.setQuantity(2.00);
 		order.setQuantityUnits(Context.getConceptService().getConcept(51));
 		order.setNumRefills(10);
@@ -705,9 +705,9 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
         cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
         order.setDateActivated(cal.getTime());
         order.setAutoExpireDate(new Date());
-        order.setOrderType(Context.getOrderService().getOrderTypeByName("Drug order"));
+        order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Drug order"));
         order.setDrug(Context.getConceptService().getDrug(3));
-        order.setCareSetting(Context.getOrderService().getCareSetting(1));
+        order.setCareSetting(Context.getCareSettingService().getCareSetting(1));
         order.setQuantity(2.00);
         order.setQuantityUnits(Context.getConceptService().getConcept(51));
         order.setNumRefills(10);
@@ -727,8 +727,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	public void saveOrder_shouldFailDrugOrderWithoutADrugNonCodedWhenDrugOrderIsNonCoded() {
 		executeDataSet("org/openmrs/api/include/OrderServiceTest-nonCodedDrugs.xml");
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "true");
 		Context.getAdministrationService().saveGlobalProperty(gp);
@@ -736,7 +736,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		DrugOrder order = new DrugOrder();
 		Encounter encounter = Context.getEncounterService().getEncounter(3);
 		order.setEncounter(encounter);
-		order.setConcept(Context.getOrderService().getNonCodedDrugConcept());
+		order.setConcept(Context.getDrugService().getNonCodedDrugConcept());
 		order.setPatient(patient);
 		order.setCareSetting(careSetting);
 		order.setOrderer(Context.getProviderService().getProvider(1));
@@ -755,8 +755,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	public void saveOrder_shouldPassDrugOrderWithADrugNonCodedWhenDrugOrderIsNonCoded() {
 		executeDataSet("org/openmrs/api/include/OrderServiceTest-nonCodedDrugs.xml");
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "true");
 		Context.getAdministrationService().saveGlobalProperty(gp);
@@ -764,7 +764,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		DrugOrder order = new DrugOrder();
 		Encounter encounter = Context.getEncounterService().getEncounter(3);
 		order.setEncounter(encounter);
-		order.setConcept(Context.getOrderService().getNonCodedDrugConcept());
+		order.setConcept(Context.getDrugService().getNonCodedDrugConcept());
 		order.setDrugNonCoded("Non coded drug");
 		order.setPatient(patient);
 		order.setCareSetting(careSetting);
@@ -782,8 +782,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveOrder_shouldFailDrugOrderWithBothDrugNonCodedAndDrugAreSetForDrugOrder() {
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "true");
 		Context.getAdministrationService().saveGlobalProperty(gp);
 		//place drug order
@@ -809,8 +809,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveOrder_shouldFailDrugOrderWithNeitherDrugNonCodedNorDrugAreSetForDrugOrderWhenDrugRequiredSet() {
 		Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "true");
 		Context.getAdministrationService().saveGlobalProperty(gp);
@@ -835,8 +835,8 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void saveOrder_shouldPassDrugOrderWithNeitherDrugNonCodedNorDrugAreSetForDrugOrderWhenDrugRequiredISNotSet() {
 		executeDataSet("org/openmrs/api/include/OrderServiceTest-nonCodedDrugs.xml");Patient patient = Context.getPatientService().getPatient(7);
-		CareSetting careSetting = Context.getOrderService().getCareSetting(2);
-		OrderType orderType = Context.getOrderService().getOrderTypeByName("Drug order");
+		CareSetting careSetting = Context.getCareSettingService().getCareSetting(2);
+		OrderType orderType = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 
 		GlobalProperty gp = new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DRUG_ORDER_REQUIRE_DRUG, "false");
 		Context.getAdministrationService().saveGlobalProperty(gp);
@@ -846,7 +846,7 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 		order.setEncounter(encounter);
 		order.setPatient(patient);
 		order.setCareSetting(careSetting);
-		order.setConcept(Context.getOrderService().getNonCodedDrugConcept());
+		order.setConcept(Context.getDrugService().getNonCodedDrugConcept());
 		order.setOrderer(Context.getProviderService().getProvider(1));
 		order.setDateActivated(encounter.getEncounterDatetime());
 		order.setOrderType(orderType);

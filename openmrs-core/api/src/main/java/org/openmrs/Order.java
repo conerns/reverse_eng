@@ -76,31 +76,32 @@ public class Order extends BaseCustomizableData<OrderAttribute> implements FormR
 	
 	private String instructions;
 	
+	// OrderDates
 	private Date dateActivated;
-	
 	private Date autoExpireDate;
+	private Date scheduledDate;
+	private Date dateStopped;
 	
 	private Encounter encounter;
 	
 	private Provider orderer;
 	
-	private Date dateStopped;
-	
 	private Concept orderReason;
+	private String orderReasonNonCoded;
 	
 	private String accessionNumber;
-	
-	private String orderReasonNonCoded;
 	
 	private Urgency urgency = Urgency.ROUTINE;
 	
 	private String orderNumber;
 	
-	private String commentToFulfiller;
+	
+	private String commentToFulfiller; //Represents the status of an order received from a fulfiller 
+	private FulfillerStatus fulfillerStatus;
+	private String fulfillerComment; // Represents the comment that goes along with with fulfiller status
+	
 	
 	private CareSetting careSetting;
-	
-	private Date scheduledDate;
 	
 	private String formNamespaceAndPath;
 	
@@ -129,16 +130,6 @@ public class Order extends BaseCustomizableData<OrderAttribute> implements FormR
 	 */
 	private OrderGroup orderGroup;
 	
-	/**
-	 * Represents the status of an order received from a fulfiller 
-	 * @see FulfillerStatus
-	 */
-	private FulfillerStatus fulfillerStatus;
-	
-	/**
-	 * Represents the comment that goes along with with fulfiller status
-	 */	
-	private String fulfillerComment;
 
 	// Constructors
 	

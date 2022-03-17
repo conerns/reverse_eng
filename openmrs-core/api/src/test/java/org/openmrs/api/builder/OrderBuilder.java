@@ -59,7 +59,7 @@ public class OrderBuilder {
 	}
 	
 	public OrderBuilder withCareSetting(Integer careSettingID) {
-		order.setCareSetting(orderService.getCareSetting(careSettingID));
+		order.setCareSetting(Context.getCareSettingService().getCareSetting(careSettingID));
 		return this;
 	}
 	
@@ -79,7 +79,7 @@ public class OrderBuilder {
 	}
 	
 	public OrderBuilder withOrderType(Integer orderTypeID) {
-		order.setOrderType(orderService.getOrderType(orderTypeID));
+		order.setOrderType(Context.getOrderTypeService().getOrderType(orderTypeID));
 		return this;
 	}
 	

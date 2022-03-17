@@ -18,6 +18,7 @@ import org.openmrs.DrugOrder;
 import org.openmrs.Duration;
 import org.openmrs.Order;
 import org.openmrs.annotation.Handler;
+import org.openmrs.api.DrugService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
@@ -119,7 +120,7 @@ public class DrugOrderValidator extends OrderValidator implements Validator {
 
 
 		if(requireDrug){
-			if(order.getConcept() != null && OpenmrsUtil.nullSafeEquals(orderService.getNonCodedDrugConcept(), order.getConcept())){
+			if(order.getConcept() != null && OpenmrsUtil.nullSafeEquals(Context.getDrugService().getNonCodedDrugConcept(), order.getConcept())){
 				if(order.getDrug() == null && !order.isNonCodedDrug()){
 					errors.rejectValue("drugNonCoded", "DrugOrder.error.drugNonCodedIsRequired");
 				}
@@ -162,21 +163,21 @@ public class DrugOrderValidator extends OrderValidator implements Validator {
 	}
 	
 	private void validateUnitsAreAmongAllowedConcepts(Errors errors, DrugOrder order) {
-		OrderService orderService = Context.getOrderService();
+		DrugService drugService = Context.getDrugService();
 		if (order.getDoseUnits() != null) {
-			List<Concept> drugDosingUnits = orderService.getDrugDosingUnits();
+			List<Concept> drugDosingUnits = drugService.getDrugDosingUnits();
 			if (!drugDosingUnits.contains(order.getDoseUnits())) {
 				errors.rejectValue("doseUnits", "DrugOrder.error.notAmongAllowedConcepts");
 			}
 		}
 		if (order.getQuantityUnits() != null) {
-			List<Concept> drugDispensingUnits = orderService.getDrugDispensingUnits();
+			List<Concept> drugDispensingUnits = drugService.getDrugDispensingUnits();
 			if (!drugDispensingUnits.contains(order.getQuantityUnits())) {
 				errors.rejectValue("quantityUnits", "DrugOrder.error.notAmongAllowedConcepts");
 			}
 		}
 		if (order.getDurationUnits() != null) {
-			List<Concept> drugDurationUnits = orderService.getDurationUnits();
+			List<Concept> drugDurationUnits = drugService.getDurationUnits();
 			if (!drugDurationUnits.contains(order.getDurationUnits())) {
 				errors.rejectValue("durationUnits", "DrugOrder.error.notAmongAllowedConcepts");
 			}
@@ -185,7 +186,7 @@ public class DrugOrderValidator extends OrderValidator implements Validator {
 			}
 		}
 		if (order.getRoute() != null) {
-			List<Concept> routes = orderService.getDrugRoutes();
+			List<Concept> routes = Context.getDrugService().getDrugRoutes();
 			if (!routes.contains(order.getRoute())) {
 				errors.rejectValue("route", "DrugOrder.error.routeNotAmongAllowedConcepts");
 			}

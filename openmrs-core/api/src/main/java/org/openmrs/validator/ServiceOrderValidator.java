@@ -54,7 +54,7 @@ public class ServiceOrderValidator extends OrderValidator implements Validator {
 			errors.reject("error.general");
 		} else {
 			if (order.getSpecimenSource() != null) {
-				List<Concept> specimenSources = Context.getOrderService().getTestSpecimenSources();
+				List<Concept> specimenSources = Context.getDrugService().getTestSpecimenSources();
 				if (!specimenSources.contains(order.getSpecimenSource())) {
 					errors.rejectValue("specimenSource", "ServiceOrder.error.specimenSourceNotAmongAllowedConcepts");
 				}

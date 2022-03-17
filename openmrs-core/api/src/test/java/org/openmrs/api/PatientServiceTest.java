@@ -158,7 +158,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 	}
 
 	private boolean hasActiveOrderOfType(Patient patient, String orderTypeName) {
-		OrderType drugOrder = Context.getOrderService().getOrderTypeByName(orderTypeName);
+		OrderType drugOrder = Context.getOrderTypeService().getOrderTypeByName(orderTypeName);
 		List<Order> preferredPatientOrders = Context.getOrderService().getAllOrdersByPatient(patient).stream()
 				.filter(Order::isActive)
 				.filter(order -> Objects.equals(drugOrder, order.getOrderType()))
@@ -3243,7 +3243,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 	public void mergePatients_shouldNotFailIfMultiplePatientsHaveActiveOrderOfDifferentTypes() throws Exception {
 		Patient preferredPatient = patientService.getPatient(2);
 		Patient notPreferredPatient = patientService.getPatient(7);
-		OrderType DrugOrder = Context.getOrderService().getOrderTypeByName("Drug order");
+		OrderType DrugOrder = Context.getOrderTypeService().getOrderTypeByName("Drug order");
 		voidOrdersForType(Collections.singleton(preferredPatient), DrugOrder);
 		
 		assertFalse(hasActiveOrderOfType(preferredPatient, "Drug order"), "Test pre-request: No Active Drug order in " + preferredPatient);

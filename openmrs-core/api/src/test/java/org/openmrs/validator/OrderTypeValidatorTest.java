@@ -102,7 +102,7 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	@Test
 	public void validate_shouldFailIfNameIsADuplicate() {
 		OrderType orderType = new OrderType();
-		orderType.setName(orderService.getOrderType(1).getName());
+		orderType.setName(Context.getOrderTypeService().getOrderType(1).getName());
 		Errors errors = new BindException(orderType, "orderType");
 		new OrderTypeValidator().validate(orderType, errors);
 		assertTrue(errors.hasFieldErrors("name"));
@@ -115,7 +115,7 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	public void validate_shouldFailIfConceptClassIsADuplicate() {
 		OrderType orderType = new OrderType();
 		orderType.setName("concept class test");
-		OrderType existing = orderService.getOrderType(2);
+		OrderType existing = Context.getOrderTypeService().getOrderType(2);
 		assertEquals(1, existing.getConceptClasses().size());
 		orderType.addConceptClass(existing.getConceptClasses().iterator().next());
 		Errors errors = new BindException(orderType, "orderType");
@@ -128,8 +128,8 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfParentIsAmongItsDescendants() {
-		OrderType orderType = orderService.getOrderType(2);
-		OrderType descendant = orderService.getOrderType(9);
+		OrderType orderType = Context.getOrderTypeService().getOrderType(2);
+		OrderType descendant = Context.getOrderTypeService().getOrderType(9);
 		assertTrue(descendant.getParent().getParent().equals(orderType));
 		orderType.setParent(descendant);
 		Errors errors = new BindException(orderType, "orderType");
@@ -142,8 +142,8 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldFailIfParentIsAlsoADirectChild() {
-		OrderType orderType = orderService.getOrderType(8);
-		OrderType descendant = orderService.getOrderType(12);
+		OrderType orderType = Context.getOrderTypeService().getOrderType(8);
+		OrderType descendant = Context.getOrderTypeService().getOrderType(12);
 		assertTrue(descendant.getParent().equals(orderType));
 		orderType.setParent(descendant);
 		Errors errors = new BindException(orderType, "orderType");
@@ -173,7 +173,7 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldPassIfAllFieldsAreCorrectForAnExistingOrderType() {
-		OrderType orderType = orderService.getOrderType(1);
+		OrderType orderType = Context.getOrderTypeService().getOrderType(1);
 		assertNotNull(orderType);
 		Errors errors = new BindException(orderType, "orderType");
 		new OrderTypeValidator().validate(orderType, errors);
@@ -186,10 +186,10 @@ public class OrderTypeValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void validate_shouldBeInvokedWhenAnOrderTypeIsSaved() {
-		OrderType orderType = orderService.getOrderType(1);
+		OrderType orderType = Context.getOrderTypeService().getOrderType(1);
 		orderType.setName(null);
 		String expectedMsg = "'" + orderType + "' failed to validate with reason: name: " + Context.getMessageSourceService().getMessage("error.name");
-		APIException exception = assertThrows(APIException.class, () -> orderService.saveOrderType(orderType));
+		APIException exception = assertThrows(APIException.class, () -> Context.getOrderTypeService().saveOrderType(orderType));
 		assertThat(exception.getMessage(), is(expectedMsg));
 	}
 	

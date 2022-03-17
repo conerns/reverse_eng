@@ -12,13 +12,11 @@ package org.openmrs.api.builder;
 
 import java.util.Date;
 
+import liquibase.pro.packaged.C;
 import org.openmrs.DosingInstructions;
 import org.openmrs.DrugOrder;
 import org.openmrs.Order;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.OrderService;
-import org.openmrs.api.PatientService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 
 public class DrugOrderBuilder {
@@ -33,12 +31,18 @@ public class DrugOrderBuilder {
 	
 	private final ConceptService conceptService;
 	
+	private final CareSettingService careSettingService;
+	
+	private final OrderTypeService orderTypeService;
+	
 	public DrugOrderBuilder() {
 		patientService = Context.getPatientService();
 		conceptService = Context.getConceptService();
 		orderService = Context.getOrderService();
 		encounterService = Context.getEncounterService();
 		drugOrder = new DrugOrder();
+		careSettingService = Context.getCareSettingService();
+		orderTypeService = Context.getOrderTypeService();
 	}
 	
 	public DrugOrder build() {
@@ -91,7 +95,7 @@ public class DrugOrderBuilder {
 	}
 	
 	public DrugOrderBuilder withCareSetting(Integer careSettingID) {
-		drugOrder.setCareSetting(orderService.getCareSetting(careSettingID));
+		drugOrder.setCareSetting(careSettingService.getCareSetting(careSettingID));
 		return this;
 	}
 	
@@ -111,7 +115,7 @@ public class DrugOrderBuilder {
 	}
 	
 	public DrugOrderBuilder withOrderType(Integer orderTypeID) {
-		drugOrder.setOrderType(orderService.getOrderType(orderTypeID));
+		drugOrder.setOrderType(orderTypeService.getOrderType(orderTypeID));
 		return this;
 	}
 	

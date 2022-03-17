@@ -38,6 +38,8 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 	
 	protected OrderService orderService;
 	
+	protected OrderTypeService orderTypeService;
+	
 	protected OrderSetService orderSetService;
 	
 	protected ConceptService conceptService;
@@ -63,6 +65,9 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		}
 		if (null == conceptService) {
 			conceptService = Context.getConceptService();
+		}
+		if (null == orderTypeService){
+			orderTypeService = Context.getOrderTypeService();
 		}
 	}
 	
@@ -139,7 +144,7 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		Integer initialSize = orderSet.getOrderSetMembers().size();
 		
 		OrderSetMember newOrderSetMember = new OrderSetMember();
-		newOrderSetMember.setOrderType(orderService.getOrderType(100));
+		newOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		newOrderSetMember.setConcept(conceptService.getConcept(1002));
 		newOrderSetMember.setCreator(new User(1));
 		newOrderSetMember.setDateCreated(new Date());
@@ -165,7 +170,7 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		Integer initialSize = orderSet.getOrderSetMembers().size();
 		
 		OrderSetMember newOrderSetMember = new OrderSetMember();
-		newOrderSetMember.setOrderType(orderService.getOrderType(100));
+		newOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		newOrderSetMember.setConcept(conceptService.getConcept(1002));
 		newOrderSetMember.setCreator(new User(1));
 		newOrderSetMember.setDateCreated(new Date());
@@ -185,7 +190,7 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		
 		Integer newPosition = savedOrderSet.getOrderSetMembers().size() + 1;
 		OrderSetMember orderSetMemberToBeAddedAtPosition = new OrderSetMember();
-		orderSetMemberToBeAddedAtPosition.setOrderType(orderService.getOrderType(100));
+		orderSetMemberToBeAddedAtPosition.setOrderType(orderTypeService.getOrderType(100));
 		orderSetMemberToBeAddedAtPosition.setConcept(conceptService.getConcept(1002));
 		orderSetMemberToBeAddedAtPosition.setCreator(new User(1));
 		orderSetMemberToBeAddedAtPosition.setDateCreated(new Date());
@@ -205,21 +210,21 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		newOrderSet.setDescription("New Order Set");
 		
 		OrderSetMember firstOrderSetMember = new OrderSetMember();
-		firstOrderSetMember.setOrderType(orderService.getOrderType(100));
+		firstOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		firstOrderSetMember.setConcept(conceptService.getConcept(1000));
 		firstOrderSetMember.setCreator(new User(1));
 		firstOrderSetMember.setDateCreated(new Date());
 		firstOrderSetMember.setRetired(false);
 		
 		OrderSetMember secondOrderSetMember = new OrderSetMember();
-		secondOrderSetMember.setOrderType(orderService.getOrderType(100));
+		secondOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		secondOrderSetMember.setConcept(conceptService.getConcept(1001));
 		secondOrderSetMember.setCreator(new User(1));
 		secondOrderSetMember.setDateCreated(new Date());
 		secondOrderSetMember.setRetired(false);
 		
 		OrderSetMember thirdOrderSetMember = new OrderSetMember();
-		thirdOrderSetMember.setOrderType(orderService.getOrderType(100));
+		thirdOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		thirdOrderSetMember.setConcept(conceptService.getConcept(1001));
 		thirdOrderSetMember.setCreator(new User(1));
 		thirdOrderSetMember.setDateCreated(new Date());
@@ -245,7 +250,7 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		Integer initialSize = orderSet.getOrderSetMembers().size();
 		
 		OrderSetMember newOrderSetMember = new OrderSetMember();
-		newOrderSetMember.setOrderType(orderService.getOrderType(100));
+		newOrderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		newOrderSetMember.setConcept(conceptService.getConcept(1002));
 		newOrderSetMember.setCreator(new User(1));
 		newOrderSetMember.setDateCreated(new Date());
@@ -341,7 +346,7 @@ public class OrderSetServiceTest extends BaseContextSensitiveTest {
 		orderSet.setOperator(OrderSet.Operator.ALL);
 		
 		OrderSetMember orderSetMember = new OrderSetMember();
-		orderSetMember.setOrderType(orderService.getOrderType(100));
+		orderSetMember.setOrderType(orderTypeService.getOrderType(100));
 		orderSetMember.setConcept(conceptService.getConcept(1000));
 		orderSetMember.setCreator(new User(1));
 		orderSetMember.setDateCreated(new Date());

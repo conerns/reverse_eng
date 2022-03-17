@@ -45,11 +45,11 @@ public class TestOrderValidatorTest extends BaseContextSensitiveTest {
 		ConceptService conceptService = Context.getConceptService();
 		Concept specimenSource = conceptService.getConcept(3);
 		OrderService orderService = Context.getOrderService();
-		assertThat(specimenSource, not(isIn(orderService.getDrugRoutes())));
+		assertThat(specimenSource, not(isIn(Context.getDrugService().getDrugRoutes())));
 		TestOrder order = new TestOrder();
 		Patient patient = new Patient(8);
 		order.setPatient(patient);
-		order.setOrderType(orderService.getOrderTypeByName("Test order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Test order"));
 		order.setConcept(conceptService.getConcept(5497));
 		order.setOrderer(new Provider());
 		order.setCareSetting(new CareSetting());
@@ -74,11 +74,11 @@ public class TestOrderValidatorTest extends BaseContextSensitiveTest {
 		ConceptService conceptService = Context.getConceptService();
 		Concept specimenSource = conceptService.getConcept(22);
 		OrderService orderService = Context.getOrderService();
-		assertThat(specimenSource, isIn(orderService.getDrugRoutes()));
+		assertThat(specimenSource, isIn(Context.getDrugService().getDrugRoutes()));
 		TestOrder order = new TestOrder();
 		Patient patient = new Patient(8);
 		order.setPatient(patient);
-		order.setOrderType(orderService.getOrderTypeByName("Test order"));
+		order.setOrderType(Context.getOrderTypeService().getOrderTypeByName("Test order"));
 		order.setConcept(conceptService.getConcept(5497));
 		order.setOrderer(Context.getProviderService().getProvider(1));
 		order.setCareSetting(new CareSetting());

@@ -27,12 +27,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
-import org.openmrs.api.APIException;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.OrderService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.ProviderService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.order.OrderUtilTest;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
@@ -61,6 +56,15 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 	@Autowired
 	private EncounterService encounterService;
 	
+	@Autowired
+	private OrderTypeService orderTypeService;
+	
+	@Autowired
+	private OrderFrequencyService orderFrequencyService;
+	
+	@Autowired
+	private CareSettingService careSettingService;
+	
 	
 	@Test
 	public void shouldGetTheActiveOrdersForAPatient() {
@@ -75,7 +79,7 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 	@Test
 	public void shouldGetTheActiveDrugOrdersForAPatient() {
 		Patient patient = patientService.getPatient(2);
-		List<Order> activeDrugOrders = orderService.getActiveOrders(patient, orderService.getOrderTypeByName("Drug order"),
+		List<Order> activeDrugOrders = orderService.getActiveOrders(patient, orderTypeService.getOrderTypeByName("Drug order"),
 		    null, null);
 		assertEquals(4, activeDrugOrders.size());
 		Order[] expectedDrugOrders = { orderService.getOrder(222), orderService.getOrder(3), orderService.getOrder(444),
@@ -87,8 +91,8 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 	public void shouldPlaceADrugOrder() {
 		executeDataSet(ORDER_ENTRY_DATASET_XML);
 		Patient patient = patientService.getPatient(7);
-		CareSetting careSetting = orderService.getCareSetting(1);
-		int activeDrugOrderCount = orderService.getActiveOrders(patient, orderService.getOrderTypeByName("Drug order"),
+		CareSetting careSetting = careSettingService.getCareSetting(1);
+		int activeDrugOrderCount = orderService.getActiveOrders(patient, orderTypeService.getOrderTypeByName("Drug order"),
 		    careSetting, null).size();
 		
 		//place drug order
@@ -105,12 +109,12 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		order.setDoseUnits(conceptService.getConcept(50));
 		order.setQuantity(20.0);
 		order.setQuantityUnits(conceptService.getConcept(51));
-		order.setFrequency(orderService.getOrderFrequency(3000));
+		order.setFrequency(orderFrequencyService.getOrderFrequency(3000));
 		order.setRoute(conceptService.getConcept(22));
 		order.setNumRefills(10);
 		
 		orderService.saveOrder(order, null);
-		List<Order> activeOrders = orderService.getActiveOrders(patient, orderService.getOrderTypeByName("Drug order"),
+		List<Order> activeOrders = orderService.getActiveOrders(patient, orderTypeService.getOrderTypeByName("Drug order"),
 		    careSetting, null);
 		assertEquals(++activeDrugOrderCount, activeOrders.size());
 		assertTrue(activeOrders.contains(order));
@@ -120,8 +124,8 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 	public void shouldPlaceATestOrder() {
 		executeDataSet(ORDER_ENTRY_DATASET_XML);
 		Patient patient = patientService.getPatient(7);
-		CareSetting careSetting = orderService.getCareSetting(1);
-		int activeTestOrderCount = orderService.getActiveOrders(patient, orderService.getOrderTypeByName("Test order"),
+		CareSetting careSetting = careSettingService.getCareSetting(1);
+		int activeTestOrderCount = orderService.getActiveOrders(patient, orderTypeService.getOrderTypeByName("Test order"),
 		    careSetting, null).size();
 		
 		//place test order
@@ -134,14 +138,14 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		order.setEncounter(encounter);
 		order.setDateActivated(encounter.getEncounterDatetime());
 		order.setClinicalHistory("Patient had a negative reaction to the test in the past");
-		order.setFrequency(orderService.getOrderFrequency(3000));
+		order.setFrequency(orderFrequencyService.getOrderFrequency(3000));
 		order.setSpecimenSource(conceptService.getConcept(22));
 		order.setNumberOfRepeats(3);
 		order.setFulfillerStatus(Order.FulfillerStatus.RECEIVED);
 		order.setFulfillerComment("A comment from the filler");
 		
 		orderService.saveOrder(order, null);
-		List<Order> activeOrders = orderService.getActiveOrders(patient, orderService.getOrderTypeByName("Test order"),
+		List<Order> activeOrders = orderService.getActiveOrders(patient, orderTypeService.getOrderTypeByName("Test order"),
 		    careSetting, null);
 		assertEquals(++activeTestOrderCount, activeOrders.size());
 		assertTrue(activeOrders.contains(order));
@@ -348,7 +352,7 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 	public void shouldAllowRetrospectiveDataEntryOfOrders() {
 		Order order = new TestOrder();
 		order.setPatient(patientService.getPatient(2));
-		order.setCareSetting(orderService.getCareSetting(2));
+		order.setCareSetting(careSettingService.getCareSetting(2));
 		order.setConcept(conceptService.getConcept(5089));
 		order.setEncounter(encounterService.getEncounter(6));
 		order.setOrderer(providerService.getProvider(1));
@@ -381,7 +385,7 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		DrugOrder order = new DrugOrder();
 		order.setEncounter(encounter);
 		order.setPatient(patient);
-		order.setCareSetting(orderService.getCareSetting(2));
+		order.setCareSetting(careSettingService.getCareSetting(2));
 		order.setOrderer(Context.getProviderService().getProvider(1));
 		order.setDateActivated(encounter.getEncounterDatetime());
 		order.setDrug(conceptService.getDrug(2));
@@ -389,9 +393,9 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		order.setDose(300.0);
 		order.setDoseUnits(conceptService.getConcept(50));
 		order.setQuantity(20.0);
-		order.setOrderType(orderService.getOrderType(1));
+		order.setOrderType(orderTypeService.getOrderType(1));
 		order.setQuantityUnits(conceptService.getConcept(51));
-		order.setFrequency(orderService.getOrderFrequency(1));
+		order.setFrequency(orderFrequencyService.getOrderFrequency(1));
 		order.setRoute(conceptService.getConcept(22));
 		order.setDuration(10);
 		order.setDurationUnits(conceptService.getConcept(1001));
@@ -407,7 +411,7 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		DrugOrder order2 = new DrugOrder();
 		order2.setEncounter(encounter2);
 		order2.setPatient(patient);
-		order2.setCareSetting(orderService.getCareSetting(2));
+		order2.setCareSetting(careSettingService.getCareSetting(2));
 		order2.setOrderer(Context.getProviderService().getProvider(1));
 		order2.setDateActivated(encounter2.getEncounterDatetime());
 		order2.setDrug(conceptService.getDrug(2));
@@ -415,9 +419,9 @@ public class OrderEntryIntegrationTest extends BaseContextSensitiveTest {
 		order2.setDose(300.0);
 		order2.setDoseUnits(conceptService.getConcept(50));
 		order2.setQuantity(20.0);
-		order2.setOrderType(orderService.getOrderType(1));
+		order2.setOrderType(orderTypeService.getOrderType(1));
 		order2.setQuantityUnits(conceptService.getConcept(51));
-		order2.setFrequency(orderService.getOrderFrequency(1));
+		order2.setFrequency(orderFrequencyService.getOrderFrequency(1));
 		order2.setRoute(conceptService.getConcept(22));
 		order2.setDuration(20);
 		order2.setDurationUnits(conceptService.getConcept(1001));

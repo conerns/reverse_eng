@@ -121,7 +121,6 @@
 		<property name="messageSourceService" ref="messageSourceService"/>
 		<property name="visitService" ref="visitService"/>
 		<property name="providerService" ref="providerService"/>
-		
 		<property name="userRolesService" ref="userRolesService"/>
 		<property name="visitTypeService" ref="visitTypeService"/>
 		<property name="visitAttributeService" ref="visitAttributeService"/>
@@ -132,6 +131,13 @@
 		<property name="patientProgramService" ref="patientProgramService"/>
 		<property name="conceptStateService" ref="conceptStateService"/>
 		<property name="programAttributeTypeService" ref="programAttributeTypeService"/>
+
+		<property name="orderTypeService" ref="orderTypeService"/>
+		<property name="orderGroupService" ref="orderGroupService"/>
+		<property name="orderFrequencyService" ref="orderFrequencyService"/>
+		<property name="orderAttributeService" ref="orderAttributeService"/>
+		<property name="careSettingService" ref="careSettingService"/>
+		<property name="drugService" ref="drugService"/>
 	</bean>
 
 	<bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
@@ -248,6 +254,22 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
+	<bean id="orderTypeDAO" class="org.openmrs.api.db.hibernate.HibernateOrderTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="orderAttributeDAO" class="org.openmrs.api.db.hibernate.HibernateOrderAttributeDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="orderGroupDAO" class="org.openmrs.api.db.hibernate.HibernateOrderGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="orderFrequencyDAO" class="org.openmrs.api.db.hibernate.HibernateOrderFrequencyDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="careSettingDAO" class="org.openmrs.api.db.hibernate.HibernateCareSettingDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
 
 	<!--  **************************  SCHEDULER SERVICE  *************************  -->
 	<!-- 
@@ -316,6 +338,24 @@
 	<bean id="orderServiceTarget" class="org.openmrs.api.impl.OrderServiceImpl">
 		<property name="orderDAO" ref="orderDAO"/>
 	</bean>
+
+	<bean id="orderTypeServiceTarget" class="org.openmrs.api.impl.OrderTypeServiceImpl">
+		<property name="orderTypeDAO" ref="orderTypeDAO"/>
+	</bean>
+	<bean id="orderGroupServiceTarget" class="org.openmrs.api.impl.OrderGroupServiceImpl">
+		<property name="orderGroupDAO" ref="orderGroupDAO"/>
+	</bean>
+	<bean id="orderFrequencyServiceTarget" class="org.openmrs.api.impl.OrderFrequencyServiceImpl">
+		<property name="orderFrequencyDAO" ref="orderFrequencyDAO"/>
+	</bean>
+	<bean id="orderAttributeServiceTarget" class="org.openmrs.api.impl.OrderAttributeServiceImpl">
+		<property name="orderAttributeDAO" ref="orderAttributeDAO"/>
+	</bean>
+	<bean id="drugServiceTarget" class="org.openmrs.api.impl.DrugServiceImpl" />
+	<bean id="careSettingServiceTarget" class="org.openmrs.api.impl.CareSettingServiceImpl">
+		<property name="careSettingDAO" ref="careSettingDAO"/>
+	</bean>
+	
 	<bean id="conditionServiceTarget" class="org.openmrs.api.impl.ConditionServiceImpl">
 		<property name="conditionDAO" ref="conditionDAO"/>
 	</bean>
@@ -487,6 +527,44 @@
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>
+	
+	<bean id="orderTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="orderTypeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="orderGroupService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="orderGroupServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="orderFrequencyService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="orderFrequencyServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="orderAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="orderAttributeServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="drugService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="drugServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="careSettingService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="careSettingServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	
 	<bean id="conditionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="conditionServiceTarget"/>
