@@ -44,7 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.util.OpenmrsClassLoader;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,7 +124,7 @@ public class ModuleClassLoader extends URLClassLoader {
 			}
 		} else {
 			for (URL url : urls) {
-				providedPackages.addAll(ModuleUtil.getPackagesFromFile(OpenmrsUtil.url2file(url)));
+				providedPackages.addAll(ModuleUtil.getPackagesFromFile(OpenmrsExtUtil.url2file(url)));
 			}
 		}
 	}
@@ -247,7 +247,7 @@ public class ModuleClassLoader extends URLClassLoader {
 			try {
 				in = new FileInputStream(module.getFile());
 				out = new FileOutputStream(tmpModuleJar);
-				OpenmrsUtil.copyFile(in, out);
+				OpenmrsExtUtil.copyFile(in, out);
 			}
 			catch (IOException io) {
 				log.warn("Unable to copy tmpModuleFile", io);
@@ -786,12 +786,12 @@ public class ModuleClassLoader extends URLClassLoader {
 			result = new File(libCacheModuleFolder, libname);
 			
 			// copy the file over to the cache
-			InputStream in = OpenmrsUtil.getResourceInputStream(libUrl);
+			InputStream in = OpenmrsExtUtil.getResourceInputStream(libUrl);
 			try {
 				FileOutputStream fileOut = new FileOutputStream(result);
 				OutputStream out = new BufferedOutputStream(fileOut);
 				try {
-					OpenmrsUtil.copyFile(in, out);
+					OpenmrsExtUtil.copyFile(in, out);
 				}
 				finally {
 					try {

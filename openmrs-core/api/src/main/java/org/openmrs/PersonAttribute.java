@@ -26,7 +26,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.hibernate.search.LuceneAnalyzers;
 import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -338,7 +338,7 @@ public class PersonAttribute extends BaseChangeableOpenmrsData implements java.i
 		@Override
 		public int compare(PersonAttribute pa1, PersonAttribute pa2) {
 			int retValue;
-			if ((retValue = OpenmrsUtil.compareWithNullAsGreatest(pa1.getAttributeType(), pa2.getAttributeType())) != 0) {
+			if ((retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(pa1.getAttributeType(), pa2.getAttributeType())) != 0) {
 				return retValue;
 			}
 			
@@ -346,15 +346,15 @@ public class PersonAttribute extends BaseChangeableOpenmrsData implements java.i
 				return retValue;
 			}
 			
-			if ((retValue = OpenmrsUtil.compareWithNullAsLatest(pa1.getDateCreated(), pa2.getDateCreated())) != 0) {
+			if ((retValue = OpenmrsCompareUtil.compareWithNullAsLatest(pa1.getDateCreated(), pa2.getDateCreated())) != 0) {
 				return retValue;
 			}
 			
-			if ((retValue = OpenmrsUtil.compareWithNullAsGreatest(pa1.getValue(), pa2.getValue())) != 0) {
+			if ((retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(pa1.getValue(), pa2.getValue())) != 0) {
 				return retValue;
 			}
 			
-			return OpenmrsUtil.compareWithNullAsGreatest(pa1.getPersonAttributeId(), pa2.getPersonAttributeId());
+			return OpenmrsCompareUtil.compareWithNullAsGreatest(pa1.getPersonAttributeId(), pa2.getPersonAttributeId());
 		}
 	}
 	

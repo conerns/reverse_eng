@@ -20,7 +20,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -87,7 +87,7 @@ public class BinaryStreamHandler extends AbstractHandler implements ComplexObsHa
 		Assert.notNull(complexData, "Complex data must not be null");
 		
 		// Get the Mime Type and set it
-		String mimeType = OpenmrsUtil.getFileMimeType(file);
+		String mimeType = OpenmrsExtUtil.getFileMimeType(file);
 		complexData.setMimeType(mimeType);
 		
 		obs.setComplexData(complexData);
@@ -114,7 +114,7 @@ public class BinaryStreamHandler extends AbstractHandler implements ComplexObsHa
 			InputStream in = (InputStream) obs.getComplexData().getData();
 			File outfile = getOutputFileToWrite(obs);
 			OutputStream out = new FileOutputStream(outfile, false);
-			OpenmrsUtil.copyFile(in, out);
+			OpenmrsExtUtil.copyFile(in, out);
 			
 			// Store the filename in the Obs
 			obs.setComplexData(null);

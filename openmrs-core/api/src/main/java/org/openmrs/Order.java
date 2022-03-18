@@ -12,11 +12,9 @@ package org.openmrs;
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.hibernate.HibernateUtil;
 import org.openmrs.order.OrderUtil;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Encapsulates information about the clinical action of a provider requesting something for a
@@ -406,7 +404,7 @@ public class Order extends BaseCustomizableData<OrderAttribute> implements FormR
 		if (checkDate == null) {
 			checkDate = new Date();
 		}
-		return OpenmrsUtil.compare(dateActivated, checkDate) <= 0;
+		return OpenmrsCompareUtil.compare(dateActivated, checkDate) <= 0;
 	}
 	
 	/**
@@ -797,7 +795,7 @@ public class Order extends BaseCustomizableData<OrderAttribute> implements FormR
 		if (otherOrder == null) {
 			return false;
 		}
-		return OpenmrsUtil.nullSafeEquals(this.getConcept(), otherOrder.getConcept());
+		return OpenmrsCompareUtil.nullSafeEquals(this.getConcept(), otherOrder.getConcept());
 	}
 	
 	/**

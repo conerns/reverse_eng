@@ -30,8 +30,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.db.hibernate.search.LuceneAnalyzers;
 import org.openmrs.layout.name.NameSupport;
 import org.openmrs.layout.name.NameTemplate;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -532,25 +532,25 @@ public class PersonName extends BaseChangeableOpenmrsData implements java.io.Ser
 				ret = pn2.getPreferred().compareTo(pn1.getPreferred());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getFamilyName(), pn2.getFamilyName());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getFamilyName(), pn2.getFamilyName());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getFamilyName2(), pn2.getFamilyName2());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getFamilyName2(), pn2.getFamilyName2());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getGivenName(), pn2.getGivenName());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getGivenName(), pn2.getGivenName());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getMiddleName(), pn2.getMiddleName());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getMiddleName(), pn2.getMiddleName());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getFamilyNamePrefix(), pn2.getFamilyNamePrefix());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getFamilyNamePrefix(), pn2.getFamilyNamePrefix());
 			}
 			if (ret == 0) {
-				ret = OpenmrsUtil.compareWithNullAsGreatest(pn1.getFamilyNameSuffix(), pn2.getFamilyNameSuffix());
+				ret = OpenmrsCompareUtil.compareWithNullAsGreatest(pn1.getFamilyNameSuffix(), pn2.getFamilyNameSuffix());
 			}
 			if (ret == 0 && pn1.getDateCreated() != null) {
-				ret = OpenmrsUtil.compareWithNullAsLatest(pn1.getDateCreated(), pn2.getDateCreated());
+				ret = OpenmrsCompareUtil.compareWithNullAsLatest(pn1.getDateCreated(), pn2.getDateCreated());
 			}
 			
 			// if we've gotten this far, just check all name values. If they are

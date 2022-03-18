@@ -30,6 +30,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
 import org.openmrs.util.DatabaseUtil;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.openmrs.util.OpenmrsUtil;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -106,7 +107,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 	public static void createOrderEntryUpgradeFileWithTestData(String propString) throws IOException {
 		Properties props = new Properties();
 		props.load(new StringReader(propString));
-		String appDataDir = OpenmrsUtil.getApplicationDataDirectory();
+		String appDataDir = OpenmrsExtUtil.getApplicationDataDirectory();
 		File propFile = new File(appDataDir, DatabaseUtil.ORDER_ENTRY_UPGRADE_SETTINGS_FILENAME);
 		props.store(new FileWriter(propFile), null);
 		propFile.deleteOnExit();
@@ -119,7 +120,7 @@ public class Database1_9_7UpgradeIT extends BaseContextSensitiveTest {
 		testAppDataDir.mkdir();
 		
 		System.setProperty(OpenmrsConstants.APPLICATION_DATA_DIRECTORY_RUNTIME_PROPERTY, testAppDataDir.getAbsolutePath());
-		OpenmrsUtil.setApplicationDataDirectory(testAppDataDir.getAbsolutePath());
+		OpenmrsExtUtil.setApplicationDataDirectory(testAppDataDir.getAbsolutePath());
 	}
 	
 	@AfterAll

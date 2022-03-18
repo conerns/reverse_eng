@@ -37,7 +37,7 @@ import org.openmrs.Privilege;
 import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.messagesource.MessageSourceService;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -164,7 +164,7 @@ public class ModuleFileParser {
 
 	private void copyInputStreamToFile(InputStream inputStream, File file) {
 		try (FileOutputStream outputStream = new FileOutputStream(file)) {
-			OpenmrsUtil.copyFile(inputStream, outputStream);
+			OpenmrsExtUtil.copyFile(inputStream, outputStream);
 		}
 		catch (IOException e) {
 			throw new ModuleException(messageSourceService.getMessage("Module.error.cannotCreateFile"), e);

@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.ConceptMapType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -67,7 +67,7 @@ public class ConceptMapTypeValidator implements Validator {
 		
 		name = name.trim();
 		ConceptMapType duplicate = Context.getConceptService().getConceptMapTypeByName(name);
-		if (duplicate != null && !OpenmrsUtil.nullSafeEquals(duplicate.getUuid(), conceptMapType.getUuid())) {
+		if (duplicate != null && !OpenmrsCompareUtil.nullSafeEquals(duplicate.getUuid(), conceptMapType.getUuid())) {
 			errors.rejectValue("name", "ConceptMapType.duplicate.name", "Duplicate concept map type name: " + name);
 		}
 		ValidateUtil.validateFieldLengths(errors, obj.getClass(), "name", "description", "retireReason");

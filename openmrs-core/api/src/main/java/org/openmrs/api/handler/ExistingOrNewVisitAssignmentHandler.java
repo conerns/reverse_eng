@@ -21,11 +21,10 @@ import org.openmrs.Visit;
 import org.openmrs.VisitType;
 import org.openmrs.api.APIException;
 import org.openmrs.api.GlobalPropertyListener;
-import org.openmrs.api.VisitService;
 import org.openmrs.api.VisitTypeService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsDateUtil;
 
 /**
  * This handler assigns an encounter to an existing visit, where appropriate, or creates a new one.
@@ -90,7 +89,7 @@ public class ExistingOrNewVisitAssignmentHandler extends ExistingVisitAssignment
 		visit.setVisitType(visitType);
 		
 		//set stop date time to last millisecond of the encounter day.
-		visit.setStopDatetime(OpenmrsUtil.getLastMomentOfDay(encounter.getEncounterDatetime()));
+		visit.setStopDatetime(OpenmrsDateUtil.getLastMomentOfDay(encounter.getEncounterDatetime()));
 		
 		encounter.setVisit(visit);
 	}

@@ -19,7 +19,7 @@ import org.openmrs.ProgramWorkflow;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
@@ -102,7 +102,7 @@ public class PatientProgramValidator implements Validator {
 		
 		// if enrollment or complete date of program is in future or complete date has come before enroll date we should throw error
 		if (patientProgram.getDateEnrolled() != null
-		        && OpenmrsUtil.compareWithNullAsLatest(patientProgram.getDateCompleted(), patientProgram.getDateEnrolled()) < 0) {
+		        && OpenmrsCompareUtil.compareWithNullAsLatest(patientProgram.getDateCompleted(), patientProgram.getDateEnrolled()) < 0) {
 			errors.rejectValue("dateCompleted", "error.patientProgram.enrolledDateShouldBeBeforecompletionDate");
 		}
 		
@@ -161,7 +161,7 @@ public class PatientProgramValidator implements Validator {
 						continue;
 					}
 					
-					if (OpenmrsUtil.compareWithNullAsLatest(patientState.getEndDate(), patientState.getStartDate()) < 0) {
+					if (OpenmrsCompareUtil.compareWithNullAsLatest(patientState.getEndDate(), patientState.getStartDate()) < 0) {
 						errors.rejectValue("states", "PatientState.error.endDateCannotBeBeforeStartDate");
 						return;
 					} else if (statesAndStartDates.contains(patientState.getState().getUuid() + ""
@@ -187,7 +187,7 @@ public class PatientProgramValidator implements Validator {
 							if (latestState.getEndDate() == null) {
 								errors.rejectValue("states", "PatientProgram.error.cannotBeInMultipleStates");
 								return;
-							} else if (OpenmrsUtil.compareWithNullAsEarliest(patientState.getStartDate(), latestState
+							} else if (OpenmrsCompareUtil.compareWithNullAsEarliest(patientState.getStartDate(), latestState
 							        .getEndDate()) < 0) {
 								//current state was started before a previous state was ended
 								errors.rejectValue("states", "PatientProgram.error.foundOverlappingStates", new Object[] {
@@ -200,7 +200,7 @@ public class PatientProgramValidator implements Validator {
 							if (patientState.getEndDate() == null) {
 								errors.rejectValue("states", "PatientProgram.error.cannotBeInMultipleStates");
 								return;
-							} else if (OpenmrsUtil.compareWithNullAsEarliest(latestState.getStartDate(), patientState
+							} else if (OpenmrsCompareUtil.compareWithNullAsEarliest(latestState.getStartDate(), patientState
 							        .getEndDate()) < 0) {
 								//latest state was started before a previous state was ended
 								errors.rejectValue("states", "PatientProgram.error.foundOverlappingStates");

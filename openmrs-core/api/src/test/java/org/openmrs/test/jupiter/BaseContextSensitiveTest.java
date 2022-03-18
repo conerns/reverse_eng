@@ -78,10 +78,7 @@ import org.openmrs.module.ModuleConstants;
 import org.openmrs.test.SkipBaseSetup;
 import org.openmrs.test.SkipBaseSetupAnnotationExecutionListener;
 import org.openmrs.test.TestUtil;
-import org.openmrs.util.DatabaseUtil;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,7 +349,7 @@ public abstract class BaseContextSensitiveTest {
 			
 			runtimeProperties.setProperty(OpenmrsConstants.APPLICATION_DATA_DIRECTORY_RUNTIME_PROPERTY, tempappdir
 			        .getAbsolutePath());
-			OpenmrsUtil.setApplicationDataDirectory(tempappdir.getAbsolutePath());
+			OpenmrsExtUtil.setApplicationDataDirectory(tempappdir.getAbsolutePath());
 		}
 		catch (IOException e) {
 			log.error("Unable to create temp dir", e);

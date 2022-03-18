@@ -20,7 +20,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class AbstractHandler {
 			filename = uuid + extension;
 		}
 		
-		File dir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(
+		File dir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(
 		    Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		return new File(dir, filename);
 	}
@@ -109,12 +109,12 @@ public class AbstractHandler {
 		log.debug("file path: " + file.getAbsolutePath());
 		ComplexData complexData = null;
 		try {
-			complexData = new ComplexData(file.getName(), OpenmrsUtil.getFileAsBytes(file));
+			complexData = new ComplexData(file.getName(), OpenmrsExtUtil.getFileAsBytes(file));
 		}
 		catch (IOException e) {
 			log.error("Trying to read file: " + file.getAbsolutePath(), e);
 		}
-		String mimeType = OpenmrsUtil.getFileMimeType(file);
+		String mimeType = OpenmrsExtUtil.getFileMimeType(file);
 		complexData.setMimeType(mimeType);
 		obs.setComplexData(complexData);
 		
@@ -147,7 +147,7 @@ public class AbstractHandler {
 	public static File getComplexDataFile(Obs obs) {
 		String[] names = obs.getValueComplex().split("\\|");
 		String filename = names.length < 2 ? names[0] : names[names.length - 1];
-		File dir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(
+		File dir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(
 		    Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		return new File(dir, filename);
 	}

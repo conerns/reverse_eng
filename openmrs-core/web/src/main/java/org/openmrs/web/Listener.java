@@ -46,13 +46,7 @@ import org.openmrs.module.OpenmrsCoreModuleException;
 import org.openmrs.module.web.OpenmrsJspServlet;
 import org.openmrs.module.web.WebModuleUtil;
 import org.openmrs.scheduler.SchedulerUtil;
-import org.openmrs.util.DatabaseUpdateException;
-import org.openmrs.util.DatabaseUpdater;
-import org.openmrs.util.InputRequiredException;
-import org.openmrs.util.MemoryLeakUtil;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.*;
 import org.openmrs.web.filter.initialization.DatabaseDetective;
 import org.openmrs.web.filter.initialization.InitializationFilter;
 import org.openmrs.web.filter.update.UpdateFilter;
@@ -166,7 +160,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 				String appDataRuntimeProperty = props
 				        .getProperty(OpenmrsConstants.APPLICATION_DATA_DIRECTORY_RUNTIME_PROPERTY, null);
 				if (StringUtils.hasLength(appDataRuntimeProperty)) {
-					OpenmrsUtil.setApplicationDataDirectory(null);
+					OpenmrsExtUtil.setApplicationDataDirectory(null);
 				}
 				
 				//ensure that we always log the runtime properties file that we are using
@@ -174,7 +168,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 				Logger contextLog = Logger.getLogger(getClass());
 				contextLog.setLevel(Level.INFO);
 				contextLog.info("Using runtime properties file: "
-				        + OpenmrsUtil.getRuntimePropertiesFilePathName(WebConstants.WEBAPP_NAME));
+				        + OpenmrsProprietiesUtil.getRuntimePropertiesFilePathName(WebConstants.WEBAPP_NAME));
 			}
 			
 			Thread.currentThread().setContextClassLoader(OpenmrsClassLoader.getInstance());
@@ -218,7 +212,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 		}
 		
 		DatabaseDetective databaseDetective = new DatabaseDetective();
-		if (databaseDetective.isDatabaseEmpty(OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME))) {
+		if (databaseDetective.isDatabaseEmpty(OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME))) {
 			return true;
 		}
 		
@@ -292,10 +286,10 @@ public final class Listener extends ContextLoader implements ServletContextListe
 		// "application_data_directory" runtime property is set
 		String appDataDir = servletContext.getInitParameter("application.data.directory");
 		if (StringUtils.hasLength(appDataDir)) {
-			OpenmrsUtil.setApplicationDataDirectory(appDataDir);
+			OpenmrsExtUtil.setApplicationDataDirectory(appDataDir);
 		} else if (!"openmrs".equalsIgnoreCase(WebConstants.WEBAPP_NAME)) {
-			OpenmrsUtil.setApplicationDataDirectory(
-			    Paths.get(OpenmrsUtil.getApplicationDataDirectory(), WebConstants.WEBAPP_NAME).toString());
+			OpenmrsExtUtil.setApplicationDataDirectory(
+			    Paths.get(OpenmrsExtUtil.getApplicationDataDirectory(), WebConstants.WEBAPP_NAME).toString());
 		}
 	}
 	
@@ -332,7 +326,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 			Document doc = db.parse(dwrFile);
 			Element elem = doc.getDocumentElement();
 			elem.setTextContent("");
-			OpenmrsUtil.saveDocument(doc, dwrFile);
+			OpenmrsExtUtil.saveDocument(doc, dwrFile);
 		}
 		catch (Exception e) {
 			// got here because the dwr-modules.xml file is empty for some reason.  This might
@@ -439,7 +433,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 		try {
 			inputStream = new FileInputStream(fromPath);
 			outputStream = new FileOutputStream(toPath);
-			OpenmrsUtil.copyFile(inputStream, outputStream);
+			OpenmrsExtUtil.copyFile(inputStream, outputStream);
 		}
 		catch (IOException io) {
 			return false;
@@ -532,7 +526,7 @@ public final class Listener extends ContextLoader implements ServletContextListe
 			if ("true".equalsIgnoreCase(System.getProperty("FUNCTIONAL_TEST_MODE"))) {
 				//Delete the temporary file created for functional testing and shutdown the mysql daemon
 				String filename = WebConstants.WEBAPP_NAME + "-test-runtime.properties";
-				File file = new File(OpenmrsUtil.getApplicationDataDirectory(), filename);
+				File file = new File(OpenmrsExtUtil.getApplicationDataDirectory(), filename);
 				System.out.println(filename + " delete=" + file.delete());
 				
 			}
@@ -573,10 +567,10 @@ public final class Listener extends ContextLoader implements ServletContextListe
 	 * Finds and loads the runtime properties
 	 *
 	 * @return Properties
-	 * @see OpenmrsUtil#getRuntimeProperties(String)
+	 * @see OpenmrsProprietiesUtil#getRuntimeProperties(String)
 	 */
 	public static Properties getRuntimeProperties() {
-		return OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
+		return OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
 	}
 	
 	/**

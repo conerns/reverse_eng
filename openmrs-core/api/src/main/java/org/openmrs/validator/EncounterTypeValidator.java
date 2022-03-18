@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.EncounterType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -58,7 +58,7 @@ public class EncounterTypeValidator implements Validator {
 			
 			if (!errors.hasErrors()) {
 				EncounterType duplicate = Context.getEncounterService().getEncounterType(encounterType.getName().trim());
-				if (duplicate != null && !OpenmrsUtil.nullSafeEquals(encounterType.getUuid(), duplicate.getUuid())
+				if (duplicate != null && !OpenmrsCompareUtil.nullSafeEquals(encounterType.getUuid(), duplicate.getUuid())
 				        && !duplicate.getRetired()) {
 					errors.rejectValue("name", "EncounterType.error.duplicateEncounterTypeNameSpecified",
 					    "Specified Encounter Type name already exists, please specify another ");

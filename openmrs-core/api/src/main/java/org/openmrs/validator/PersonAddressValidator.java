@@ -18,7 +18,7 @@ import org.openmrs.PersonAddress;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.layout.address.AddressTemplate;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
@@ -79,13 +79,13 @@ public class PersonAddressValidator implements Validator {
 			addressString = personAddress.toString();
 		}
 		
-		if (OpenmrsUtil.compareWithNullAsEarliest(personAddress.getStartDate(), new Date()) > 0) {
+		if (OpenmrsCompareUtil.compareWithNullAsEarliest(personAddress.getStartDate(), new Date()) > 0) {
 			errors.rejectValue("startDate", "PersonAddress.error.startDateInFuture", new Object[] { "'" + addressString
 			        + "'" }, "The Start Date for address '" + addressString + "' shouldn't be in the future");
 		}
 		
 		if (personAddress.getStartDate() != null
-		        && OpenmrsUtil.compareWithNullAsLatest(personAddress.getStartDate(), personAddress.getEndDate()) > 0) {
+		        && OpenmrsCompareUtil.compareWithNullAsLatest(personAddress.getStartDate(), personAddress.getEndDate()) > 0) {
 			errors.rejectValue("endDate", "PersonAddress.error.endDateBeforeStartDate", new Object[] { "'" + addressString
 			        + "'" }, "The End Date for address '" + addressString + "' shouldn't be earlier than the Start Date");
 		}

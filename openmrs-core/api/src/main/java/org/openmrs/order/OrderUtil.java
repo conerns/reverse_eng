@@ -11,7 +11,7 @@ package org.openmrs.order;
 
 import org.openmrs.Order;
 import org.openmrs.OrderType;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * Contains convenience methods for working with Orders.
@@ -77,16 +77,16 @@ public class OrderUtil {
 		}
 		
 		if (order2.getEffectiveStopDate() == null) {
-			return OpenmrsUtil.compare(order1.getEffectiveStopDate(), order2.getEffectiveStartDate()) > -1;
+			return OpenmrsCompareUtil.compare(order1.getEffectiveStopDate(), order2.getEffectiveStartDate()) > -1;
 		}
 		
 		if (order1.getEffectiveStopDate() == null) {
-			return (OpenmrsUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStartDate()) > -1)
-			        && (OpenmrsUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStopDate()) < 1);
+			return (OpenmrsCompareUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStartDate()) > -1)
+			        && (OpenmrsCompareUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStopDate()) < 1);
 		}
 		
-		return (OpenmrsUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStopDate()) < 1)
-		        && (OpenmrsUtil.compare(order1.getEffectiveStopDate(), order2.getEffectiveStartDate()) > -1);
+		return (OpenmrsCompareUtil.compare(order1.getEffectiveStartDate(), order2.getEffectiveStopDate()) < 1)
+		        && (OpenmrsCompareUtil.compare(order1.getEffectiveStopDate(), order2.getEffectiveStartDate()) > -1);
 	}
 	
 }

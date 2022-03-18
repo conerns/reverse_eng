@@ -12,7 +12,8 @@ package org.openmrs;
 import static org.openmrs.Order.Action.DISCONTINUE;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
+import org.openmrs.util.OpenmrsStringUtil;
 
 /**
  * DrugOrder
@@ -528,9 +529,9 @@ public class DrugOrder extends Order {
         DrugOrder otherDrugOrder = (DrugOrder) otherOrder;
 
         if (isNonCodedDrug() || otherDrugOrder.isNonCodedDrug()) {
-            return OpenmrsUtil.nullSafeEqualsIgnoreCase(this.getDrugNonCoded(), otherDrugOrder.getDrugNonCoded());
+            return OpenmrsStringUtil.nullSafeEqualsIgnoreCase(this.getDrugNonCoded(), otherDrugOrder.getDrugNonCoded());
         }
-        return OpenmrsUtil.nullSafeEquals(this.getDrug(), otherDrugOrder.getDrug());
+        return OpenmrsCompareUtil.nullSafeEquals(this.getDrug(), otherDrugOrder.getDrug());
     }
 
 	/**

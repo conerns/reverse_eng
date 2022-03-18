@@ -86,7 +86,7 @@ public class SecurityTest {
 		String expected = "this is fantasmic";
 		String encrypted = "GnMz8qETyKMv+edLpYqWfBhR+lX6JlkocNGwHhmhXSY=";
 		String actual = Security.decrypt(encrypted, initVector, secretKey);
-		assertTrue(OpenmrsUtil.nullSafeEquals(expected, actual));
+		assertTrue(OpenmrsCompareUtil.nullSafeEquals(expected, actual));
 		
 		expected = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta sapien ac nisi imperdiet posuere. Ma"
 		        + "ecenas nec felis ac enim posuere semper. In arcu turpis, elementum nec auctor id, pretium sed tortor. Quisque "
@@ -179,7 +179,7 @@ public class SecurityTest {
 		        + "t9mHrJ+FI181rG5bdf62ZsSuziuQ==";
 		
 		actual = Security.decrypt(encrypted, initVector, secretKey);
-		assertTrue(OpenmrsUtil.nullSafeEquals(expected, actual));
+		assertTrue(OpenmrsCompareUtil.nullSafeEquals(expected, actual));
 	}
 	
 	/**
@@ -192,7 +192,7 @@ public class SecurityTest {
 		String encrypted = Security.encrypt(expected);
 		assertTrue(StringUtils.hasText(encrypted));
 		String actual = Security.decrypt(encrypted);
-		assertTrue(OpenmrsUtil.nullSafeEquals(expected, actual));
+		assertTrue(OpenmrsCompareUtil.nullSafeEquals(expected, actual));
 		
 		// long text
 		expected = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta sapien ac nisi imperdiet posuere. Maecenas nec felis ac enim posuere semper. In arcu turpis, elementum nec auctor id, pretium sed tortor. Quisque sit amet erat ante. Praesent metus dui, porttitor non volutpat eu, porta sed ante. Fusce quis dignissim nisl. Vivamus id massa in nisl sollicitudin iaculis ac ut odio. Morbi et sapien non massa ultricies commodo. Nunc semper, nulla a pellentesque adipiscing, urna nisl vulputate lacus, non rutrum nulla mauris at tortor. Quisque molestie, velit nec vehicula tempor, mi eros fermentum ipsum, ut ullamcorper nisl sem at risus. Nam varius nunc sit amet velit blandit gravida sed vel purus. Nam ac justo ut metus elementum vehicula ac non ante. Aliquam pellentesque semper mauris ut pulvinar."
@@ -203,14 +203,14 @@ public class SecurityTest {
 		encrypted = Security.encrypt(expected);
 		assertTrue(StringUtils.hasText(encrypted));
 		actual = Security.decrypt(encrypted);
-		assertTrue(OpenmrsUtil.nullSafeEquals(expected, actual));
+		assertTrue(OpenmrsCompareUtil.nullSafeEquals(expected, actual));
 		
 		// foreign text
 		expected = "傑里米 (Jeremy), 潔儀 (Kitty) and 贏 (Win) like encryption :-D";
 		encrypted = Security.encrypt(expected);
 		assertTrue(StringUtils.hasText(encrypted));
 		actual = Security.decrypt(encrypted);
-		assertTrue(OpenmrsUtil.nullSafeEquals(expected, actual));
+		assertTrue(OpenmrsCompareUtil.nullSafeEquals(expected, actual));
 	}
 	
 }

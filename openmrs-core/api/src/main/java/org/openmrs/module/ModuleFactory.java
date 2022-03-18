@@ -39,14 +39,7 @@ import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.Daemon;
 import org.openmrs.module.Extension.MEDIA_TYPE;
-import org.openmrs.util.CycleException;
-import org.openmrs.util.DatabaseUpdater;
-import org.openmrs.util.Graph;
-import org.openmrs.util.InputRequiredException;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.Advisor;
@@ -1176,7 +1169,7 @@ public class ModuleFactory {
 				File folder = OpenmrsClassLoader.getLibCacheFolder();
 				File tmpModuleDir = new File(folder, moduleId);
 				try {
-					OpenmrsUtil.deleteDirectory(tmpModuleDir);
+					OpenmrsExtUtil.deleteDirectory(tmpModuleDir);
 				}
 				catch (IOException e) {
 					log.warn("Unable to delete libcachefolder for " + moduleId);

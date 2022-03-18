@@ -56,7 +56,7 @@ public class OpenmrsUtilUnitTest {
 	@Test
 	public void parseParameterList_shouldReturnKeyPairsGivenParametersSeparatedByPipe() {
 
-		Map<String, String> actual = OpenmrsUtil.parseParameterList("role_id=role|person_id=person");
+		Map<String, String> actual = OpenmrsStringUtil.parseParameterList("role_id=role|person_id=person");
 		
 		assertThat(actual, hasEntry("role_id", "role"));
 		assertThat(actual, hasEntry("person_id", "person"));
@@ -66,7 +66,7 @@ public class OpenmrsUtilUnitTest {
 	@Test
 	public void parseParameterList_shouldReturnKeyPairsGivenOnePairAndOmitTrailingPipe() {
 
-		Map<String, String> actual = OpenmrsUtil.parseParameterList("role_id=role|");
+		Map<String, String> actual = OpenmrsStringUtil.parseParameterList("role_id=role|");
 		
 		assertThat(actual, hasEntry("role_id", "role"));
 		assertEquals(1, actual.size());
@@ -75,7 +75,7 @@ public class OpenmrsUtilUnitTest {
 	@Test
 	public void parseParameterList_shouldReturnKeyPairsGivenOnePairWithoutValue() {
 
-		Map<String, String> actual = OpenmrsUtil.parseParameterList("role_id=");
+		Map<String, String> actual = OpenmrsStringUtil.parseParameterList("role_id=");
 		
 		assertThat(actual, hasEntry("role_id", ""));
 		assertEquals(1, actual.size());
@@ -84,54 +84,54 @@ public class OpenmrsUtilUnitTest {
 	@Test
 	public void parseParameterList_shouldReturnEmptyMapGivenNull() {
 
-		assertThat(OpenmrsUtil.parseParameterList(null), equalTo(Collections.EMPTY_MAP));
+		assertThat(OpenmrsStringUtil.parseParameterList(null), equalTo(Collections.EMPTY_MAP));
 	}
 	
 	@Test
 	public void parseParameterList_shouldReturnEmptyMapGivenEmptyString() {
 
-		assertThat(OpenmrsUtil.parseParameterList(""), equalTo(Collections.EMPTY_MAP));
+		assertThat(OpenmrsStringUtil.parseParameterList(""), equalTo(Collections.EMPTY_MAP));
 	}
 	
 	@Test
 	public void parseParameterList_shouldReturnEmptyMapGivenOnlyPipesAndNoWhitespace() {
 
-		assertThat(OpenmrsUtil.parseParameterList("||||"), equalTo(Collections.EMPTY_MAP));
+		assertThat(OpenmrsStringUtil.parseParameterList("||||"), equalTo(Collections.EMPTY_MAP));
 	}
 	
 	@Test
 	public void parseParameterList_shouldFailGivenOnlyWhitespaces() {
 
-		assertThrows(IllegalArgumentException.class, () -> OpenmrsUtil.parseParameterList("   "));
+		assertThrows(IllegalArgumentException.class, () -> OpenmrsStringUtil.parseParameterList("   "));
 	}
 	
 	@Test
 	public void parseParameterList_shouldFailGivenOnlyAKey() {
-		assertThrows(IllegalArgumentException.class, () -> OpenmrsUtil.parseParameterList("role_id"));
+		assertThrows(IllegalArgumentException.class, () -> OpenmrsStringUtil.parseParameterList("role_id"));
 	}
 	
 	@Test
 	public void parseParameterList_shouldFailGivenOnlyKeysSeparatedByPipes() {
 
-		assertThrows(IllegalArgumentException.class, () -> OpenmrsUtil.parseParameterList("role_id|patient_id"));
+		assertThrows(IllegalArgumentException.class, () -> OpenmrsStringUtil.parseParameterList("role_id|patient_id"));
 	}
 
 	@Test
 	public void join_shouldReturnEmptyStringGivenNullForCollection() {
 		
-		assertThat(OpenmrsUtil.join(null, ""), is(""));
+		assertThat(OpenmrsStringUtil.join(null, ""), is(""));
 	}
 	
 	@Test
 	public void join_shouldReturnEmptyStringGivenEmptyCollection() {
 
-		assertThat(OpenmrsUtil.join(Collections.EMPTY_LIST, ""), is(""));
+		assertThat(OpenmrsStringUtil.join(Collections.EMPTY_LIST, ""), is(""));
 	}
 
 	@Test
 	public void join_shouldReturnListElementsJoinedBySeparatorWithoutLeadingOrTrailingSeparator() {
 
-		assertThat(OpenmrsUtil.join(moduleList, ","), is("module1,module2"));
+		assertThat(OpenmrsStringUtil.join(moduleList, ","), is("module1,module2"));
 	}
 	
 	@Test
@@ -139,19 +139,19 @@ public class OpenmrsUtilUnitTest {
 
 		List<String> listWithNull = Arrays.asList("module1", null, "module2");
 
-		assertThat(OpenmrsUtil.join(listWithNull, ","), is("module1,null,module2"));
+		assertThat(OpenmrsStringUtil.join(listWithNull, ","), is("module1,null,module2"));
 	}
 
 	@Test
 	public void join_shouldReturnListElementsJoinedBySeparatorIfGivenSeparatorIsEmptyString() {
 
-		assertThat(OpenmrsUtil.join(moduleList, ""), is("module1module2"));
+		assertThat(OpenmrsStringUtil.join(moduleList, ""), is("module1module2"));
 	}
 
 	@Test
 	public void join_shouldReturnListElementsJoinedBySeparatorIfGivenSeparatorIsNull() {
 
-		assertThat(OpenmrsUtil.join(moduleList, null), is("module1nullmodule2"));
+		assertThat(OpenmrsStringUtil.join(moduleList, null), is("module1nullmodule2"));
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class OpenmrsUtilUnitTest {
 
 		String[] array = new String[]{"element1","element2","element3"};
 
-		assertTrue(OpenmrsUtil.isStringInArray("element1", array));
+		assertTrue(OpenmrsStringUtil.isStringInArray("element1", array));
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class OpenmrsUtilUnitTest {
 
 		String[] array = new String[]{"element1","element2","element3"};
 
-		assertFalse(OpenmrsUtil.isStringInArray("element4", array));
+		assertFalse(OpenmrsStringUtil.isStringInArray("element4", array));
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setHiNormal(null);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setLowNormal(null);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiNormal(10.34d);
 		concept.setLowNormal(3.67d);
 
-		assertTrue(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiNormal(4.97d);
 		concept.setLowNormal(3.67d);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiNormal(10.34d);
 		concept.setLowNormal(6.67d);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiNormal(5.67);
 		concept.setLowNormal(2.67);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiNormal(10.34d);
 		concept.setLowNormal(5.64d);
 
-		assertFalse(OpenmrsUtil.isInNormalNumericRange(5.64f, concept));
+		assertFalse(OpenmrsNumericUtil.isInNormalNumericRange(5.64f, concept));
 	}
 
 	@Test
@@ -244,7 +244,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setHiCritical(null);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -253,7 +253,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setLowCritical(null);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(10.34d);
 		concept.setLowCritical(3.67d);
 
-		assertTrue(OpenmrsUtil.isInCriticalNumericRange(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isInCriticalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(4.34d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -283,7 +283,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(10.34d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(2.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(2.67f, concept));
 	}
 
 	@Test
@@ -293,7 +293,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(5.67d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -303,7 +303,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(10.67d);
 		concept.setLowCritical(5.64d);
 
-		assertFalse(OpenmrsUtil.isInCriticalNumericRange(5.64f, concept));
+		assertFalse(OpenmrsNumericUtil.isInCriticalNumericRange(5.64f, concept));
 	}
 
 	@Test
@@ -312,7 +312,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setHiAbsolute(null);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -321,7 +321,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setLowAbsolute(null);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -331,7 +331,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiAbsolute(10.34d);
 		concept.setLowAbsolute(3.67d);
 
-		assertTrue(OpenmrsUtil.isInAbsoluteNumericRange(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isInAbsoluteNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -341,7 +341,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(4.34d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -351,7 +351,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(10.34d);
 		concept.setLowCritical(6.67d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(5.67f, concept));
 	}
 
 	@Test
@@ -361,7 +361,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(4.34d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(4.34f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(4.34f, concept));
 	}
 
 	@Test
@@ -371,7 +371,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(14.34d);
 		concept.setLowCritical(4.34d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(4.34f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(4.34f, concept));
 	}
 
 	@Test
@@ -380,7 +380,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setHiAbsolute(null);
 
-		assertTrue(OpenmrsUtil.isValidNumericValue(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isValidNumericValue(5.67f, concept));
 	}
 
 	@Test
@@ -389,7 +389,7 @@ public class OpenmrsUtilUnitTest {
 		ConceptNumeric concept = new ConceptNumeric();
 		concept.setLowAbsolute(null);
 
-		assertTrue(OpenmrsUtil.isValidNumericValue(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isValidNumericValue(5.67f, concept));
 	}
 
 	@Test
@@ -399,7 +399,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiAbsolute(10.34d);
 		concept.setLowAbsolute(3.67d);
 
-		assertTrue(OpenmrsUtil.isValidNumericValue(5.67f, concept));
+		assertTrue(OpenmrsNumericUtil.isValidNumericValue(5.67f, concept));
 	}
 
 	@Test
@@ -409,7 +409,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiAbsolute(10.34d);
 		concept.setLowAbsolute(6.67d);
 
-		assertFalse(OpenmrsUtil.isValidNumericValue(5.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isValidNumericValue(5.67f, concept));
 	}
 
 	@Test
@@ -419,7 +419,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiAbsolute(10.34d);
 		concept.setLowAbsolute(6.67d);
 
-		assertFalse(OpenmrsUtil.isValidNumericValue(15.67f, concept));
+		assertFalse(OpenmrsNumericUtil.isValidNumericValue(15.67f, concept));
 	}
 
 	@Test
@@ -429,7 +429,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(4.34d);
 		concept.setLowCritical(3.67d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(4.34f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(4.34f, concept));
 	}
 
 	@Test
@@ -439,7 +439,7 @@ public class OpenmrsUtilUnitTest {
 		concept.setHiCritical(14.34d);
 		concept.setLowCritical(4.34d);
 
-		assertFalse(OpenmrsUtil.isInAbsoluteNumericRange(4.34f, concept));
+		assertFalse(OpenmrsNumericUtil.isInAbsoluteNumericRange(4.34f, concept));
 	}
 	
 	@Test
@@ -447,7 +447,7 @@ public class OpenmrsUtilUnitTest {
 
 		System.setProperty("FUNCTIONAL_TEST_MODE", "true");
 
-		assertTrue(OpenmrsUtil.isTestMode());
+		assertTrue(OpenmrsProprietiesUtil.isTestMode());
 	}
 	
 	@Test
@@ -455,7 +455,7 @@ public class OpenmrsUtilUnitTest {
 
 		System.setProperty("FUNCTIONAL_TEST_MODE", "false");
 
-		assertFalse(OpenmrsUtil.isTestMode());
+		assertFalse(OpenmrsProprietiesUtil.isTestMode());
 	}
 
 	@Test
@@ -464,7 +464,7 @@ public class OpenmrsUtilUnitTest {
 		LinkedList<Integer> origList = new LinkedList<>(Arrays.asList(1,2,3));
 		LinkedList<Integer> newList = new LinkedList<>(Arrays.asList(2,3,4));
 
-		Collection<Collection<Integer>> result = OpenmrsUtil.compareLists(origList, newList);
+		Collection<Collection<Integer>> result = OpenmrsCollectionUtil.compareLists(origList, newList);
 		Iterator<Collection<Integer>> it = result.iterator();
 		
 		assertThat(result.size(), is(2));
@@ -475,7 +475,7 @@ public class OpenmrsUtilUnitTest {
 	@Test
 	public void getRuntimePropertiesFilePathName_shouldReturnNullIfPropertyFileNotExist() {
 
-		assertNull(OpenmrsUtil.getRuntimePropertiesFilePathName("app-openmrs"));
+		assertNull(OpenmrsProprietiesUtil.getRuntimePropertiesFilePathName("app-openmrs"));
 	}
 
 }

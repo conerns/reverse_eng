@@ -27,6 +27,8 @@ import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsExtUtil;
+import org.openmrs.util.OpenmrsProprietiesUtil;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
@@ -83,7 +85,7 @@ public class TestUtil {
 			String filename = webappName + "-runtime.properties";
 			
 			if (propertyStream == null) {
-				filepath = OpenmrsUtil.getApplicationDataDirectory() + filename;
+				filepath = OpenmrsExtUtil.getApplicationDataDirectory() + filename;
 				try {
 					propertyStream = new FileInputStream(filepath);
 				}
@@ -101,7 +103,7 @@ public class TestUtil {
 			
 			if (propertyStream == null)
 				throw new IOException("Could not open '" + filename + "' in user or local directory.");
-			OpenmrsUtil.loadProperties(props, propertyStream);
+			OpenmrsProprietiesUtil.loadProperties(props, propertyStream);
 			propertyStream.close();
 			
 		}

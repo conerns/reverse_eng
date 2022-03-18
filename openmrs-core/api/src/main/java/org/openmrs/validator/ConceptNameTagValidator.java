@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsStringUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -58,8 +58,8 @@ public class ConceptNameTagValidator implements Validator {
 			
 			if (cnt.getTag() != null) {
 				ConceptNameTag currentTag = Context.getConceptService().getConceptNameTagByName(cnt.getTag());
-				if (currentTag != null && !OpenmrsUtil.nullSafeEqualsIgnoreCase(cnt.getUuid(), currentTag.getUuid())
-				        && OpenmrsUtil.nullSafeEqualsIgnoreCase(currentTag.getTag(), cnt.getTag())) {
+				if (currentTag != null && !OpenmrsStringUtil.nullSafeEqualsIgnoreCase(cnt.getUuid(), currentTag.getUuid())
+				        && OpenmrsStringUtil.nullSafeEqualsIgnoreCase(currentTag.getTag(), cnt.getTag())) {
 					errors.rejectValue("tag", "Concept.name.tag.duplicate");
 				}
 			}

@@ -32,7 +32,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ServiceNotFoundException;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -63,8 +63,8 @@ public class OpenmrsConfigurationFactory extends ConfigurationFactory {
 		// try to load the configuration from the application directory
 		if (configLocation == null) {
 			for (File applicationDirectory : new File[] {
-				OpenmrsUtil.getDirectoryInApplicationDataDirectory("configuration"),
-				OpenmrsUtil.getApplicationDataDirectoryAsFile()
+				OpenmrsExtUtil.getDirectoryInApplicationDataDirectory("configuration"),
+				OpenmrsExtUtil.getApplicationDataDirectoryAsFile()
  			}) {
 				for (String suffix : getSupportedTypes()) {
 					if (suffix.equals("*")) {

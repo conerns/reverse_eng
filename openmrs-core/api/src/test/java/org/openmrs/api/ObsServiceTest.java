@@ -59,10 +59,8 @@ import org.openmrs.obs.handler.BinaryDataHandler;
 import org.openmrs.obs.handler.ImageHandler;
 import org.openmrs.obs.handler.TextHandler;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
-import org.openmrs.util.DateUtil;
-import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.*;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -419,7 +417,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		Date sd = df.parse("2006-02-13");
 		Date ed = df.parse("2006-02-13");
 		List<Obs> obs = os.getObservations(null, null, null, null, null, null, null, null, null, sd,
-		    OpenmrsUtil.getLastMomentOfDay(ed), false);
+		    OpenmrsDateUtil.getLastMomentOfDay(ed), false);
 		assertEquals(1, obs.size());
 	}
 	
@@ -433,7 +431,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		// create gif file
 		// make sure the file isn't there to begin with
 		AdministrationService as = Context.getAdministrationService();
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		File createdFile = new File(complexObsDir, "openmrs_logo_small.gif");
 		if (createdFile.exists())
@@ -487,7 +485,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		// create gif file
 		// make sure the file isn't there to begin with
 		AdministrationService as = Context.getAdministrationService();
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		File createdFile = new File(complexObsDir, "openmrs_logo_small.gif");
 		if (createdFile.exists())
@@ -650,7 +648,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		
 		// make sure the file isn't there to begin with
 		String filename = "nameOfFile_" + obsToSave.getUuid() + ".txt";
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 	        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		File createdFile = new File(complexObsDir, filename);
 		if (createdFile.exists()) {
@@ -682,7 +680,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		AdministrationService as = Context.getAdministrationService();
 		
 		// Create the file that was supposedly put there by another obs
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		File previouslyCreatedFile = new File(complexObsDir, "nameOfFile.txt");
 		
@@ -1324,7 +1322,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		// ImageHandler inherits AbstractHandler which handles complex data files on disk
 		assertNotNull(complexObs.getComplexData());
 		AdministrationService as = Context.getAdministrationService();
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		for (File file : complexObsDir.listFiles()) {
 			file.delete();
@@ -1783,7 +1781,7 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		AdministrationService as = Context.getAdministrationService();
 		
 		// make sure the file isn't there to begin with
-		File complexObsDir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(as
+		File complexObsDir = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(as
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
 		final File createdFile = new File(complexObsDir, "nameOfFile.txt");
 		if (createdFile.exists())

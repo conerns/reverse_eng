@@ -11,7 +11,7 @@ package org.openmrs;
 
 import java.util.Date;
 
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * PatientState
@@ -105,8 +105,8 @@ public class PatientState extends BaseFormRecordableOpenmrsData implements java.
 		if (onDate == null) {
 			onDate = new Date();
 		}
-		return !getVoided() && (OpenmrsUtil.compareWithNullAsEarliest(startDate, onDate) <= 0)
-		        && (OpenmrsUtil.compareWithNullAsLatest(endDate, onDate) > 0);
+		return !getVoided() && (OpenmrsCompareUtil.compareWithNullAsEarliest(startDate, onDate) <= 0)
+		        && (OpenmrsCompareUtil.compareWithNullAsLatest(endDate, onDate) > 0);
 	}
 	
 	/**
@@ -217,12 +217,12 @@ public class PatientState extends BaseFormRecordableOpenmrsData implements java.
 	@SuppressWarnings("squid:S1210")
 	@Override
 	public int compareTo(PatientState o) {
-		int result = OpenmrsUtil.compareWithNullAsEarliest(getStartDate(), o.getStartDate());
+		int result = OpenmrsCompareUtil.compareWithNullAsEarliest(getStartDate(), o.getStartDate());
 		if (result == 0) {
-			result = OpenmrsUtil.compareWithNullAsLatest(getEndDate(), o.getEndDate());
+			result = OpenmrsCompareUtil.compareWithNullAsLatest(getEndDate(), o.getEndDate());
 		}
 		if (result == 0) {
-			result = OpenmrsUtil.compareWithNullAsGreatest(getUuid(), o.getUuid());
+			result = OpenmrsCompareUtil.compareWithNullAsGreatest(getUuid(), o.getUuid());
 		}
 		return result;
 	}

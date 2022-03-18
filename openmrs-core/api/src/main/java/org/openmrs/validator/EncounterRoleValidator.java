@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.EncounterRole;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 
 /**
@@ -41,7 +41,7 @@ public class EncounterRoleValidator extends RequireNameValidator {
 		if (!errors.hasErrors()) {
 			EncounterRole duplicate = Context.getEncounterService().getEncounterRoleByName(encounterRole.getName().trim());
 			if (duplicate != null && duplicate.getUuid() != null
-			        && !OpenmrsUtil.nullSafeEquals(encounterRole.getUuid(), duplicate.getUuid())) {
+			        && !OpenmrsCompareUtil.nullSafeEquals(encounterRole.getUuid(), duplicate.getUuid())) {
 				errors.rejectValue("name", "encounterRole.duplicate.name",
 				    "Specified Encounter Role name already exists, please specify another ");
 			}

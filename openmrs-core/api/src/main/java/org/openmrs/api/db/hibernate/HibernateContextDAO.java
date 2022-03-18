@@ -38,7 +38,7 @@ import org.openmrs.api.db.ContextDAO;
 import org.openmrs.api.db.FullTextSessionFactory;
 import org.openmrs.api.db.UserDAO;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsProprietiesUtil;
 import org.openmrs.util.Security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -438,7 +438,7 @@ public class HibernateContextDAO implements ContextDAO {
 		Properties props = new Properties();
 		URL url = getClass().getResource("/hibernate.default.properties");
 		File file = new File(url.getPath());
-		OpenmrsUtil.loadProperties(props, file);
+		OpenmrsProprietiesUtil.loadProperties(props, file);
 		
 		// add in all default properties that don't exist in the runtime
 		// properties yet

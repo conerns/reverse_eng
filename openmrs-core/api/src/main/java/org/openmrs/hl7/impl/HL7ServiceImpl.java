@@ -52,9 +52,7 @@ import org.openmrs.hl7.HL7Util;
 import org.openmrs.hl7.Hl7InArchivesMigrateThread;
 import org.openmrs.hl7.Hl7InArchivesMigrateThread.Status;
 import org.openmrs.hl7.db.HL7DAO;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.util.*;
 import org.openmrs.validator.PatientIdentifierValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,7 +240,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 	@Override
 	@Transactional(readOnly = true)
 	public Integer countHL7InQueue(int messageState, String query) throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.countHL7s(HL7InQueue.class, messageState, query));
+		return OpenmrsNumericUtil.convertToInteger(dao.countHL7s(HL7InQueue.class, messageState, query));
 	}
 	
 	/**
@@ -251,7 +249,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 	@Override
 	@Transactional(readOnly = true)
 	public Integer countHL7InError(String query) throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.countHL7s(HL7InError.class, null, query));
+		return OpenmrsNumericUtil.convertToInteger(dao.countHL7s(HL7InError.class, null, query));
 	}
 	
 	/**
@@ -260,7 +258,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 	@Override
 	@Transactional(readOnly = true)
 	public Integer countHL7InArchive(int messageState, String query) throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.countHL7s(HL7InArchive.class, messageState, query));
+		return OpenmrsNumericUtil.convertToInteger(dao.countHL7s(HL7InArchive.class, messageState, query));
 	}
 	
 	/**
@@ -707,7 +705,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 		}
 		
 		// mark this queue object as processing so that it isn't processed twice
-		if (OpenmrsUtil.nullSafeEquals(HL7Constants.HL7_STATUS_PROCESSING, hl7InQueue.getMessageState())) {
+		if (OpenmrsCompareUtil.nullSafeEquals(HL7Constants.HL7_STATUS_PROCESSING, hl7InQueue.getMessageState())) {
 			throw new HL7Exception("The hl7InQueue message with id: " + hl7InQueue.getHL7InQueueId()
 			        + " is already processing. " + ",key=" + hl7InQueue.getHL7SourceKey() + ")");
 		} else {
@@ -1001,9 +999,9 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 		String uuid = null;
 		for (CX identifier : identifiers) {
 			// check for UUID as the assigning authority
-			if (OpenmrsUtil.nullSafeEquals(identifier.getAssigningAuthority().getNamespaceID().getValue(), "UUID")) {
+			if (OpenmrsCompareUtil.nullSafeEquals(identifier.getAssigningAuthority().getNamespaceID().getValue(), "UUID")) {
 				// check for duplicates
-				if (found && !OpenmrsUtil.nullSafeEquals(identifier.getIDNumber().getValue(), uuid)) {
+				if (found && !OpenmrsCompareUtil.nullSafeEquals(identifier.getIDNumber().getValue(), uuid)) {
 					throw new HL7Exception("multiple UUID values found");
 				}
 				uuid = identifier.getIDNumber().getValue();
@@ -1035,12 +1033,12 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 		}
 		
 		// quit early if the message is not migrated or already loaded
-		if (!OpenmrsUtil.nullSafeEquals(archive.getMessageState(), HL7Constants.HL7_STATUS_MIGRATED) || archive.isLoaded()) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(archive.getMessageState(), HL7Constants.HL7_STATUS_MIGRATED) || archive.isLoaded()) {
 			return;
 		}
 		
 		try {
-			archive.setHL7Data(OpenmrsUtil.getFileAsString(new File(new URI(archive.getHL7Data()))));
+			archive.setHL7Data(OpenmrsExtUtil.getFileAsString(new File(new URI(archive.getHL7Data()))));
 			archive.setLoaded(true);
 		}
 		catch (URISyntaxException e) {
@@ -1099,7 +1097,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 			throw new APIException("Hl7Service.migrate.null.archive", (Object[]) null);
 		}
 		
-		if (!OpenmrsUtil.nullSafeEquals(archive.getMessageState(), HL7Constants.HL7_STATUS_PROCESSED)) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(archive.getMessageState(), HL7Constants.HL7_STATUS_PROCESSED)) {
 			throw new APIException("Hl7Service.migrate.archive.state", (Object[]) null);
 		}
 		

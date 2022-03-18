@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.search.annotations.Field;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * PersonAttributeType
@@ -198,7 +198,7 @@ public class PersonAttributeType extends BaseChangeableOpenmrsMetadata implement
 		
 		@Override
 		public int compare(PersonAttributeType pat1, PersonAttributeType pat2) {
-			return OpenmrsUtil.compareWithNullAsGreatest(pat1.getPersonAttributeTypeId(), pat2.getPersonAttributeTypeId());
+			return OpenmrsCompareUtil.compareWithNullAsGreatest(pat1.getPersonAttributeTypeId(), pat2.getPersonAttributeTypeId());
 			
 		}
 	}

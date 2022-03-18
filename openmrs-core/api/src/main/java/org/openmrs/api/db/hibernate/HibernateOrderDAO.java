@@ -41,7 +41,7 @@ import org.openmrs.api.db.OrderDAO;
 import org.openmrs.parameter.OrderSearchCriteria;
 import org.openmrs.User;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsDateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -184,13 +184,13 @@ public class HibernateOrderDAO implements OrderDAO {
 			// set the date's time to the last millisecond of the date
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(searchCriteria.getActivatedOnOrBeforeDate());
-			crit.add(Restrictions.le("dateActivated", OpenmrsUtil.getLastMomentOfDay(cal.getTime())));
+			crit.add(Restrictions.le("dateActivated", OpenmrsDateUtil.getLastMomentOfDay(cal.getTime())));
 		}
 		if (searchCriteria.getActivatedOnOrAfterDate() != null) {
 			// set the date's time to 00:00:00.000
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(searchCriteria.getActivatedOnOrAfterDate());
-			crit.add(Restrictions.ge("dateActivated", OpenmrsUtil.firstSecondOfDay(cal.getTime())));
+			crit.add(Restrictions.ge("dateActivated", OpenmrsDateUtil.firstSecondOfDay(cal.getTime())));
 		}
 		if (searchCriteria.isStopped()) {
 			// an order is considered Canceled regardless of the time when the dateStopped was set
@@ -200,7 +200,7 @@ public class HibernateOrderDAO implements OrderDAO {
 			// set the date's time to the last millisecond of the date
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(searchCriteria.getAutoExpireOnOrBeforeDate());
-			crit.add(Restrictions.le("autoExpireDate", OpenmrsUtil.getLastMomentOfDay(cal.getTime())));
+			crit.add(Restrictions.le("autoExpireDate", OpenmrsDateUtil.getLastMomentOfDay(cal.getTime())));
 		}
         if (searchCriteria.getAction() != null) {
             crit.add(Restrictions.eq("action", searchCriteria.getAction()));
@@ -249,10 +249,10 @@ public class HibernateOrderDAO implements OrderDAO {
 			crit.add(Restrictions.or(
 					Restrictions.and(
 							Restrictions.isNotNull("dateStopped"),
-							Restrictions.le("dateStopped", OpenmrsUtil.getLastMomentOfDay(cal.getTime()))),
+							Restrictions.le("dateStopped", OpenmrsDateUtil.getLastMomentOfDay(cal.getTime()))),
 					Restrictions.and(
 							Restrictions.isNotNull("autoExpireDate"),
-							Restrictions.le("autoExpireDate", OpenmrsUtil.getLastMomentOfDay(cal.getTime())))));
+							Restrictions.le("autoExpireDate", OpenmrsDateUtil.getLastMomentOfDay(cal.getTime())))));
 		}
 		if (!searchCriteria.getIncludeVoided()) {
 			crit.add(Restrictions.eq("voided", false));

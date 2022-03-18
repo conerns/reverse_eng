@@ -20,7 +20,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.APIException;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +63,7 @@ public class MediaHandler extends AbstractHandler implements ComplexObsHandler {
 				ComplexData complexData = new ComplexData(originalFilename, mediaStream);
 				
 				// Get the Mime Type and set it
-				String mimeType = OpenmrsUtil.getFileMimeType(file);
+				String mimeType = OpenmrsExtUtil.getFileMimeType(file);
 				complexData.setMimeType(mimeType);
 				
 				complexData.setLength(file.length());
@@ -103,7 +103,7 @@ public class MediaHandler extends AbstractHandler implements ComplexObsHandler {
 			File outfile = getOutputFileToWrite(obs);
 			OutputStream out = new FileOutputStream(outfile, false);
 			FileInputStream mediaStream = (FileInputStream) obs.getComplexData().getData();
-			OpenmrsUtil.copyFile(mediaStream, out);
+			OpenmrsExtUtil.copyFile(mediaStream, out);
 			
 			// Store the filename in the Obs
 			obs.setComplexData(null);

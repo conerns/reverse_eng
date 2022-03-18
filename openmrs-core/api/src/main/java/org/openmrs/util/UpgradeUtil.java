@@ -38,7 +38,7 @@ public class UpgradeUtil {
 	 * <strong>Should</strong> fail if units is not specified
 	 */
 	public static Integer getConceptIdForUnits(String units) {
-		String appDataDir = OpenmrsUtil.getApplicationDataDirectory();
+		String appDataDir = OpenmrsExtUtil.getApplicationDataDirectory();
 		Properties props = new Properties();
 		String conceptId = null;
 		String filePath = appDataDir +

@@ -20,7 +20,7 @@ import org.hibernate.type.Type;
 import org.openmrs.Retireable;
 import org.openmrs.Voidable;
 import org.openmrs.api.UnchangeableObjectException;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,7 +97,7 @@ public abstract class ImmutableEntityInterceptor extends EmptyInterceptor {
 				
 				Object previousValue = (previousState != null) ? previousState[i] : null;
 				Object currentValue = (currentState != null) ? currentState[i] : null;
-				if (!OpenmrsUtil.nullSafeEquals(currentValue, previousValue)) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(currentValue, previousValue)) {
 					if (changedProperties == null) {
 						changedProperties = new ArrayList<>();
 					}

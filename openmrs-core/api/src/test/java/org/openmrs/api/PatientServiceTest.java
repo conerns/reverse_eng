@@ -79,8 +79,8 @@ import org.openmrs.serialization.SerializationException;
 import org.openmrs.test.SkipBaseSetup;
 import org.openmrs.test.TestUtil;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 
 /**
  * This class tests methods in the PatientService class TODO Add methods to test all methods in
@@ -713,11 +713,11 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 			@Override
 			public boolean matches(Object argument) {
 				Visit visit = (Visit) argument;
-				return OpenmrsUtil.nullSafeEquals(visit.getLocation(), expected.getLocation())
-				        && OpenmrsUtil.nullSafeEquals(visit.getVisitType(), expected.getVisitType())
-				        && OpenmrsUtil.nullSafeEquals(visit.getIndication(), expected.getIndication())
-				        && OpenmrsUtil.nullSafeEquals(visit.getStartDatetime(), expected.getStartDatetime())
-				        && OpenmrsUtil.nullSafeEquals(visit.getStopDatetime(), expected.getStopDatetime())
+				return OpenmrsCompareUtil.nullSafeEquals(visit.getLocation(), expected.getLocation())
+				        && OpenmrsCompareUtil.nullSafeEquals(visit.getVisitType(), expected.getVisitType())
+				        && OpenmrsCompareUtil.nullSafeEquals(visit.getIndication(), expected.getIndication())
+				        && OpenmrsCompareUtil.nullSafeEquals(visit.getStartDatetime(), expected.getStartDatetime())
+				        && OpenmrsCompareUtil.nullSafeEquals(visit.getStopDatetime(), expected.getStopDatetime())
 				        && (visit.getEncounters().size() == expected.getEncounters().size());
 			}
 

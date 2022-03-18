@@ -21,8 +21,8 @@ import org.openmrs.annotation.Handler;
 import org.openmrs.api.DrugService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -120,7 +120,7 @@ public class DrugOrderValidator extends OrderValidator implements Validator {
 
 
 		if(requireDrug){
-			if(order.getConcept() != null && OpenmrsUtil.nullSafeEquals(Context.getDrugService().getNonCodedDrugConcept(), order.getConcept())){
+			if(order.getConcept() != null && OpenmrsCompareUtil.nullSafeEquals(Context.getDrugService().getNonCodedDrugConcept(), order.getConcept())){
 				if(order.getDrug() == null && !order.isNonCodedDrug()){
 					errors.rejectValue("drugNonCoded", "DrugOrder.error.drugNonCodedIsRequired");
 				}

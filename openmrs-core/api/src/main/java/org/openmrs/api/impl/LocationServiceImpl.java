@@ -10,14 +10,11 @@
 package org.openmrs.api.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.openmrs.Address;
 import org.openmrs.Location;
-import org.openmrs.LocationAttribute;
 import org.openmrs.LocationAttributeType;
 import org.openmrs.LocationTag;
 import org.openmrs.api.APIException;
@@ -26,7 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.db.LocationDAO;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsNumericUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -270,7 +267,7 @@ public class LocationServiceImpl extends BaseOpenmrsService implements LocationS
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCountOfLocations(String nameFragment, Boolean includeRetired) {
-		return OpenmrsUtil.convertToInteger(dao.getCountOfLocations(nameFragment, includeRetired));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfLocations(nameFragment, includeRetired));
 	}
 	
 	/**

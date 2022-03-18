@@ -47,6 +47,7 @@ import org.openmrs.api.context.ServiceContext;
 import org.openmrs.scheduler.SchedulerUtil;
 import org.openmrs.util.OpenmrsClassLoader;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +104,7 @@ public class ModuleUtil {
 								FileOutputStream outStream = new FileOutputStream(expandedFile, false);
 								
 								// do the actual file copying
-								OpenmrsUtil.copyFile(stream, outStream);
+								OpenmrsExtUtil.copyFile(stream, outStream);
 								
 								// add the freshly expanded file to the list of modules we're going to start up
 								modulesToLoad.add(expandedFile);
@@ -180,7 +181,7 @@ public class ModuleUtil {
 		File folder = getModuleRepository();
 		
 		// check if module filename is already loaded
-		if (OpenmrsUtil.folderContains(folder, filename)) {
+		if (OpenmrsExtUtil.folderContains(folder, filename)) {
 			throw new ModuleException(filename + " is already associated with a loaded module.");
 		}
 		
@@ -189,7 +190,7 @@ public class ModuleUtil {
 		FileOutputStream outputStream = null;
 		try {
 			outputStream = new FileOutputStream(file);
-			OpenmrsUtil.copyFile(inputStream, outputStream);
+			OpenmrsExtUtil.copyFile(inputStream, outputStream);
 		}
 		catch (IOException e) {
 			throw new ModuleException("Can't create module file for " + filename, e);
@@ -496,7 +497,7 @@ public class ModuleUtil {
 		// if the property wasn't a full path already, assume it was intended to be a folder in the
 		// application directory
 		if (!folder.exists()) {
-			folder = new File(OpenmrsUtil.getApplicationDataDirectory(), folderName);
+			folder = new File(OpenmrsExtUtil.getApplicationDataDirectory(), folderName);
 		}
 		
 		// now create the modules folder if it doesn't exist
@@ -628,7 +629,7 @@ public class ModuleUtil {
 		FileOutputStream outStream = null;
 		try {
 			outStream = new FileOutputStream(file);
-			OpenmrsUtil.copyFile(input, outStream);
+			OpenmrsExtUtil.copyFile(input, outStream);
 		}
 		finally {
 			try {
@@ -736,7 +737,7 @@ public class ModuleUtil {
 			}
 			
 			out = new ByteArrayOutputStream();
-			OpenmrsUtil.copyFile(in, out);
+			OpenmrsExtUtil.copyFile(in, out);
 			output = out.toString(StandardCharsets.UTF_8.name());
 		}
 		catch (IOException io) {

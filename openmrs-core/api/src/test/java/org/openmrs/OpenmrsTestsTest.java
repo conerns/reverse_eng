@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.openmrs.annotation.OpenmrsProfileExcludeFilterWithModulesJUnit4Test;
 import org.openmrs.annotation.StartModuleAnnotationJUnit4Test;
 import org.openmrs.annotation.StartModuleAnnotationReuseJUnit4Test;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 
 /**
  * Runs tests on the openmrs junit tests TODO: add unit test to make sure all tests have a call to
@@ -181,7 +181,7 @@ public class OpenmrsTestsTest {
 		Pattern pattern = Pattern.compile(classNameRegex);
 		
 		URL url = classLoader.getResource("org/openmrs");
-		File directory = OpenmrsUtil.url2file(url);
+		File directory = OpenmrsExtUtil.url2file(url);
 		// make sure we get a directory back
 		assertTrue(directory.isDirectory(), "org.openmrs.test should be a directory");
 		
@@ -190,7 +190,7 @@ public class OpenmrsTestsTest {
 		// check to see if the web layer is also included.  Skip it if its not there
 		url = classLoader.getResource("org/openmrs/web");
 		if (url != null) {
-			directory = OpenmrsUtil.url2file(url);
+			directory = OpenmrsExtUtil.url2file(url);
 			// make sure we get a directory back
 			assertTrue(directory.isDirectory(), "org.openmrs.web.test should be a directory");
 			

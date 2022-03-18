@@ -28,7 +28,7 @@ import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
 import org.openmrs.util.Format;
 import org.openmrs.util.Format.FORMAT_TYPE;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1197,7 +1197,7 @@ public class Obs extends BaseFormRecordableOpenmrsData {
 	
 	protected void markAsDirty(Object oldValue, Object newValue) {
 		//Should we ignore the case for Strings?
-		if (!isDirty() && obsId != null && !OpenmrsUtil.nullSafeEquals(oldValue, newValue)) {
+		if (!isDirty() && obsId != null && !OpenmrsCompareUtil.nullSafeEquals(oldValue, newValue)) {
 			dirty = true;
 		}
 	}

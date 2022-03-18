@@ -29,7 +29,7 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.EncodingType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Resolution;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -488,7 +488,7 @@ public class Person extends BaseChangeableOpenmrsData {
 		}
 		attributeMap = null;
 		allAttributeMap = null;
-		if (!OpenmrsUtil.collectionContains(attributes, newAttribute) && !newIsNull) {
+		if (!OpenmrsCollectionUtil.collectionContains(attributes, newAttribute) && !newIsNull) {
 			attributes.add(newAttribute);
 		}
 	}
@@ -709,7 +709,7 @@ public class Person extends BaseChangeableOpenmrsData {
 			if (names == null) {
 				names = new TreeSet<>();
 			}
-			if (!OpenmrsUtil.collectionContains(names, name)) {
+			if (!OpenmrsCollectionUtil.collectionContains(names, name)) {
 				names.add(name);
 			}
 		}
@@ -740,7 +740,7 @@ public class Person extends BaseChangeableOpenmrsData {
 			if (addresses == null) {
 				addresses = new TreeSet<>();
 			}
-			if (!OpenmrsUtil.collectionContains(addresses, address) && !address.isBlank()) {
+			if (!OpenmrsCollectionUtil.collectionContains(addresses, address) && !address.isBlank()) {
 				addresses.add(address);
 			}
 		}

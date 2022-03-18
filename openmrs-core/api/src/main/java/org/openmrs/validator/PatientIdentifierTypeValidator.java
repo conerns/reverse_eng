@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -62,7 +62,7 @@ public class PatientIdentifierTypeValidator implements Validator {
 			PatientIdentifierType exist = Context.getPatientService().getPatientIdentifierTypeByName(
 			    identifierType.getName());
 			if (exist != null && !exist.getRetired()
-			        && !OpenmrsUtil.nullSafeEquals(identifierType.getUuid(), exist.getUuid())) {
+			        && !OpenmrsCompareUtil.nullSafeEquals(identifierType.getUuid(), exist.getUuid())) {
 				errors.rejectValue("name", "identifierType.duplicate.name");
 			}
 		}

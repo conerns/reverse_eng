@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.FieldType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -55,7 +55,7 @@ public class FieldTypeValidator implements Validator {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.name");
 			if (!errors.hasErrors()) {
 				FieldType exist = Context.getFormService().getFieldTypeByName(fieldType.getName());
-				if (exist != null && !exist.getRetired() && !OpenmrsUtil.nullSafeEquals(fieldType.getUuid(), exist.getUuid())) {
+				if (exist != null && !exist.getRetired() && !OpenmrsCompareUtil.nullSafeEquals(fieldType.getUuid(), exist.getUuid())) {
 					errors.rejectValue("name", "fieldtype.duplicate.name");
 				}
 			}

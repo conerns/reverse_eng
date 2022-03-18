@@ -17,7 +17,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * This class is the representation of a person's address. This class is many-to-one to the Person
@@ -384,10 +384,10 @@ public class PersonAddress extends BaseChangeableOpenmrsData implements java.io.
 				retValue = other.getPreferred().compareTo(getPreferred());
 			}
 			if (retValue == 0 && getDateCreated() != null) {
-				retValue = OpenmrsUtil.compareWithNullAsLatest(getDateCreated(), other.getDateCreated());
+				retValue = OpenmrsCompareUtil.compareWithNullAsLatest(getDateCreated(), other.getDateCreated());
 			}
 			if (retValue == 0) {
-				retValue = OpenmrsUtil.compareWithNullAsGreatest(getPersonAddressId(), other.getPersonAddressId());
+				retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(getPersonAddressId(), other.getPersonAddressId());
 			}
 			
 			// if we've gotten this far, just check all address values. If they are

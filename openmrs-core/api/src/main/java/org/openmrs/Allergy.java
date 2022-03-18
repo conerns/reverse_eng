@@ -30,7 +30,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * Represent allergy
@@ -279,13 +279,13 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	 * @return true if the values match, else false
 	 */
 	public boolean hasSameValues(Allergy allergy) {
-		if (!OpenmrsUtil.nullSafeEquals(getAllergyId(), allergy.getAllergyId())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getAllergyId(), allergy.getAllergyId())) {
 			return false;
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getPatient(), allergy.getPatient())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getPatient(), allergy.getPatient())) {
 			//if object instances are different but with the same patient id, then not changed
 			if (getPatient() != null && allergy.getPatient() != null) {
-				if (!OpenmrsUtil.nullSafeEquals(getPatient().getPatientId(), allergy.getPatient().getPatientId())) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(getPatient().getPatientId(), allergy.getPatient().getPatientId())) {
 					return false;
 				}
 			}
@@ -293,10 +293,10 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 				return false;
 			}
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getAllergen().getCodedAllergen(), allergy.getAllergen().getCodedAllergen())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getAllergen().getCodedAllergen(), allergy.getAllergen().getCodedAllergen())) {
 			//if object instances are different but with the same concept id, then not changed
 			if (getAllergen().getCodedAllergen() != null && allergy.getAllergen().getCodedAllergen() != null) {
-				if (!OpenmrsUtil.nullSafeEquals(getAllergen().getCodedAllergen().getConceptId(), allergy.getAllergen().getCodedAllergen().getConceptId())) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(getAllergen().getCodedAllergen().getConceptId(), allergy.getAllergen().getCodedAllergen().getConceptId())) {
 					return false;
 				}
 			}
@@ -304,13 +304,13 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 				return false;
 			}
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getAllergen().getNonCodedAllergen(), allergy.getAllergen().getNonCodedAllergen())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getAllergen().getNonCodedAllergen(), allergy.getAllergen().getNonCodedAllergen())) {
 			return false;
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getSeverity(), allergy.getSeverity())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getSeverity(), allergy.getSeverity())) {
 			//if object instances are different but with the same concept id, then not changed
 			if (getSeverity() != null && allergy.getSeverity() != null) {
-				if (!OpenmrsUtil.nullSafeEquals(getSeverity().getConceptId(), allergy.getSeverity().getConceptId())) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(getSeverity().getConceptId(), allergy.getSeverity().getConceptId())) {
 					return false;
 				}
 			}
@@ -318,7 +318,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 				return false;
 			}
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getComment(), allergy.getComment())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getComment(), allergy.getComment())) {
 			return false;
 		}
 		return hasSameReactions(allergy);
@@ -353,7 +353,7 @@ public class Allergy extends BaseFormRecordableOpenmrsData {
 	 */
 	public AllergyReaction getAllergyReaction(Integer allergyReactionId) {
 		for (AllergyReaction reaction : reactions) {
-			if (OpenmrsUtil.nullSafeEquals(reaction.getAllergyReactionId(), allergyReactionId)) {
+			if (OpenmrsCompareUtil.nullSafeEquals(reaction.getAllergyReactionId(), allergyReactionId)) {
 				return reaction;
 			}
 		}

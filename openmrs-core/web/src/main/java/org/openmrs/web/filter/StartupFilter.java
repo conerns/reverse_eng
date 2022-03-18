@@ -9,7 +9,6 @@
  */
 package org.openmrs.web.filter;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -132,7 +131,7 @@ public abstract class StartupFilter implements Filter {
 				}
 				
 				try (InputStream imageFileInputStream = new FileInputStream(fullFilePath.normalize().toFile())) {
-					OpenmrsUtil.copyFile(imageFileInputStream, httpResponse.getOutputStream());
+					OpenmrsExtUtil.copyFile(imageFileInputStream, httpResponse.getOutputStream());
 				}
 				catch (FileNotFoundException e) {
 					log.error("Unable to find file: {}", filePath, e);

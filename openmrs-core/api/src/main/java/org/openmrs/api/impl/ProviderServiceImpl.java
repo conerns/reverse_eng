@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.openmrs.Person;
 import org.openmrs.Provider;
-import org.openmrs.ProviderAttribute;
 import org.openmrs.ProviderAttributeType;
 import org.openmrs.api.APIException;
 import org.openmrs.api.ProviderService;
@@ -23,7 +22,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.db.ProviderDAO;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsNumericUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -151,7 +150,7 @@ public class ProviderServiceImpl extends BaseOpenmrsService implements ProviderS
 	 */
 	@Override
 	public Integer getCountOfProviders(String query, boolean includeRetired) {
-		return OpenmrsUtil.convertToInteger(dao.getCountOfProviders(query, includeRetired));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfProviders(query, includeRetired));
 	}
 	
 	/**

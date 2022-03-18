@@ -50,16 +50,8 @@ import org.openmrs.liquibase.ChangeLogVersionFinder;
 import org.openmrs.module.MandatoryModuleException;
 import org.openmrs.module.OpenmrsCoreModuleException;
 import org.openmrs.module.web.WebModuleUtil;
-import org.openmrs.util.DatabaseUpdateException;
-import org.openmrs.util.DatabaseUpdater;
+import org.openmrs.util.*;
 import org.openmrs.liquibase.ChangeSetExecutorCallback;
-import org.openmrs.util.DatabaseUpdaterLiquibaseProvider;
-import org.openmrs.util.DatabaseUtil;
-import org.openmrs.util.InputRequiredException;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.PrivilegeConstants;
-import org.openmrs.util.Security;
 import org.openmrs.web.Listener;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebDaemon;
@@ -722,7 +714,7 @@ public class InitializationFilter extends StartupFilter {
 					wizardModel.hasCurrentOpenmrsDatabase = false;
 					wizardModel.hasCurrentDatabaseUser = true;
 					wizardModel.createDatabaseUser = false;
-					Properties props = OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
+					Properties props = OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
 					wizardModel.currentDatabaseUsername = props.getProperty("connection.username");
 					wizardModel.currentDatabasePassword = props.getProperty("connection.password");
 					wizardModel.createDatabaseUsername = wizardModel.currentDatabaseUsername;
@@ -778,7 +770,7 @@ public class InitializationFilter extends StartupFilter {
 							
 							//If we have a runtime properties file, get the database setup details from it
 							if (skipDatabaseSetupPage()) {
-								Properties props = OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
+								Properties props = OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
 								wizardModel.databaseConnection = props.getProperty("connection.url");
 								loadedDriverString = loadDriver(wizardModel.databaseConnection, wizardModel.databaseDriver);
 								if (!StringUtils.hasText(loadedDriverString)) {
@@ -874,8 +866,8 @@ public class InitializationFilter extends StartupFilter {
 	}
 	
 	private void setDatabaseNameIfInTestMode() {
-		if (OpenmrsUtil.isTestMode()) {
-			wizardModel.databaseName = OpenmrsUtil.getOpenMRSVersionInTestMode();
+		if (OpenmrsProprietiesUtil.isTestMode()) {
+			wizardModel.databaseName = OpenmrsProprietiesUtil.getOpenMRSVersionInTestMode();
 		}
 	}
 	
@@ -997,11 +989,11 @@ public class InitializationFilter extends StartupFilter {
 	private File getRuntimePropertiesFile() {
 		File file;
 		
-		String pathName = OpenmrsUtil.getRuntimePropertiesFilePathName(WebConstants.WEBAPP_NAME);
+		String pathName = OpenmrsProprietiesUtil.getRuntimePropertiesFilePathName(WebConstants.WEBAPP_NAME);
 		if (pathName != null) {
 			file = new File(pathName);
 		} else {
-			file = new File(OpenmrsUtil.getApplicationDataDirectory(), getRuntimePropertiesFileName());
+			file = new File(OpenmrsExtUtil.getApplicationDataDirectory(), getRuntimePropertiesFileName());
 		}
 		
 		log.debug("Using file: " + file.getAbsolutePath());
@@ -1010,7 +1002,7 @@ public class InitializationFilter extends StartupFilter {
 	}
 	
 	private String getRuntimePropertiesFileName() {
-		String fileName = OpenmrsUtil.getRuntimePropertiesFileNameInTestMode();
+		String fileName = OpenmrsProprietiesUtil.getRuntimePropertiesFileNameInTestMode();
 		if (fileName == null) {
 			fileName = WebConstants.WEBAPP_NAME + "-runtime.properties";
 		}
@@ -1076,7 +1068,7 @@ public class InitializationFilter extends StartupFilter {
 		wizardModel = new InitializationWizardModel();
 		DatabaseDetective databaseDetective = new DatabaseDetective();
 		//set whether need to do initialization work
-		if (databaseDetective.isDatabaseEmpty(OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME))) {
+		if (databaseDetective.isDatabaseEmpty(OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME))) {
 			//if runtime-properties file doesn't exist, have to do initialization work
 			setInitializationComplete(false);
 		} else {
@@ -1489,7 +1481,7 @@ public class InitializationFilter extends StartupFilter {
 						    wizardModel.databaseName);
 						
 						finalDatabaseConnectionString = finalDatabaseConnectionString.replace("@APPLICATIONDATADIR@",
-						    OpenmrsUtil.getApplicationDataDirectory().replace("\\", "/"));
+							OpenmrsExtUtil.getApplicationDataDirectory().replace("\\", "/"));
 						
 						// verify that the database connection works
 						if (!verifyConnection(connectionUsername, connectionPassword.toString(),
@@ -1717,7 +1709,7 @@ public class InitializationFilter extends StartupFilter {
 						FileOutputStream fos = null;
 						try {
 							fos = new FileOutputStream(getRuntimePropertiesFile());
-							OpenmrsUtil.storeProperties(runtimeProperties, fos,
+							OpenmrsProprietiesUtil.storeProperties(runtimeProperties, fos,
 							    "Auto generated by OpenMRS initialization wizard");
 							wizardModel.workLog.add("Saved runtime properties file " + getRuntimePropertiesFile());
 							
@@ -1900,7 +1892,7 @@ public class InitializationFilter extends StartupFilter {
 	 * @return
 	 */
 	private static boolean skipDatabaseSetupPage() {
-		Properties props = OpenmrsUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
+		Properties props = OpenmrsProprietiesUtil.getRuntimeProperties(WebConstants.WEBAPP_NAME);
 		return (props != null && StringUtils.hasText(props.getProperty("connection.url"))
 		        && StringUtils.hasText(props.getProperty("connection.username"))
 		        && StringUtils.hasText(props.getProperty("connection.password")));

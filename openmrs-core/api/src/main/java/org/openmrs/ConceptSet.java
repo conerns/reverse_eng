@@ -11,7 +11,7 @@ package org.openmrs;
 
 import java.util.Date;
 
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * This represents a single concept within a concept set.
@@ -191,9 +191,9 @@ public class ConceptSet extends BaseOpenmrsObject implements Auditable, java.io.
 	@Override
 	@SuppressWarnings("squid:S1210")
 	public int compareTo(ConceptSet cs) {
-		int value = OpenmrsUtil.compareWithNullAsLowest(concept.getRetired(), cs.concept.getRetired());
+		int value = OpenmrsCompareUtil.compareWithNullAsLowest(concept.getRetired(), cs.concept.getRetired());
 		if (value == 0) {
-			value = OpenmrsUtil.compareWithNullAsLowest(this.getSortWeight(), cs.getSortWeight());
+			value = OpenmrsCompareUtil.compareWithNullAsLowest(this.getSortWeight(), cs.getSortWeight());
 		}
 		return value;
 	}

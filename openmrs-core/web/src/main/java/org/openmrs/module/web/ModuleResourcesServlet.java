@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleUtil;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,10 +66,10 @@ public class ModuleResourcesServlet extends HttpServlet {
 		
 		FileInputStream is = new FileInputStream(f);
 		try {
-			OpenmrsUtil.copyFile(is, response.getOutputStream());
+			OpenmrsExtUtil.copyFile(is, response.getOutputStream());
 		}
 		finally {
-			OpenmrsUtil.closeStream(is);
+			OpenmrsExtUtil.closeStream(is);
 		}
 	}
 	

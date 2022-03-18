@@ -23,7 +23,7 @@ import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.openmrs.api.db.hibernate.search.LuceneAnalyzers;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -298,7 +298,7 @@ public class PatientIdentifier extends BaseChangeableOpenmrsData implements java
 					retValue = pi1.getPreferred().compareTo(pi2.getPreferred());
 				}
 				if (retValue == 0) {
-					retValue = OpenmrsUtil.compareWithNullAsLatest(pi1.getDateCreated(), pi2.getDateCreated());
+					retValue = OpenmrsCompareUtil.compareWithNullAsLatest(pi1.getDateCreated(), pi2.getDateCreated());
 				}
 				if (pi1.getIdentifierType() == null && pi2.getIdentifierType() == null) {
 					return 0;
@@ -310,11 +310,11 @@ public class PatientIdentifier extends BaseChangeableOpenmrsData implements java
 					retValue = -1;
 				}
 				if (retValue == 0) {
-					retValue = OpenmrsUtil.compareWithNullAsGreatest(pi1.getIdentifierType().getPatientIdentifierTypeId(),
+					retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(pi1.getIdentifierType().getPatientIdentifierTypeId(),
 					    pi2.getIdentifierType().getPatientIdentifierTypeId());
 				}
 				if (retValue == 0) {
-					retValue = OpenmrsUtil.compareWithNullAsGreatest(pi1.getIdentifier(), pi2.getIdentifier());
+					retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(pi1.getIdentifier(), pi2.getIdentifier());
 				}
 				
 				// if we've gotten this far, just check all identifier values.  If they are

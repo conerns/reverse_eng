@@ -31,6 +31,8 @@ import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
+import org.openmrs.util.OpenmrsExtUtil;
+import org.openmrs.util.OpenmrsProprietiesUtil;
 import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +146,7 @@ public class HibernateSessionFactoryBean extends LocalSessionFactoryBean impleme
 			InputStream propertyStream = getClass().getResourceAsStream("/hibernate.default.properties");
 			Properties props = new Properties();
 			
-			OpenmrsUtil.loadProperties(props, propertyStream);
+			OpenmrsProprietiesUtil.loadProperties(props, propertyStream);
 			propertyStream.close();
 			
 			// Only load in the default properties if they don't exist
@@ -160,7 +162,7 @@ public class HibernateSessionFactoryBean extends LocalSessionFactoryBean impleme
 		}
 		
 		log.debug("Replacing variables in hibernate properties");
-		final String applicationDataDirectory = OpenmrsUtil.getApplicationDataDirectory();
+		final String applicationDataDirectory = OpenmrsExtUtil.getApplicationDataDirectory();
 		for (Entry<Object, Object> entry : config.entrySet()) {
 			String value = (String) entry.getValue();
 			

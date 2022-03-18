@@ -59,6 +59,8 @@ import org.openmrs.module.web.filter.ModuleFilterMapping;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.util.OpenmrsExtUtil;
+import org.openmrs.util.OpenmrsProprietiesUtil;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.DispatcherServlet;
@@ -187,7 +189,7 @@ public class WebModuleUtil {
 							// copy the contents over to the webapp for non directories
 							outStream = new FileOutputStream(outFile, false);
 							inStream = jarFile.getInputStream(entry);
-							OpenmrsUtil.copyFile(inStream, outStream);
+							OpenmrsExtUtil.copyFile(inStream, outStream);
 						}
 					} else if ("moduleApplicationContext.xml".equals(name) || "webModuleApplicationContext.xml".equals(name)) {
 						moduleNeedsContextRefresh = true;
@@ -265,7 +267,7 @@ public class WebModuleUtil {
 					moduleNeedsContextRefresh = true;
 					
 					// save the dwr-modules.xml file.
-					OpenmrsUtil.saveDocument(dwrmodulexml, f);
+					OpenmrsExtUtil.saveDocument(dwrmodulexml, f);
 				}
 			}
 			catch (FileNotFoundException e) {
@@ -688,7 +690,7 @@ public class WebModuleUtil {
 			Properties emptyProperties = new Properties();
 			for (File f : files) {
 				if (f.getName().startsWith("module_messages")) {
-					OpenmrsUtil.storeProperties(emptyProperties, f, "");
+					OpenmrsProprietiesUtil.storeProperties(emptyProperties, f, "");
 				}
 			}
 		}
@@ -736,7 +738,7 @@ public class WebModuleUtil {
 		File moduleWebFolder = new File(absPath.replace("/", File.separator));
 		if (moduleWebFolder.exists()) {
 			try {
-				OpenmrsUtil.deleteDirectory(moduleWebFolder);
+				OpenmrsExtUtil.deleteDirectory(moduleWebFolder);
 			}
 			catch (IOException io) {
 				log.warn("Couldn't delete: " + moduleWebFolder.getAbsolutePath(), io);
@@ -796,7 +798,7 @@ public class WebModuleUtil {
 				}
 				
 				// save the dwr-modules.xml file.
-				OpenmrsUtil.saveDocument(dwrmodulexml, f);
+				OpenmrsExtUtil.saveDocument(dwrmodulexml, f);
 			}
 		}
 		catch (FileNotFoundException e) {

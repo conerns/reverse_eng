@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.openmrs.util.OpenmrsUtil.deleteDirectory;
+import static org.openmrs.util.OpenmrsExtUtil.deleteDirectory;
 
 import java.io.File;
 import java.io.IOException;

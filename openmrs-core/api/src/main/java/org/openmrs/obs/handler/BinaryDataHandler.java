@@ -18,7 +18,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.APIException;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -65,7 +65,7 @@ public class BinaryDataHandler extends AbstractHandler implements ComplexObsHand
 			originalFilename = originalFilename.replaceAll(",", "").replaceAll(" ", "").replaceAll("file$", "");
 			
 			try {
-				complexData = new ComplexData(originalFilename, OpenmrsUtil.getFileAsBytes(file));
+				complexData = new ComplexData(originalFilename, OpenmrsExtUtil.getFileAsBytes(file));
 			}
 			catch (IOException e) {
 				log.error("Trying to read file: " + file.getAbsolutePath(), e);
@@ -79,7 +79,7 @@ public class BinaryDataHandler extends AbstractHandler implements ComplexObsHand
 		Assert.notNull(complexData, "Complex data must not be null");
 		
 		// Get the Mime Type and set it
-		String mimeType = OpenmrsUtil.getFileMimeType(file);
+		String mimeType = OpenmrsExtUtil.getFileMimeType(file);
 		complexData.setMimeType(mimeType);
 		
 		obs.setComplexData(complexData);
@@ -119,7 +119,7 @@ public class BinaryDataHandler extends AbstractHandler implements ComplexObsHand
 				fout.write((byte[]) data);
 			} else if (InputStream.class.isAssignableFrom(data.getClass())) {
 				try {
-					OpenmrsUtil.copyFile((InputStream) data, fout);
+					OpenmrsExtUtil.copyFile((InputStream) data, fout);
 				}
 				catch (IOException e) {
 					throw new APIException("Obs.error.unable.convert.complex.data", new Object[] { "input stream" }, e);

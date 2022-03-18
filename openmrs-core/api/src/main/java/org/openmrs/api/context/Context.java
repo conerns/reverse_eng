@@ -44,14 +44,7 @@ import org.openmrs.notification.mail.MailMessageSender;
 import org.openmrs.notification.mail.velocity.VelocityMessagePreparator;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.SchedulerUtil;
-import org.openmrs.util.DatabaseUpdateException;
-import org.openmrs.util.DatabaseUpdater;
-import org.openmrs.util.InputRequiredException;
-import org.openmrs.util.LocaleUtility;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.util.*;
 import org.openmrs.validator.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1242,11 +1235,11 @@ public class Context {
 	 * to mm/dd/yyyy
 	 *
 	 * @return SimpleDateFormat for the user's current locale
-	 * @see org.openmrs.util.OpenmrsUtil#getDateFormat(Locale)
+	 * @see OpenmrsDateUtil#getDateFormat(Locale)
 	 * <strong>Should</strong> return a pattern with four y characters in it
 	 */
 	public static SimpleDateFormat getDateFormat() {
-		return OpenmrsUtil.getDateFormat(getLocale());
+		return OpenmrsDateUtil.getDateFormat(getLocale());
 	}
 
 	/**
@@ -1254,11 +1247,11 @@ public class Context {
 	 * hh:mm a
 	 *
 	 * @return SimpleDateFormat for the user's current locale
-	 * @see org.openmrs.util.OpenmrsUtil#getTimeFormat(Locale)
+	 * @see OpenmrsDateUtil#getTimeFormat(Locale)
 	 * <strong>Should</strong> return a pattern with two h characters in it
 	 */
 	public static SimpleDateFormat getTimeFormat() {
-		return OpenmrsUtil.getTimeFormat(getLocale());
+		return OpenmrsDateUtil.getTimeFormat(getLocale());
 	}
 
 	/**
@@ -1266,11 +1259,11 @@ public class Context {
 	 * mm/dd/yyyy hh:mm a
 	 *
 	 * @return SimpleDateFormat for the user's current locale
-	 * @see org.openmrs.util.OpenmrsUtil#getDateTimeFormat(Locale)
+	 * @see OpenmrsDateUtil#getDateTimeFormat(Locale)
 	 * <strong>Should</strong> return a pattern with four y characters and two h characters in it
 	 */
 	public static SimpleDateFormat getDateTimeFormat() {
-		return OpenmrsUtil.getDateTimeFormat(getLocale());
+		return OpenmrsDateUtil.getDateTimeFormat(getLocale());
 	}
 
 	/**

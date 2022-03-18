@@ -22,6 +22,7 @@ import java.net.URL;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
@@ -396,7 +397,7 @@ public class ModuleUtilIT extends BaseContextSensitiveTest {
 		try {
 			testFolder = ModuleUtil.getModuleRepository();
 			assertNotNull(testFolder);
-			assertEquals(new File(OpenmrsUtil.getApplicationDataDirectory(), folderName), ModuleUtil
+			assertEquals(new File(OpenmrsExtUtil.getApplicationDataDirectory(), folderName), ModuleUtil
 			        .getModuleRepository());
 		}
 		finally {

@@ -41,7 +41,7 @@ import org.openmrs.api.db.hibernate.search.TermsFilterFactory;
 import org.openmrs.customdatatype.CustomValueDescriptor;
 import org.openmrs.customdatatype.Customizable;
 import org.openmrs.util.LocaleUtility;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
@@ -850,7 +850,7 @@ public class Concept extends BaseOpenmrsObject implements Auditable, Retireable,
 					return shortName;
 				}
 				// test for partially locale match - any language matches takes precedence over country matches.
-				if (OpenmrsUtil.nullSafeEquals(locale.getLanguage(), nameLocale.getLanguage())) {
+				if (OpenmrsCompareUtil.nullSafeEquals(locale.getLanguage(), nameLocale.getLanguage())) {
 					bestMatch = shortName;
 				} else if (bestMatch == null && StringUtils.isNotBlank(locale.getCountry())
 				        && locale.getCountry().equals(nameLocale.getCountry())) {

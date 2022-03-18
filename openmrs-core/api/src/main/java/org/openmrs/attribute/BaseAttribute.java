@@ -18,7 +18,7 @@ import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.customdatatype.Customizable;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.NotYetPersistedException;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * Abstract base implementation of {@link Attribute}. Actual implementations should be able to extend this
@@ -145,13 +145,13 @@ public abstract class BaseAttribute<AT extends AttributeType, OwningType extends
 		}
 		int retValue = getVoided().compareTo(other.getVoided());
 		if (retValue == 0) {
-			retValue = OpenmrsUtil.compareWithNullAsGreatest(getAttributeType().getId(), other.getAttributeType().getId());
+			retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(getAttributeType().getId(), other.getAttributeType().getId());
 		}
 		if (retValue == 0) {
-			retValue = OpenmrsUtil.compareWithNullAsGreatest(getValueReference(), other.getValueReference());
+			retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(getValueReference(), other.getValueReference());
 		}
 		if (retValue == 0) {
-			retValue = OpenmrsUtil.compareWithNullAsGreatest(getId(), other.getId());
+			retValue = OpenmrsCompareUtil.compareWithNullAsGreatest(getId(), other.getId());
 		}
 		return retValue;
 	}

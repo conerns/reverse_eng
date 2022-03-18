@@ -14,15 +14,9 @@ import liquibase.exception.LockException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.liquibase.ChangeLogDetective;
-import org.openmrs.util.DatabaseUpdateException;
-import org.openmrs.util.DatabaseUpdater;
+import org.openmrs.util.*;
 import org.openmrs.liquibase.ChangeSetExecutorCallback;
-import org.openmrs.util.DatabaseUpdaterLiquibaseProvider;
-import org.openmrs.util.InputRequiredException;
 import org.openmrs.liquibase.ChangeLogVersionFinder;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.RoleConstants;
-import org.openmrs.util.Security;
 import org.openmrs.web.Listener;
 import org.openmrs.web.WebDaemon;
 import org.openmrs.web.filter.StartupFilter;
@@ -261,7 +255,7 @@ public class UpdateFilter extends StartupFilter {
 					result.put("updateWarnings", sb.toString());
 					result.put("updateLogFile",
 					    StringUtils.replace(
-					        OpenmrsUtil.getApplicationDataDirectory() + DatabaseUpdater.DATABASE_UPDATES_LOG_FILE, "\\",
+							OpenmrsExtUtil.getApplicationDataDirectory() + DatabaseUpdater.DATABASE_UPDATES_LOG_FILE, "\\",
 					        "\\\\"));
 					updateJob.hasUpdateWarnings = false;
 					updateJob.getUpdateWarnings().clear();

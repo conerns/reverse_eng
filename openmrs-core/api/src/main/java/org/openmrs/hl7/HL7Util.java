@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -298,6 +298,6 @@ public class HL7Util {
 			        + "' in the application data directory as the root directory for hl7_in_archives");
 		}
 		
-		return OpenmrsUtil.getDirectoryInApplicationDataDirectory(archiveDir);
+		return OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(archiveDir);
 	}
 }

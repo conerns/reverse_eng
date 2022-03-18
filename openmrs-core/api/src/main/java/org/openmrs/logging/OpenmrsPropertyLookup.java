@@ -17,6 +17,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ServiceNotFoundException;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
@@ -57,7 +58,7 @@ public class OpenmrsPropertyLookup extends AbstractLookup {
 		
 		switch (key) {
 			case "applicationDirectory":
-				final String applicationDirectory = OpenmrsUtil.getApplicationDataDirectory();
+				final String applicationDirectory = OpenmrsExtUtil.getApplicationDataDirectory();
 				return applicationDirectory == null || applicationDirectory.isEmpty() ? null : applicationDirectory;
 			case "logLocation":
 				final String logLocation = getGlobalProperty(adminService, OpenmrsConstants.GP_LOG_LOCATION);

@@ -44,11 +44,7 @@ import org.openmrs.api.db.EncounterDAO;
 import org.openmrs.api.handler.EncounterVisitHandler;
 import org.openmrs.parameter.EncounterSearchCriteria;
 import org.openmrs.parameter.EncounterSearchCriteriaBuilder;
-import org.openmrs.util.HandlerUtil;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -134,8 +130,8 @@ public class EncounterServiceImpl extends BaseOpenmrsService implements Encounte
 			Location newLocation = encounter.getLocation();
 			for (Obs obs : encounter.getAllFlattenedObs(true)) {
 				// if the date was changed
-				if (OpenmrsUtil.compare(originalDate, newDate) != 0
-				        && OpenmrsUtil.compare(obs.getObsDatetime(), originalDate) == 0) {
+				if (OpenmrsCompareUtil.compare(originalDate, newDate) != 0
+				        && OpenmrsCompareUtil.compare(obs.getObsDatetime(), originalDate) == 0) {
 					
 					// if the obs datetime is the same as the
 					// original encounter datetime, fix it
@@ -143,7 +139,7 @@ public class EncounterServiceImpl extends BaseOpenmrsService implements Encounte
 					
 				}
 				
-				if (!OpenmrsUtil.nullSafeEquals(newLocation, originalLocation) && obs.getLocation().equals(originalLocation)) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(newLocation, originalLocation) && obs.getLocation().equals(originalLocation)) {
 					obs.setLocation(newLocation);
 				}
 				
@@ -670,7 +666,7 @@ public class EncounterServiceImpl extends BaseOpenmrsService implements Encounte
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCountOfEncounters(String query, boolean includeVoided) {
-		return OpenmrsUtil.convertToInteger(dao.getCountOfEncounters(query, null, includeVoided));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfEncounters(query, null, includeVoided));
 	}
 	
 	/**

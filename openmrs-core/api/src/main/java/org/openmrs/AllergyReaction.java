@@ -10,7 +10,7 @@
 package org.openmrs;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * Represent allergy reactions
@@ -127,13 +127,13 @@ public class AllergyReaction extends BaseOpenmrsObject implements java.io.Serial
 	 * @return true if the values match, else false
 	 */
 	public boolean hasSameValues(AllergyReaction reaction) {
-		if (!OpenmrsUtil.nullSafeEquals(getAllergyReactionId(), reaction.getAllergyReactionId())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getAllergyReactionId(), reaction.getAllergyReactionId())) {
 			return false;
 		}
-		if (!OpenmrsUtil.nullSafeEquals(getReaction(), reaction.getReaction())) {
+		if (!OpenmrsCompareUtil.nullSafeEquals(getReaction(), reaction.getReaction())) {
 			//if object instances are different but with the same concept id, then not changed
 			if (getReaction() != null && reaction.getReaction() != null) {
-				if (!OpenmrsUtil.nullSafeEquals(getReaction().getConceptId(), reaction.getReaction().getConceptId())) {
+				if (!OpenmrsCompareUtil.nullSafeEquals(getReaction().getConceptId(), reaction.getReaction().getConceptId())) {
 					return false;
 				}
 			}
@@ -141,6 +141,6 @@ public class AllergyReaction extends BaseOpenmrsObject implements java.io.Serial
 				return false;
 			}
 		}
-		return OpenmrsUtil.nullSafeEquals(getReactionNonCoded(), reaction.getReactionNonCoded());
+		return OpenmrsCompareUtil.nullSafeEquals(getReactionNonCoded(), reaction.getReactionNonCoded());
 	}
 }

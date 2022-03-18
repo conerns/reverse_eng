@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.ConceptClass;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -57,7 +57,7 @@ public class ConceptClassValidator implements Validator {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.name");
 			if (!errors.hasErrors()) {
 				ConceptClass exist = Context.getConceptService().getConceptClassByName(cc.getName());
-				if (exist != null && !exist.getRetired() && !OpenmrsUtil.nullSafeEquals(cc.getUuid(), exist.getUuid())) {
+				if (exist != null && !exist.getRetired() && !OpenmrsCompareUtil.nullSafeEquals(cc.getUuid(), exist.getUuid())) {
 					errors.rejectValue("name", "conceptclass.duplicate.name");
 				}
 			}

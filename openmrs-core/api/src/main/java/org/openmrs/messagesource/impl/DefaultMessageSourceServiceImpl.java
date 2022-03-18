@@ -19,7 +19,7 @@ import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.messagesource.MutableMessageSource;
 import org.openmrs.messagesource.PresentationMessage;
 import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsProprietiesUtil;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
@@ -60,7 +60,7 @@ public class DefaultMessageSourceServiceImpl implements MessageSourceService {
 	private DefaultMessageSourceServiceImpl() {
 		InputStream stream = OpenmrsClassLoader.getInstance().getResourceAsStream("messages.properties");
 		if (stream != null) {
-			OpenmrsUtil.loadProperties(props, stream);
+			OpenmrsProprietiesUtil.loadProperties(props, stream);
 		}
 	}
 	

@@ -41,8 +41,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.hl7.HL7Constants;
 import org.openmrs.hl7.HL7InQueueProcessor;
 import org.openmrs.obs.ComplexData;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -893,7 +893,7 @@ public class ORUR01Handler implements Application {
 	}
 	
 	private boolean isConceptProposal(String identifier) {
-		return OpenmrsUtil.nullSafeEquals(identifier, OpenmrsConstants.PROPOSED_CONCEPT_IDENTIFIER);
+		return OpenmrsCompareUtil.nullSafeEquals(identifier, OpenmrsConstants.PROPOSED_CONCEPT_IDENTIFIER);
 	}
 	
 	private Date getDate(int year, int month, int day, int hour, int minute, int second) {
@@ -1029,7 +1029,7 @@ public class ORUR01Handler implements Application {
 		String errorMessage;
 		if (StringUtils.hasText(id)) {
 			String specificErrorMsg = "";
-			if (OpenmrsUtil.nullSafeEquals("L", type)) {
+			if (OpenmrsCompareUtil.nullSafeEquals("L", type)) {
 				if (HL7Constants.PROVIDER_ASSIGNING_AUTH_PROV_ID.equalsIgnoreCase(assignAuth)) {
 					try {
 						provider = Context.getProviderService().getProvider(Integer.valueOf(id));
@@ -1122,9 +1122,9 @@ public class ORUR01Handler implements Application {
 		for (EI identifier : msh.getMessageProfileIdentifier()) {
 			if (identifier != null && identifier.getNamespaceID() != null) {
 				String identifierType = identifier.getNamespaceID().getValue();
-				if (OpenmrsUtil.nullSafeEquals(identifierType, HL7Constants.HL7_FORM_UUID)) {
+				if (OpenmrsCompareUtil.nullSafeEquals(identifierType, HL7Constants.HL7_FORM_UUID)) {
 					uuid = identifier.getEntityIdentifier().getValue();
-				} else if (OpenmrsUtil.nullSafeEquals(identifierType, HL7Constants.HL7_FORM_ID)) {
+				} else if (OpenmrsCompareUtil.nullSafeEquals(identifierType, HL7Constants.HL7_FORM_ID)) {
 					id = identifier.getEntityIdentifier().getValue();
 				} else {
 					log.warn("Form identifier type of " + identifierType + " unknown to ORU R01 processor.");

@@ -335,7 +335,7 @@ public class DatabaseUpdater {
 			Properties props = new Properties();
 			// TODO: This is a dumb requirement to have hibernate in here.  Clean this up
 			propertyStream = DatabaseUpdater.class.getClassLoader().getResourceAsStream("hibernate.default.properties");
-			OpenmrsUtil.loadProperties(props, propertyStream);
+			OpenmrsProprietiesUtil.loadProperties(props, propertyStream);
 			// add in all default properties that don't exist in the runtime
 			// properties yet
 			for (Map.Entry<Object, Object> entry : props.entrySet()) {
@@ -732,7 +732,7 @@ public class DatabaseUpdater {
 	public static void writeUpdateMessagesToFile(String text) {
 		OutputStreamWriter streamWriter = null;
 		PrintWriter writer = null;
-		File destFile = new File(OpenmrsUtil.getApplicationDataDirectory(), DatabaseUpdater.DATABASE_UPDATES_LOG_FILE);
+		File destFile = new File(OpenmrsExtUtil.getApplicationDataDirectory(), DatabaseUpdater.DATABASE_UPDATES_LOG_FILE);
 		try {
 			String lineSeparator = System.getProperty("line.separator");
 			Date date = Calendar.getInstance().getTime();

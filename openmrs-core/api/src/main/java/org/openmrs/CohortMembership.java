@@ -12,7 +12,7 @@ package org.openmrs;
 import java.util.Date;
 import java.util.Objects;
 
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 /**
  * @since 2.1.0
@@ -51,8 +51,8 @@ public class CohortMembership extends BaseChangeableOpenmrsData implements Compa
 	 */
 	public boolean isActive(Date asOfDate) {
 		Date date = asOfDate == null ? new Date() : asOfDate;
-		return !this.getVoided() && OpenmrsUtil.compare(startDate, date) <= 0
-			&& OpenmrsUtil.compareWithNullAsLatest(date, endDate) <= 0;
+		return !this.getVoided() && OpenmrsCompareUtil.compare(startDate, date) <= 0
+			&& OpenmrsCompareUtil.compareWithNullAsLatest(date, endDate) <= 0;
 	}
 	
 	public boolean isActive() {
@@ -147,10 +147,10 @@ public class CohortMembership extends BaseChangeableOpenmrsData implements Compa
 	public int compareTo(CohortMembership o) {
 		int ret = this.getVoided().compareTo(o.getVoided());
 		if (ret == 0) {
-			ret = -OpenmrsUtil.compareWithNullAsLatest(this.getEndDate(), o.getEndDate());
+			ret = -OpenmrsCompareUtil.compareWithNullAsLatest(this.getEndDate(), o.getEndDate());
 		}
 		if (ret == 0) {
-			ret = -OpenmrsUtil.compareWithNullAsEarliest(this.getStartDate(), o.getStartDate());
+			ret = -OpenmrsCompareUtil.compareWithNullAsEarliest(this.getStartDate(), o.getStartDate());
 		}
 		if (ret == 0) {
 			ret = this.getPatientId().compareTo(o.getPatientId());

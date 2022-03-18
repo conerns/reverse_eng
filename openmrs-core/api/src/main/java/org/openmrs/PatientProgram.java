@@ -11,7 +11,7 @@ package org.openmrs;
 
 import org.openmrs.customdatatype.CustomValueDescriptor;
 import org.openmrs.customdatatype.Customizable;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -125,8 +125,8 @@ public class PatientProgram extends BaseChangeableOpenmrsData implements Customi
 		if (onDate == null) {
 			onDate = new Date();
 		}
-		return !getVoided() && (getDateEnrolled() == null || OpenmrsUtil.compare(getDateEnrolled(), onDate) <= 0)
-		        && (getDateCompleted() == null || OpenmrsUtil.compare(getDateCompleted(), onDate) > 0);
+		return !getVoided() && (getDateEnrolled() == null || OpenmrsCompareUtil.compare(getDateEnrolled(), onDate) <= 0)
+		        && (getDateCompleted() == null || OpenmrsCompareUtil.compare(getDateCompleted(), onDate) > 0);
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class PatientProgram extends BaseChangeableOpenmrsData implements Customi
 			throw new IllegalArgumentException("You can't change out of a state that has an end date already");
 		}
 		if (lastState != null && lastState.getStartDate() != null
-		        && OpenmrsUtil.compare(lastState.getStartDate(), onDate) > 0) {
+		        && OpenmrsCompareUtil.compare(lastState.getStartDate(), onDate) > 0) {
 			throw new IllegalArgumentException("You can't change out of a state before that state started");
 		}
 		if (lastState != null

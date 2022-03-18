@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -22,10 +21,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.LocaleUtility;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.util.RoleConstants;
+import org.openmrs.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -472,7 +468,7 @@ public class User extends BaseOpenmrsObject implements java.io.Serializable, Att
 		String proficientLocalesProperty = getUserProperty(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES);
 		
 		if ((proficientLocales == null)
-		        || (!OpenmrsUtil.nullSafeEquals(parsedProficientLocalesProperty, proficientLocalesProperty))) {
+		        || (!OpenmrsCompareUtil.nullSafeEquals(parsedProficientLocalesProperty, proficientLocalesProperty))) {
 			parsedProficientLocalesProperty = proficientLocalesProperty;
 			proficientLocales = new ArrayList<>();
 			if (proficientLocalesProperty != null) {

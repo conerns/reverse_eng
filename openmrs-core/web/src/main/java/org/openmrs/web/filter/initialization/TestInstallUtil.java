@@ -37,7 +37,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.openmrs.web.filter.util.FilterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,15 +177,15 @@ public class TestInstallUtil {
 					String appDataDirectory = Context.getRuntimeProperties().getProperty(
 					    OpenmrsConstants.APPLICATION_DATA_DIRECTORY_RUNTIME_PROPERTY);
 					if (StringUtils.isNotBlank(appDataDirectory)) {
-						OpenmrsUtil.setApplicationDataDirectory(appDataDirectory);
+						OpenmrsExtUtil.setApplicationDataDirectory(appDataDirectory);
 					}
 					
-					File moduleRepository = OpenmrsUtil.getDirectoryInApplicationDataDirectory(moduleRepositoryFolder);
+					File moduleRepository = OpenmrsExtUtil.getDirectoryInApplicationDataDirectory(moduleRepositoryFolder);
 					
 					//delete all previously added modules in case of prior test installations
 					FileUtils.cleanDirectory(moduleRepository);
 					
-					OpenmrsUtil.copyFile(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(
+					OpenmrsExtUtil.copyFile(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(
 				        new File(moduleRepository, fileName))));
 				} else {
 					log.debug("Ignoring file that is not a .omod '{}'", fileName);

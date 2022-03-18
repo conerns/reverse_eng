@@ -54,7 +54,7 @@ import org.openmrs.person.PersonMergeLog;
 import org.openmrs.person.PersonMergeLogData;
 import org.openmrs.serialization.SerializationException;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsNumericUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.PatientIdentifierValidator;
 import org.slf4j.Logger;
@@ -1547,7 +1547,7 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 			return count;
 		}
 		
-		return OpenmrsUtil.convertToInteger(dao.getCountOfPatients(query));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfPatients(query));
 	}
 	
 	/**
@@ -1561,7 +1561,7 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 			return count;
 		}
 		
-		return OpenmrsUtil.convertToInteger(dao.getCountOfPatients(query, includeVoided));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfPatients(query, includeVoided));
 	}
 	
 	/**

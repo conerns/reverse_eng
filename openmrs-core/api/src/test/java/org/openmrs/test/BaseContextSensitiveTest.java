@@ -85,10 +85,7 @@ import org.openmrs.api.context.ContextMockHelper;
 import org.openmrs.api.context.Credentials;
 import org.openmrs.api.context.UsernamePasswordCredentials;
 import org.openmrs.module.ModuleConstants;
-import org.openmrs.util.DatabaseUtil;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.annotation.Rollback;
@@ -365,7 +362,7 @@ public abstract class BaseContextSensitiveTest extends AbstractJUnit4SpringConte
 			
 			runtimeProperties.setProperty(OpenmrsConstants.APPLICATION_DATA_DIRECTORY_RUNTIME_PROPERTY, tempappdir
 			        .getAbsolutePath());
-			OpenmrsUtil.setApplicationDataDirectory(tempappdir.getAbsolutePath());
+			OpenmrsExtUtil.setApplicationDataDirectory(tempappdir.getAbsolutePath());
 		}
 		catch (IOException e) {
 			log.error("Unable to create temp dir", e);

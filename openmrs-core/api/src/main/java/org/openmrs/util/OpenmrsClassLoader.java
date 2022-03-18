@@ -689,14 +689,14 @@ public class OpenmrsClassLoader extends URLClassLoader {
 		}
 		
 		synchronized (ModuleClassLoader.class) {
-			libCacheFolder = new File(OpenmrsUtil.getApplicationDataDirectory(), LIBCACHESUFFIX);
+			libCacheFolder = new File(OpenmrsExtUtil.getApplicationDataDirectory(), LIBCACHESUFFIX);
 			
 			log.debug("libraries cache folder is {}", libCacheFolder);
 			
 			if (libCacheFolder.exists()) {
 				// clean up and empty the folder if it exists (and is not locked)
 				try {
-					OpenmrsUtil.deleteDirectory(libCacheFolder);
+					OpenmrsExtUtil.deleteDirectory(libCacheFolder);
 					
 					libCacheFolder.mkdirs();
 				}

@@ -37,9 +37,9 @@ public class MetadataComparator implements Comparator<OpenmrsMetadata>, Serializ
 	 */
 	@Override
 	public int compare(OpenmrsMetadata left, OpenmrsMetadata right) {
-		int temp = OpenmrsUtil.compareWithNullAsLowest(left.getRetired(), right.getRetired());
+		int temp = OpenmrsCompareUtil.compareWithNullAsLowest(left.getRetired(), right.getRetired());
 		if (temp == 0) {
-			temp = OpenmrsUtil.compareWithNullAsLowest(left.getName(), right.getName());
+			temp = OpenmrsCompareUtil.compareWithNullAsLowest(left.getName(), right.getName());
 		}
 		return temp;
 	}

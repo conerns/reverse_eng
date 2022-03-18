@@ -63,7 +63,7 @@ import org.openmrs.api.db.ConceptDAO;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsNumericUtil;
 import org.openmrs.validator.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1514,7 +1514,7 @@ public class ConceptServiceImpl extends BaseOpenmrsService implements ConceptSer
 	@Transactional(readOnly = true)
 	public Integer getCountOfDrugs(String drugName, Concept concept, boolean searchOnPhrase, boolean searchDrugConceptNames,
 	        boolean includeRetired) throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.getCountOfDrugs(drugName, concept, searchOnPhrase, searchDrugConceptNames,
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfDrugs(drugName, concept, searchOnPhrase, searchDrugConceptNames,
 		    includeRetired));
 	}
 	
@@ -1776,7 +1776,7 @@ public class ConceptServiceImpl extends BaseOpenmrsService implements ConceptSer
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCountOfConceptReferenceTerms(String query, ConceptSource conceptSource, boolean includeRetired) {
-		return OpenmrsUtil.convertToInteger(dao.getCountOfConceptReferenceTerms(query, conceptSource, includeRetired));
+		return OpenmrsNumericUtil.convertToInteger(dao.getCountOfConceptReferenceTerms(query, conceptSource, includeRetired));
 	}
 	
 	/**

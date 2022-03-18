@@ -18,8 +18,8 @@ import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -77,7 +77,7 @@ public class VisitValidator extends BaseCustomizableValidator implements Validat
 		ValidationUtils.rejectIfEmpty(errors, "visitType", "Visit.error.visitType.required");
 		ValidationUtils.rejectIfEmpty(errors, "startDatetime", "Visit.error.startDate.required");
 		if (visit.getStartDatetime() != null
-		        && OpenmrsUtil.compareWithNullAsLatest(visit.getStartDatetime(), visit.getStopDatetime()) > 0) {
+		        && OpenmrsCompareUtil.compareWithNullAsLatest(visit.getStartDatetime(), visit.getStopDatetime()) > 0) {
 			errors.rejectValue("stopDatetime", "Visit.error.endDateBeforeStartDate");
 		}
 		

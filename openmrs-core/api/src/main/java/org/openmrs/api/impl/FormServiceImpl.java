@@ -41,8 +41,8 @@ import org.openmrs.api.handler.SaveHandler;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.obs.ComplexObsHandler;
 import org.openmrs.obs.SerializableComplexObsHandler;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.validator.FormValidator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
@@ -681,12 +681,12 @@ public class FormServiceImpl extends BaseOpenmrsService implements FormService {
 	
 	private boolean fieldsAreSimilar(Field field, Field fieldToBeReplaced) {
 		
-		return (OpenmrsUtil.nullSafeEquals(field.getName(), fieldToBeReplaced.getName())
-		        && OpenmrsUtil.nullSafeEquals(field.getSelectMultiple(), fieldToBeReplaced.getSelectMultiple())
-		        && OpenmrsUtil.nullSafeEquals(field.getFieldType(), fieldToBeReplaced.getFieldType())
-		        && OpenmrsUtil.nullSafeEquals(field.getConcept(), fieldToBeReplaced.getConcept())
-		        && OpenmrsUtil.nullSafeEquals(field.getTableName(), fieldToBeReplaced.getTableName())
-		        && OpenmrsUtil.nullSafeEquals(field.getDefaultValue(), fieldToBeReplaced.getDefaultValue())
+		return (OpenmrsCompareUtil.nullSafeEquals(field.getName(), fieldToBeReplaced.getName())
+		        && OpenmrsCompareUtil.nullSafeEquals(field.getSelectMultiple(), fieldToBeReplaced.getSelectMultiple())
+		        && OpenmrsCompareUtil.nullSafeEquals(field.getFieldType(), fieldToBeReplaced.getFieldType())
+		        && OpenmrsCompareUtil.nullSafeEquals(field.getConcept(), fieldToBeReplaced.getConcept())
+		        && OpenmrsCompareUtil.nullSafeEquals(field.getTableName(), fieldToBeReplaced.getTableName())
+		        && OpenmrsCompareUtil.nullSafeEquals(field.getDefaultValue(), fieldToBeReplaced.getDefaultValue())
 		        && field.getRetired() != null && !field.getRetired());
 	}
 	

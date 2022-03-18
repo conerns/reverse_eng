@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.RelationshipType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -57,7 +57,7 @@ public class RelationshipTypeValidator implements Validator {
 			RelationshipType exist = Context.getPersonService().getRelationshipTypeByName(
 			    relationshipType.getaIsToB() + "/" + relationshipType.getbIsToA());
 			if (exist != null && !exist.getRetired()
-			        && !OpenmrsUtil.nullSafeEquals(relationshipType.getUuid(), exist.getUuid())) {
+			        && !OpenmrsCompareUtil.nullSafeEquals(relationshipType.getUuid(), exist.getUuid())) {
 				errors.reject("duplicate.relationshipType");
 			}
 			ValidateUtil.validateFieldLengths(errors, obj.getClass(), "aIsToB", "bIsToA", "description", "retireReason");

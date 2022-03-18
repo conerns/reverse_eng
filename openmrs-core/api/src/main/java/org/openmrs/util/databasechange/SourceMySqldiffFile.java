@@ -19,10 +19,7 @@ import liquibase.exception.ValidationErrors;
 import liquibase.resource.InputStreamList;
 import liquibase.resource.ResourceAccessor;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.ClassLoaderFileOpener;
-import org.openmrs.util.OpenmrsClassLoader;
-import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -40,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * Executes (aka "source"s) the given file on the current database. <br>
@@ -98,7 +93,7 @@ public class SourceMySqldiffFile implements CustomTaskChange {
 			try (InputStreamList sqlFileInputStream = fileOpener.openStreams(null, sqlFile);
 			     OutputStream outputStream = new FileOutputStream(tmpOutputFile)) {
 				if (sqlFileInputStream != null && !sqlFileInputStream.isEmpty()) {
-					OpenmrsUtil.copyFile(sqlFileInputStream.iterator().next(), outputStream);
+					OpenmrsExtUtil.copyFile(sqlFileInputStream.iterator().next(), outputStream);
 				}
 			}
 		}

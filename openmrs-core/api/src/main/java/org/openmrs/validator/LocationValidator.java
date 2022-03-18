@@ -12,7 +12,7 @@ package org.openmrs.validator;
 import org.openmrs.Location;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -66,7 +66,7 @@ public class LocationValidator extends BaseCustomizableValidator implements Vali
 			}
 			
 			Location exist = Context.getLocationService().getLocation(location.getName());
-			if (exist != null && !exist.getRetired() && !OpenmrsUtil.nullSafeEquals(location.getUuid(), exist.getUuid())) {
+			if (exist != null && !exist.getRetired() && !OpenmrsCompareUtil.nullSafeEquals(location.getUuid(), exist.getUuid())) {
 				errors.rejectValue("name", "location.duplicate.name");
 			}
 			

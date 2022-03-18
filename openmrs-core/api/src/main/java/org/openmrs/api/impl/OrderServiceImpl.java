@@ -36,7 +36,6 @@ import org.openmrs.api.CannotDeleteObjectInUseException;
 import org.openmrs.api.CannotStopDiscontinuationOrderException;
 import org.openmrs.api.CannotStopInactiveOrderException;
 import org.openmrs.api.CannotUnvoidOrderException;
-import org.openmrs.api.CannotUpdateObjectInUseException;
 import org.openmrs.api.EditedOrderDoesNotMatchPreviousException;
 import org.openmrs.api.GlobalPropertyListener;
 import org.openmrs.api.MissingRequiredPropertyException;
@@ -50,8 +49,8 @@ import org.openmrs.api.db.OrderDAO;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.order.OrderUtil;
 import org.openmrs.parameter.OrderSearchCriteria;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -265,7 +264,7 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 
 	private boolean areDrugOrdersOfSameOrderableAndOverlappingSchedule(Order firstOrder, Order secondOrder) {
 		return firstOrder.hasSameOrderableAs(secondOrder)
-		        && !OpenmrsUtil.nullSafeEquals(firstOrder.getPreviousOrder(), secondOrder)
+		        && !OpenmrsCompareUtil.nullSafeEquals(firstOrder.getPreviousOrder(), secondOrder)
 		        && OrderUtil.checkScheduleOverlap(firstOrder, secondOrder)
 		        && firstOrder.getOrderType().equals(
 		            Context.getOrderTypeService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID));

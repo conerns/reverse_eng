@@ -18,7 +18,7 @@ import liquibase.exception.SetupException;
 import liquibase.exception.ValidationErrors;
 import liquibase.resource.ResourceAccessor;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -235,7 +235,7 @@ public class GenerateUuid implements CustomTaskChange {
 		}
 		
 		tableNamesArray = StringUtils.split(tableNames);
-		idExceptionsMap = OpenmrsUtil.parseParameterList(idExceptions);
+		idExceptionsMap = OpenmrsStringUtil.parseParameterList(idExceptions);
 		
 		genericIdSql = "select tablename_id from tablename where columnName is null";
 		genericIdSql = genericIdSql.replace("columnName", columnName);

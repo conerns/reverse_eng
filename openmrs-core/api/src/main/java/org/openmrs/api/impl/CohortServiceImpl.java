@@ -23,7 +23,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.CohortService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.CohortDAO;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,7 +258,7 @@ public class CohortServiceImpl extends BaseOpenmrsService implements CohortServi
 		List<CohortMembership> toUnvoid = memberships.stream().filter(
 						m -> m.getVoided()
 								&& m.getVoidedBy().equals(originallyVoidedBy)
-								&& OpenmrsUtil.compare(
+								&& OpenmrsCompareUtil.compare(
 										truncateToSeconds(m.getDateVoided()),
 										truncateToSeconds(originalDateVoided)) == 0)
 				.collect(Collectors.toList());

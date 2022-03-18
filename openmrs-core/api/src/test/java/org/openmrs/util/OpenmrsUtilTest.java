@@ -91,7 +91,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * test the collection contains method
 	 * 
-	 * @see OpenmrsUtil#collectionContains(Collection,Object)
+	 * @see OpenmrsCollectionUtil#collectionContains(Collection, Object)
 	 */
 	@Test
 	public void collectionContains_shouldUseEqualsMethodForComparisonInsteadOfCompareToGivenListCollection()
@@ -114,13 +114,13 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 		pi.setDateCreated(null);
 		pi.setCreator(null);
 		
-		assertTrue(OpenmrsUtil.collectionContains(identifiers, pi), "Just because the date is null, doesn't make it not in the list anymore");
+		assertTrue(OpenmrsCollectionUtil.collectionContains(identifiers, pi), "Just because the date is null, doesn't make it not in the list anymore");
 	}
 	
 	/**
 	 * test the collection contains method
 	 * 
-	 * @see OpenmrsUtil#collectionContains(Collection,Object)
+	 * @see OpenmrsCollectionUtil#collectionContains(Collection, Object)
 	 */
 	@Test
 	public void collectionContains_shouldUseEqualsMethodForComparisonInsteadOfCompareToGivenSortedSetCollection()
@@ -143,18 +143,18 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 		pi.setDateCreated(null);
 		pi.setCreator(null);
 		
-		assertTrue(OpenmrsUtil.collectionContains(identifiers, pi), "Just because the date is null, doesn't make it not in the list anymore");
+		assertTrue(OpenmrsCollectionUtil.collectionContains(identifiers, pi), "Just because the date is null, doesn't make it not in the list anymore");
 	}
 	
 	/**
-	 * When given a null parameter, the {@link OpenmrsUtil#url2file(java.net.URL)} method should
+	 * When given a null parameter, the {@link OpenmrsExtUtil#url2file(URL)} method should
 	 * quietly fail by returning null
 	 * 
-	 * @see OpenmrsUtil#url2file(URL)
+	 * @see OpenmrsExtUtil#url2file(URL)
 	 */
 	@Test
 	public void url2file_shouldReturnNullGivenNullParameter() {
-		assertNull(OpenmrsUtil.url2file(null));
+		assertNull(OpenmrsExtUtil.url2file(null));
 	}
 
 	/**
@@ -352,85 +352,85 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	}
 	
 	/**
-	 * @see OpenmrsUtil#getDateFormat(Locale)
+	 * @see OpenmrsDateUtil#getDateFormat(Locale)
 	 */
 	@Test
 	public void getDateFormat_shouldReturnAPatternWithFourYCharactersInIt() {
-		assertEquals("MM/dd/yyyy", OpenmrsUtil.getDateFormat(Locale.US).toLocalizedPattern());
-		assertEquals("dd/MM/yyyy", OpenmrsUtil.getDateFormat(Locale.UK).toLocalizedPattern());
-		assertEquals("tt.MM.uuuu", OpenmrsUtil.getDateFormat(Locale.GERMAN).toLocalizedPattern());
-		assertEquals("dd-MM-yyyy", OpenmrsUtil.getDateFormat(new Locale("pt", "pt")).toLocalizedPattern());
+		assertEquals("MM/dd/yyyy", OpenmrsDateUtil.getDateFormat(Locale.US).toLocalizedPattern());
+		assertEquals("dd/MM/yyyy", OpenmrsDateUtil.getDateFormat(Locale.UK).toLocalizedPattern());
+		assertEquals("tt.MM.uuuu", OpenmrsDateUtil.getDateFormat(Locale.GERMAN).toLocalizedPattern());
+		assertEquals("dd-MM-yyyy", OpenmrsDateUtil.getDateFormat(new Locale("pt", "pt")).toLocalizedPattern());
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsUpperAndLowerCase(String)
+	 * @see OpenmrsStringUtil#containsUpperAndLowerCase(String)
 	 */
 	@Test
 	public void containsUpperAndLowerCase_shouldReturnTrueIfStringContainsUpperAndLowerCase() {
-		assertTrue(OpenmrsUtil.containsUpperAndLowerCase("Hello"));
-		assertTrue(OpenmrsUtil.containsUpperAndLowerCase("methodName"));
-		assertTrue(OpenmrsUtil.containsUpperAndLowerCase("the letter K"));
-		assertTrue(OpenmrsUtil.containsUpperAndLowerCase("The number 10"));
+		assertTrue(OpenmrsStringUtil.containsUpperAndLowerCase("Hello"));
+		assertTrue(OpenmrsStringUtil.containsUpperAndLowerCase("methodName"));
+		assertTrue(OpenmrsStringUtil.containsUpperAndLowerCase("the letter K"));
+		assertTrue(OpenmrsStringUtil.containsUpperAndLowerCase("The number 10"));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsUpperAndLowerCase(String)
+	 * @see OpenmrsStringUtil#containsUpperAndLowerCase(String)
 	 */
 	@Test
 	public void containsUpperAndLowerCase_shouldReturnFalseIfStringDoesNotContainLowerCaseCharacters() {
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase("HELLO"));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase("THE NUMBER 10?"));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase(""));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase(null));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase("HELLO"));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase("THE NUMBER 10?"));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase(""));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase(null));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsUpperAndLowerCase(String)
+	 * @see OpenmrsStringUtil#containsUpperAndLowerCase(String)
 	 */
 	@Test
 	public void containsUpperAndLowerCase_shouldReturnFalseIfStringDoesNotContainUpperCaseCharacters() {
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase("hello"));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase("the number 10?"));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase(""));
-		assertFalse(OpenmrsUtil.containsUpperAndLowerCase(null));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase("hello"));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase("the number 10?"));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase(""));
+		assertFalse(OpenmrsStringUtil.containsUpperAndLowerCase(null));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsOnlyDigits(String)
+	 * @see OpenmrsStringUtil#containsOnlyDigits(String)
 	 */
 	@Test
 	public void containsOnlyDigits_shouldReturnTrueIfStringContainsOnlyDigits() {
-		assertTrue(OpenmrsUtil.containsOnlyDigits("1234567890"));
+		assertTrue(OpenmrsStringUtil.containsOnlyDigits("1234567890"));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsOnlyDigits(String)
+	 * @see OpenmrsStringUtil#containsOnlyDigits(String)
 	 */
 	@Test
 	public void containsOnlyDigits_shouldReturnFalseIfStringContainsAnyNonDigits() {
-		assertFalse(OpenmrsUtil.containsOnlyDigits("1.23"));
-		assertFalse(OpenmrsUtil.containsOnlyDigits("123A"));
-		assertFalse(OpenmrsUtil.containsOnlyDigits("12 3"));
-		assertFalse(OpenmrsUtil.containsOnlyDigits(""));
-		assertFalse(OpenmrsUtil.containsOnlyDigits(null));
+		assertFalse(OpenmrsStringUtil.containsOnlyDigits("1.23"));
+		assertFalse(OpenmrsStringUtil.containsOnlyDigits("123A"));
+		assertFalse(OpenmrsStringUtil.containsOnlyDigits("12 3"));
+		assertFalse(OpenmrsStringUtil.containsOnlyDigits(""));
+		assertFalse(OpenmrsStringUtil.containsOnlyDigits(null));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsDigit(String)
+	 * @see OpenmrsStringUtil#containsDigit(String)
 	 */
 	@Test
 	public void containsDigit_shouldReturnTrueIfStringContainsAnyDigits() {
-		assertTrue(OpenmrsUtil.containsDigit("There is 1 digit here."));
+		assertTrue(OpenmrsStringUtil.containsDigit("There is 1 digit here."));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#containsDigit(String)
+	 * @see OpenmrsStringUtil#containsDigit(String)
 	 */
 	@Test
 	public void containsDigit_shouldReturnFalseIfStringContainsNoDigits() {
-		assertFalse(OpenmrsUtil.containsDigit("ABC .$!@#$%^&*()-+=/?><.,~`|[]"));
-		assertFalse(OpenmrsUtil.containsDigit(""));
-		assertFalse(OpenmrsUtil.containsDigit(null));
+		assertFalse(OpenmrsStringUtil.containsDigit("ABC .$!@#$%^&*()-+=/?><.,~`|[]"));
+		assertFalse(OpenmrsStringUtil.containsDigit(""));
+		assertFalse(OpenmrsStringUtil.containsDigit(null));
 	}
 	
 	/**
@@ -448,7 +448,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	}
 	
 	/**
-	 * @see OpenmrsUtil#getDateFormat(Locale)
+	 * @see OpenmrsDateUtil#getDateFormat(Locale)
 	 */
 	@Test
 	public void getDateFormat_shouldNotAllowTheReturnedSimpleDateFormatToBeModified() {
@@ -457,30 +457,30 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 		assertTrue(!Context.getLocale().equals(locale), "default locale is potentially already cached");
 		
 		// get the initially built dateformat from getDateFormat()
-		SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(locale);
-		assertNotSame(OpenmrsUtil.getDateFormat(locale), sdf, "initial dateFormatCache entry is modifiable");
+		SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(locale);
+		assertNotSame(OpenmrsDateUtil.getDateFormat(locale), sdf, "initial dateFormatCache entry is modifiable");
 		
 		// verify changing the pattern on our variable does not affect the cache
 		sdf.applyPattern("yyyymmdd");
-		assertTrue(!OpenmrsUtil.getDateFormat(locale).toPattern().equals(sdf.toPattern()), "initial dateFormatCache pattern is modifiable");
+		assertTrue(!OpenmrsDateUtil.getDateFormat(locale).toPattern().equals(sdf.toPattern()), "initial dateFormatCache pattern is modifiable");
 		
 		// the dateformat cache now contains the format for this locale; checking
 		// a second time will guarantee we are looking at cached data and not the
 		// initially built dateformat
-		sdf = OpenmrsUtil.getDateFormat(locale);
-		assertNotSame(OpenmrsUtil.getDateFormat(locale), sdf, "cached dateFormatCache entry is modifiable");
+		sdf = OpenmrsDateUtil.getDateFormat(locale);
+		assertNotSame(OpenmrsDateUtil.getDateFormat(locale), sdf, "cached dateFormatCache entry is modifiable");
 		
 		// verify changing the pattern on our variable does not affect the cache
 		sdf.applyPattern("yyyymmdd");
-		assertTrue(!OpenmrsUtil.getDateFormat(locale).toPattern().equals(sdf.toPattern()), "cached dateFormatCache pattern is modifiable");
+		assertTrue(!OpenmrsDateUtil.getDateFormat(locale).toPattern().equals(sdf.toPattern()), "cached dateFormatCache pattern is modifiable");
 	}
 	
 	@Test
 	public void openmrsDateFormat_shouldParseValidDate() throws ParseException {
-		SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en", "GB"));
+		SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "GB"));
 		sdf.parse("20/12/2001");
 		
-		sdf = OpenmrsUtil.getDateFormat(new Locale("en", "US"));
+		sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "US"));
 		sdf.parse("12/20/2001");
 	}
 	
@@ -488,28 +488,28 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	public void openmrsDateFormat_shouldNotAllowDatesWithInvalidDaysOrMonths() {
 		
 		try {
-			SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en", "GB"));
+			SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "GB"));
 			sdf.parse("1/13/2001");
 			fail("Date with invalid month should throw exception.");
 		}
 		catch (ParseException e) {}
 		
 		try {
-			SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en", "GB"));
+			SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "GB"));
 			sdf.parse("32/1/2001");
 			fail("Date with invalid day should throw exception.");
 		}
 		catch (ParseException e) {}
 		
 		try {
-			SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en", "US"));
+			SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "US"));
 			sdf.parse("13/1/2001");
 			fail("Date with invalid month should throw exception.");
 		}
 		catch (ParseException e) {}
 		
 		try {
-			SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en", "US"));
+			SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en", "US"));
 			sdf.parse("1/32/2001");
 			fail("Date with invalid day should throw exception.");
 		}
@@ -519,7 +519,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	@Test
 	public void openmrsDateFormat_shouldAllowSingleDigitDatesAndMonths() throws ParseException {
 		
-		SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en"));
+		SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en"));
 		sdf.parse("1/1/2001");
 		
 	}
@@ -528,7 +528,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	public void openmrsDateFormat_shouldNotAllowTwoDigitYears() {
 		
 		try {
-			SimpleDateFormat sdf = OpenmrsUtil.getDateFormat(new Locale("en"));
+			SimpleDateFormat sdf = OpenmrsDateUtil.getDateFormat(new Locale("en"));
 			sdf.parse("01/01/01");
 			fail("Date with two-digit year should throw exception.");
 		}
@@ -675,19 +675,19 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	}
 	
 	/**
-	 * @see OpenmrsUtil#nullSafeEqualsIgnoreCase(String,String)
+	 * @see OpenmrsStringUtil#nullSafeEqualsIgnoreCase(String, String)
 	 */
 	@Test
 	public void nullSafeEqualsIgnoreCase_shouldBeCaseInsensitive() {
-		assertTrue(OpenmrsUtil.nullSafeEqualsIgnoreCase("equal", "Equal"));
+		assertTrue(OpenmrsStringUtil.nullSafeEqualsIgnoreCase("equal", "Equal"));
 	}
 	
 	/**
-	 * @see OpenmrsUtil#nullSafeEqualsIgnoreCase(String,String)
+	 * @see OpenmrsStringUtil#nullSafeEqualsIgnoreCase(String, String)
 	 */
 	@Test
 	public void nullSafeEqualsIgnoreCase_shouldReturnFalseIfOnlyOneOfTheStringsIsNull() {
-		assertFalse(OpenmrsUtil.nullSafeEqualsIgnoreCase(null, ""));
+		assertFalse(OpenmrsStringUtil.nullSafeEqualsIgnoreCase(null, ""));
 	}
 	
 	@Test
@@ -701,7 +701,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 		ByteArrayOutputStream actual = new ByteArrayOutputStream();
 		ByteArrayOutputStream expected = new ByteArrayOutputStream();
 		
-		OpenmrsUtil.storeProperties(properties, actual, null);
+		OpenmrsProprietiesUtil.storeProperties(properties, actual, null);
 		
 		// Java's underlying implementation correctly writes:
 		// blacklistRegex=[^\\p{InBasicLatin}\\p{InLatin1Supplement}]
@@ -714,7 +714,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 
 	/**
 	 * @throws IOException
-	 * @see OpenmrsUtil#copyFile(InputStream, OutputStream)
+	 * @see OpenmrsExtUtil#copyFile(InputStream, OutputStream)
 	 */
 	@Test
 	public void copyFile_shouldNotCopyTheOutputstreamWhenOutputstreamIsNull() throws IOException {
@@ -723,7 +723,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 
 		OutputStream output = null;
 
-		OpenmrsUtil.copyFile(input, output);
+		OpenmrsExtUtil.copyFile(input, output);
 
 		assertNull(output);
 		assertNotNull(input);
@@ -732,14 +732,14 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 
 	/**
 	 * @throws IOException
-	 * @see OpenmrsUtil#copyFile(InputStream, OutputStream)
+	 * @see OpenmrsExtUtil#copyFile(InputStream, OutputStream)
 	 */
 	@Test
 	public void copyFile_shouldNotCopyTheOutputstreamIfInputstreamIsNull() throws IOException {
 		InputStream input = null;
 
 		ByteArrayOutputStream output = spy(new ByteArrayOutputStream());
-		OpenmrsUtil.copyFile(input, output);
+		OpenmrsExtUtil.copyFile(input, output);
 
 		assertNull(input);
 		assertNotNull(output);
@@ -748,7 +748,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 
 	/**
 	 * @throws IOException
-	 * @see OpenmrsUtil#copyFile(InputStream, OutputStream)
+	 * @see OpenmrsExtUtil#copyFile(InputStream, OutputStream)
 	 */
 	@Test
 	public void copyFile_shouldCopyInputstreamToOutputstreamAndCloseTheOutputstream() throws IOException {
@@ -757,7 +757,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 		ByteArrayInputStream expectedByteArrayInputStream = new ByteArrayInputStream(exampleInputStreamString.getBytes());
 
 		ByteArrayOutputStream output = spy(new ByteArrayOutputStream());
-		OpenmrsUtil.copyFile(expectedByteArrayInputStream, output);
+		OpenmrsExtUtil.copyFile(expectedByteArrayInputStream, output);
 
 		expectedByteArrayInputStream.reset();
 		ByteArrayInputStream byteArrayInputStreamFromOutputStream = new ByteArrayInputStream(output.toByteArray());

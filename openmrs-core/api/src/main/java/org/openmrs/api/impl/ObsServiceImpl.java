@@ -36,7 +36,7 @@ import org.openmrs.obs.ComplexObsHandler;
 import org.openmrs.obs.handler.AbstractHandler;
 import org.openmrs.util.OpenmrsClassLoader;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsNumericUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -383,7 +383,7 @@ public class ObsServiceImpl extends BaseOpenmrsService implements ObsService {
 	                                   List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations,
 	                                   Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs)
 	    throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.getObservationCount(whom, encounters, questions, answers, personTypes,
+		return OpenmrsNumericUtil.convertToInteger(dao.getObservationCount(whom, encounters, questions, answers, personTypes,
 		    locations, obsGroupId, fromDate, toDate, null, includeVoidedObs, null));
 	}
 	
@@ -398,7 +398,7 @@ public class ObsServiceImpl extends BaseOpenmrsService implements ObsService {
 	                                   List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations,
 	                                   Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs,
 	                                   String accessionNumber) throws APIException {
-		return OpenmrsUtil.convertToInteger(dao.getObservationCount(whom, encounters, questions, answers, personTypes,
+		return OpenmrsNumericUtil.convertToInteger(dao.getObservationCount(whom, encounters, questions, answers, personTypes,
 		    locations, obsGroupId, fromDate, toDate, null, includeVoidedObs, accessionNumber));
 	}
 	
@@ -631,7 +631,7 @@ public class ObsServiceImpl extends BaseOpenmrsService implements ObsService {
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getObservationCount(List<ConceptName> conceptNames, boolean includeVoided) {
-		return OpenmrsUtil.convertToInteger(dao.getObservationCount(null, null, null, null, null, null, null, null, null,
+		return OpenmrsNumericUtil.convertToInteger(dao.getObservationCount(null, null, null, null, null, null, null, null, null,
 		    conceptNames, true, null));
 	}
 	

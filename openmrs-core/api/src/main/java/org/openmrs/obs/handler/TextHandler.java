@@ -24,7 +24,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.APIException;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -71,8 +71,8 @@ public class TextHandler extends AbstractHandler implements ComplexObsHandler {
 			originalFilename = originalFilename.replaceAll(",", "").replaceAll(" ", "").replaceAll("file$", "");
 			
 			try {
-				complexData = ComplexObsHandler.RAW_VIEW.equals(view) ? new ComplexData(originalFilename, OpenmrsUtil
-				        .getFileAsBytes(file)) : new ComplexData(originalFilename, OpenmrsUtil.getFileAsString(file));
+				complexData = ComplexObsHandler.RAW_VIEW.equals(view) ? new ComplexData(originalFilename, OpenmrsExtUtil
+				        .getFileAsBytes(file)) : new ComplexData(originalFilename, OpenmrsExtUtil.getFileAsString(file));
 			}
 			catch (IOException e) {
 				log.error("Trying to read file: " + file.getAbsolutePath(), e);
@@ -88,7 +88,7 @@ public class TextHandler extends AbstractHandler implements ComplexObsHandler {
 		Assert.notNull(complexData, "Complex data must not be null");
 		
 		// Get the Mime Type and set it
-		String mimeType = OpenmrsUtil.getFileMimeType(file);
+		String mimeType = OpenmrsExtUtil.getFileMimeType(file);
 		mimeType = !(mimeType.equals("application/octet-stream")) ? mimeType : "text/plain";
 		complexData.setMimeType(mimeType);
 		

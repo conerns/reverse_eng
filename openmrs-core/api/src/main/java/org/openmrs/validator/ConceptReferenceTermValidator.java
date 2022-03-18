@@ -18,7 +18,7 @@ import org.openmrs.ConceptReferenceTermMap;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -94,7 +94,7 @@ public class ConceptReferenceTermValidator implements Validator {
 		ConceptReferenceTerm termWithDuplicateCode = Context.getConceptService().getConceptReferenceTermByCode(code,
 		    conceptReferenceTerm.getConceptSource());
 		if (termWithDuplicateCode != null
-		        && !OpenmrsUtil.nullSafeEquals(termWithDuplicateCode.getUuid(), conceptReferenceTerm.getUuid())) {
+		        && !OpenmrsCompareUtil.nullSafeEquals(termWithDuplicateCode.getUuid(), conceptReferenceTerm.getUuid())) {
 			errors.rejectValue("code", "ConceptReferenceTerm.duplicate.code",
 			    "Duplicate concept reference term code in its concept source: " + code);
 		}

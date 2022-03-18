@@ -27,7 +27,8 @@ import org.openmrs.Obs;
 import org.openmrs.api.APIException;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsExtUtil;
+
 import java.io.ByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +105,7 @@ public class ImageHandler extends AbstractHandler implements ComplexObsHandler {
 			}
 					
 			// If the mimetype is still null, determine it via getFileMimeType()
-			mimeType = mimeType != null ? mimeType : OpenmrsUtil.getFileMimeType(file);
+			mimeType = mimeType != null ? mimeType : OpenmrsExtUtil.getFileMimeType(file);
 			
 			complexData.setMimeType(mimeType);	
 			

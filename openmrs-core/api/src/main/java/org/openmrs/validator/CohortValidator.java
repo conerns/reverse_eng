@@ -17,7 +17,7 @@ import org.openmrs.CohortMembership;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.OpenmrsCompareUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -48,7 +48,7 @@ public class CohortValidator implements Validator {
 			if (!CollectionUtils.isEmpty(members)) {
 				for (CohortMembership member : members) {
 					Patient p = Context.getPatientService().getPatient(member.getPatientId());
-					int dateCompare = OpenmrsUtil.compareWithNullAsLatest(member.getStartDate(), member.getEndDate());
+					int dateCompare = OpenmrsCompareUtil.compareWithNullAsLatest(member.getStartDate(), member.getEndDate());
 					if (p != null && p.getVoided() && !member.getVoided()) {
 						String message = "Patient " + p.getPatientId()
 								+ " is voided, cannot add voided members to a cohort";
