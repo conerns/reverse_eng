@@ -211,6 +211,7 @@ public class MigrationHelper {
 		UserService us = Context.getUserService();
 		UserRolesService urs = Context.getUserRolesService();
 		PersonService personService = Context.getPersonService();
+		RelationshipService relationshipService = Context.getRelationshipService();
 		List<Relationship> relsToAdd = new ArrayList<>();
 		Random rand = new Random();
 		for (String s : relationships) {
@@ -277,7 +278,7 @@ public class MigrationHelper {
 			}
 			Person person = personService.getPerson(user.getUserId());
 			
-			RelationshipType relationship = personService.getRelationshipTypeByName(relationshipType);
+			RelationshipType relationship = relationshipService.getRelationshipTypeByName(relationshipType);
 			PatientIdentifierType pit = ps.getPatientIdentifierTypeByName(identifierType);
 			List<PatientIdentifier> found = ps.getPatientIdentifiers(identifier, Collections.singletonList(pit), null, null,
 			    null);
@@ -294,7 +295,7 @@ public class MigrationHelper {
 		}
 		int addedSoFar = 0;
 		for (Relationship rel : relsToAdd) {
-			personService.saveRelationship(rel);
+			relationshipService.saveRelationship(rel);
 			++addedSoFar;
 		}
 		return addedSoFar;

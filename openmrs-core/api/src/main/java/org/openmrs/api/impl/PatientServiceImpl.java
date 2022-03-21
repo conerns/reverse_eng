@@ -660,14 +660,14 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 	
 	private void mergeRelationships(Patient preferred, Patient notPreferred, PersonMergeLogData mergedData) {
 		// copy all relationships
-		PersonService personService = Context.getPersonService();
+		RelationshipService relationshipService = Context.getRelationshipService();
 		Set<String> existingRelationships = new HashSet<>();
 		// fill in the existing relationships with hashes
-		for (Relationship rel : personService.getRelationshipsByPerson(preferred)) {
+		for (Relationship rel : relationshipService.getRelationshipsByPerson(preferred)) {
 			existingRelationships.add(relationshipHash(rel, preferred));
 		}
 		// iterate over notPreferred's relationships and only copy them if they are needed
-		for (Relationship rel : personService.getRelationshipsByPerson(notPreferred)) {
+		for (Relationship rel : relationshipService.getRelationshipsByPerson(notPreferred)) {
 			if (!rel.getVoided()) {
 				boolean personAisPreferred = rel.getPersonA().equals(preferred);
 				boolean personAisNotPreferred = rel.getPersonA().equals(notPreferred);
@@ -677,11 +677,11 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 				
 				if ((personAisPreferred && personBisNotPreferred) || (personBisPreferred && personAisNotPreferred)) {
 					// void this relationship if it's between the preferred and notPreferred patients
-					personService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
+					relationshipService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
 					        + " was merged to person " + (personAisPreferred ? "A" : "B"));
 				} else if (existingRelationships.contains(relHash)) {
 					// void this relationship if it already exists between preferred and the other side
-					personService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
+					relationshipService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
 					        + " was merged and a relationship already exists");
 				} else {
 					// copy this relationship and replace notPreferred with preferred
@@ -693,10 +693,10 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
 						tmpRel.setPersonB(preferred);
 					}
 					log.debug("Copying relationship " + rel.getRelationshipId() + " to " + preferred.getPatientId());
-					Relationship persisted = personService.saveRelationship(tmpRel);
+					Relationship persisted = relationshipService.saveRelationship(tmpRel);
 					mergedData.addCreatedRelationship(persisted.getUuid());
 					// void the existing relationship to the notPreferred
-					personService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
+					relationshipService.voidRelationship(rel, "person " + (personAisNotPreferred ? "A" : "B")
 					        + " was merged, relationship copied to #" + tmpRel.getRelationshipId());
 					// add the relationship hash to existing relationships
 					existingRelationships.add(relHash);

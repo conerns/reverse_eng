@@ -65,7 +65,7 @@ public class CreateCoreUuids extends BaseContextSensitiveTest {
 		
 		// relationship types
 		System.out.println("Relationship type");
-		for (RelationshipType type : Context.getPersonService().getAllRelationshipTypes()) {
+		for (RelationshipType type : Context.getRelationshipService().getAllRelationshipTypes()) {
 			String output = "<update tableName=\"relationship_type\"><column name=\"uuid\" value=\"" + type.getUuid()
 			        + "\"/><where> relationship_type_id = '" + type.getRelationshipTypeId() + "' and a_is_to_b = '"
 			        + type.getaIsToB().replace("'", "\\'") + "' and b_is_to_a = '" + type.getbIsToA().replace("'", "\\'")

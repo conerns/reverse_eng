@@ -49,12 +49,7 @@ import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
-import org.openmrs.api.APIException;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.ProviderService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.hl7.HL7Constants;
 import org.openmrs.obs.ComplexObsHandler;
@@ -432,7 +427,7 @@ public class ORUR01HandlerTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void processNK1_shouldCreateARelationshipFromANK1Segment() throws Exception {
-		PersonService personService = Context.getPersonService();
+		RelationshipService personService = Context.getRelationshipService();
 		Patient patient = new Patient(3); // the patient that is the focus of
 		// this hl7 message
 		Patient relative = new Patient(2); // the patient that is related to
@@ -542,7 +537,7 @@ public class ORUR01HandlerTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void processNK1_shouldNotCreateARelationshipIfOneExists() throws Exception {
-		PersonService personService = Context.getPersonService();
+		RelationshipService personService = Context.getRelationshipService();
 		Patient patient = new Patient(3); // the patient that is the focus of
 		// this hl7 message
 		Patient relative = new Patient(2); // the patient that is related to
@@ -587,7 +582,7 @@ public class ORUR01HandlerTest extends BaseContextSensitiveTest {
 	 */
 	@Test
 	public void processORU_R01_shouldProcessMultipleNK1Segments() throws Exception {
-		PersonService personService = Context.getPersonService();
+		RelationshipService personService = Context.getRelationshipService();
 		Patient patient = new Patient(3); // the patient that is the focus of
 		// this hl7 message
 		Patient relative = new Patient(2); // the patient that is related to
@@ -663,7 +658,7 @@ public class ORUR01HandlerTest extends BaseContextSensitiveTest {
 		assertNotNull(relative, "a new person was not created");
 		
 		// see if the relative made it into the relationship properly
-		List<Relationship> rels = personService.getRelationships(relative, patient, new RelationshipType(3));
+		List<Relationship> rels = Context.getRelationshipService().getRelationships(relative, patient, new RelationshipType(3));
 		assertTrue(!rels.isEmpty() && rels.size() == 1, "new relationship was not created");
 	}
 	

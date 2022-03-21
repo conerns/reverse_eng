@@ -1325,6 +1325,10 @@ public class Context {
 	public static DatatypeService getDatatypeService() {
 		return getServiceContext().getDatatypeService();
 	}
+	
+	public static RelationshipService getRelationshipService(){
+		return getServiceContext().getRelationshipService();
+	}
 
 	/**
 	 * Add or replace a property in the config properties list

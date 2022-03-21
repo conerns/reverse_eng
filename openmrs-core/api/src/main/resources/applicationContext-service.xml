@@ -98,6 +98,7 @@
 	<bean id="serviceContext" class="org.openmrs.api.context.ServiceContext" factory-method="getInstance"
 		  destroy-method="destroyInstance">
 		<property name="patientService" ref="patientService"/>
+		<property name="relationshipService" ref="relationshipService"/>
 		<property name="personService" ref="personService"/>
 		<property name="conceptService" ref="conceptService"/>
 		<property name="userService" ref="userService"/>
@@ -195,6 +196,9 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="programWorkflowDAO" class="org.openmrs.api.db.hibernate.HibernateProgramWorkflowDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="relationshipDAO" class="org.openmrs.api.db.hibernate.HibernateRelationshipDAO">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="patientProgramDAO" class="org.openmrs.api.db.hibernate.HibernatePatientProgramDAO">
@@ -300,6 +304,9 @@
 	</bean>
 	<bean id="userRolesServiceTarget" class="org.openmrs.api.impl.UserRolesServiceImpl">
 		<property name="userRolesDAO" ref="userRolesDAO"/>
+	</bean>
+	<bean id="relationshipServiceTarget" class="org.openmrs.api.impl.RelationshipServiceImpl">
+		<property name="relationshipDAO" ref="relationshipDAO"/>
 	</bean>
 	<bean id="obsServiceTarget" class="org.openmrs.api.impl.ObsServiceImpl">
 		<property name="obsDAO" ref="obsDAO"/>
@@ -488,6 +495,12 @@
 	<bean id="conceptService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target" ref="conceptServiceTarget"/>
+		<property name="preInterceptors" ref="serviceInterceptors"/>
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+	</bean>
+	<bean id="relationshipService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="relationshipServiceTarget"/>
 		<property name="preInterceptors" ref="serviceInterceptors"/>
 		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
 	</bean>

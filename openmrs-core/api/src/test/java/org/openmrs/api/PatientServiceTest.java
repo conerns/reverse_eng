@@ -122,6 +122,8 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 	
 	protected static LocationService locationService = null;
 	
+	protected static RelationshipService relationshipService = null;
+	
 	
 	/**
 	 * Run this before each unit test in this class. The "@Before" method in
@@ -135,6 +137,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		personService = Context.getPersonService();
 		adminService = Context.getAdministrationService();
 		locationService = Context.getLocationService();
+		relationshipService = Context.getRelationshipService();
 
 		updateSearchIndex();
 	}
@@ -2212,7 +2215,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		
 		// check for a relationship that should not be duplicated: 2->1 and
 		// 999->1
-		List<Relationship> rels = personService.getRelationships(preferred, new Person(1), new RelationshipType(2));
+		List<Relationship> rels = relationshipService.getRelationships(preferred, new Person(1), new RelationshipType(2));
 		assertEquals(1, rels.size(), "duplicate relationships were not removed");
 	}
 	
@@ -2229,7 +2232,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		
 		patientService.mergePatients(preferred, notPreferred);
 		
-		List<Relationship> rels = personService.getRelationshipsByPerson(notPreferred);
+		List<Relationship> rels = relationshipService.getRelationshipsByPerson(notPreferred);
 		assertTrue(rels.isEmpty(), "there should not be any relationships for non preferred");
 	}
 	
@@ -2413,7 +2416,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		//find the UUID of the created relationship as a result of the merge
 		//note: since patient 2 is related to patient 1. patient 7 should now be related to patient 1
 		String createdRelationshipUuid = null;
-		List<Relationship> relationships = personService.getRelationshipsByPerson(preferred);
+		List<Relationship> relationships = relationshipService.getRelationshipsByPerson(preferred);
 		for (Relationship r : relationships) {
 			if (r.getPersonB().getId().equals(1) || r.getPersonA().getId().equals(1)) {
 				createdRelationshipUuid = r.getUuid();
@@ -2437,7 +2440,7 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		//merge the two patients and retrieve the audit object
 		PersonMergeLog audit = mergeAndRetrieveAudit(preferred, notPreferred);
 		
-		assertTrue(isValueInList(personService.getRelationship(4).getUuid(), audit.getPersonMergeLogData().getVoidedRelationships()), "relationship voiding not audited");
+		assertTrue(isValueInList(relationshipService.getRelationship(4).getUuid(), audit.getPersonMergeLogData().getVoidedRelationships()), "relationship voiding not audited");
 	}
 	
 	/**
@@ -2697,10 +2700,10 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 		
 		// check for relationships that should not be removed: 7->999 (type 4)
 		// and 7->999 (type 1)
-		List<Relationship> rels = personService.getRelationships(new Person(7), preferred, new RelationshipType(4));
+		List<Relationship> rels = relationshipService.getRelationships(new Person(7), preferred, new RelationshipType(4));
 		assertEquals(1, rels.size(), "7->999 (type 4) was removed");
 		
-		rels = personService.getRelationships(new Person(7), preferred, new RelationshipType(1));
+		rels = relationshipService.getRelationships(new Person(7), preferred, new RelationshipType(1));
 		assertEquals(1, rels.size(), "7->999 (type 1) was removed");
 	}
 	

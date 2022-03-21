@@ -182,6 +182,13 @@ public class ServiceContext implements ApplicationContextAware {
 		return getService(ObsService.class);
 	}
 	
+	public void setRelationshipService(RelationshipService service){
+		setService(RelationshipService.class, service);
+	}
+	public RelationshipService getRelationshipService(){
+		return getService(RelationshipService.class);
+	}
+	
 	/**
 	 * @return condition related service
 	 * 

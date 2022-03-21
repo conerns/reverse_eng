@@ -54,7 +54,7 @@ public class RelationshipTypeValidator implements Validator {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aIsToB", "RelationshipType.aIsToB.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bIsToA", "RelationshipType.bIsToA.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "RelationshipType.description.required");
-			RelationshipType exist = Context.getPersonService().getRelationshipTypeByName(
+			RelationshipType exist = Context.getRelationshipService().getRelationshipTypeByName(
 			    relationshipType.getaIsToB() + "/" + relationshipType.getbIsToA());
 			if (exist != null && !exist.getRetired()
 			        && !OpenmrsCompareUtil.nullSafeEquals(relationshipType.getUuid(), exist.getUuid())) {

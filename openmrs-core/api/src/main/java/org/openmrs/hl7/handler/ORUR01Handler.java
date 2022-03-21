@@ -417,7 +417,7 @@ public class ORUR01Handler implements Application {
 		}
 		
 		// find the relationship type
-		RelationshipType relType = Context.getPersonService().getRelationshipType(relTypeId);
+		RelationshipType relType = Context.getRelationshipService().getRelationshipType(relTypeId);
 		if (relType == null) {
 			throw new HL7Exception(Context.getMessageSourceService().getMessage("ORUR01.error.relationshipTypeNotFound",
 			    new Object[] { relTypeId }, null));
@@ -435,10 +435,10 @@ public class ORUR01Handler implements Application {
 		Set<Relationship> rels = new HashSet<>();
 		if (relative != null) {
 			if (patientCanBeEitherPerson || patientIsPersonA) {
-				rels.addAll(Context.getPersonService().getRelationships(patient, relative, relType));
+				rels.addAll(Context.getRelationshipService().getRelationships(patient, relative, relType));
 			}
 			if (patientCanBeEitherPerson || !patientIsPersonA) {
-				rels.addAll(Context.getPersonService().getRelationships(relative, patient, relType));
+				rels.addAll(Context.getRelationshipService().getRelationships(relative, patient, relType));
 			}
 		}
 		
@@ -464,7 +464,7 @@ public class ORUR01Handler implements Application {
 				relation.setPersonB(patient);
 			}
 			relation.setRelationshipType(relType);
-			Context.getPersonService().saveRelationship(relation);
+			Context.getRelationshipService().saveRelationship(relation);
 		}
 	}
 	

@@ -14,12 +14,9 @@ import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
-import org.openmrs.Relationship;
-import org.openmrs.RelationshipType;
 import org.openmrs.person.PersonMergeLog;
 import org.openmrs.util.OpenmrsConstants;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -87,26 +84,6 @@ public interface PersonDAO {
 	public PersonAttribute getPersonAttribute(Integer id) throws DAOException;
 	
 	/**
-	 * @see org.openmrs.api.PersonService#getRelationship(java.lang.Integer)
-	 */
-	public Relationship getRelationship(Integer relationshipId) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#getAllRelationships(boolean)
-	 */
-	public List<Relationship> getAllRelationships(boolean includeVoided) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#getRelationshipType(java.lang.Integer)
-	 */
-	public RelationshipType getRelationshipType(Integer relationshipTypeId) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#getRelationshipTypes(java.lang.String, java.lang.Boolean)
-	 */
-	public List<RelationshipType> getRelationshipTypes(String relationshipTypeName, Boolean preferred) throws DAOException;
-	
-	/**
 	 * @see org.openmrs.api.PersonService#savePerson(org.openmrs.Person)
 	 */
 	public Person savePerson(Person person) throws DAOException;
@@ -121,39 +98,6 @@ public interface PersonDAO {
 	 */
 	public Person getPerson(Integer personId) throws DAOException;
 	
-	/**
-	 * @see org.openmrs.api.PersonService#saveRelationship(org.openmrs.Relationship)
-	 */
-	public Relationship saveRelationship(Relationship relationship) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#purgeRelationship(org.openmrs.Relationship)
-	 */
-	public void deleteRelationship(Relationship relationship) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#getRelationships(org.openmrs.Person, org.openmrs.Person,
-	 *      org.openmrs.RelationshipType)
-	 */
-	public List<Relationship> getRelationships(Person fromPerson, Person toPerson, RelationshipType relType)
-	        throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#getRelationships(org.openmrs.Person, org.openmrs.Person,
-	 *      org.openmrs.RelationshipType, java.util.Date, java.util.Date)
-	 */
-	public List<Relationship> getRelationships(Person fromPerson, Person toPerson, RelationshipType relType,
-	        Date startEffectiveDate, Date endEffectiveDate) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#saveRelationshipType(org.openmrs.RelationshipType)
-	 */
-	public RelationshipType saveRelationshipType(RelationshipType relationshipType) throws DAOException;
-	
-	/**
-	 * @see org.openmrs.api.PersonService#deleteRelationshipType(org.openmrs.RelationshipType)
-	 */
-	public void deleteRelationshipType(RelationshipType relationshipType) throws DAOException;
 	
 	/**
 	 * @param uuid
@@ -169,17 +113,6 @@ public interface PersonDAO {
 	
 	public PersonName getPersonNameByUuid(String uuid);
 	
-	/**
-	 * @param uuid
-	 * @return relationship or null
-	 */
-	public Relationship getRelationshipByUuid(String uuid);
-	
-	/**
-	 * @param uuid
-	 * @return relationship type or null
-	 */
-	public RelationshipType getRelationshipTypeByUuid(String uuid);
 	
 	/**
 	 * @param uuid
@@ -211,10 +144,6 @@ public interface PersonDAO {
 	 */
 	public Boolean getSavedPersonAttributeTypeSearchable(PersonAttributeType personAttributeType);
 	
-	/**
-	 * @see org.openmrs.api.PersonService#getAllRelationshipTypes(boolean)
-	 */
-	public List<RelationshipType> getAllRelationshipTypes(boolean includeRetired);
 	
 	/**
 	 * Saves a <code>PersonMergeLog</code> object to the database
